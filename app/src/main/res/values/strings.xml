@@ -1,6 +1,9 @@
 <resources>
-    <string name="app_name">BloodPressureMonitor</string>
+    <string name="app_name">BPM</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    
+    <!--Splash-->
+    <string name="slogan">¡Tu salud en el bolsillo!</string>
 </resources>

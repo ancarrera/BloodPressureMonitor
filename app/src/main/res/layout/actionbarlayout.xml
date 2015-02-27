@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:gravity="center_vertical"
+    android:background="@drawable/actionbarbackground"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/actionbarbutton"
+        android:layout_marginLeft="@dimen/barbuttonmarginleft"
+        android:layout_width="@dimen/buttonsize"
+        android:layout_height="@dimen/buttonsize"
+        />
+    <TextView
+        android:layout_toRightOf="@+id/actionbarbutton"
+        android:layout_toLeftOf="@+id/fakebutton"
+        android:layout_marginLeft="@dimen/margintextbar"
+        android:layout_centerVertical="true"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:textColor="@android:color/white"
+        android:layout_height="wrap_content"
+        android:text="LOGIN"/>
+
+    <ImageButton
+        android:id="@+id/fakebutton"
+        android:layout_width="@dimen/buttonsize"
+        android:layout_height="@dimen/buttonsize"
+        android:visibility="invisible"
+        android:layout_alignParentRight="true"
+        />
+
+</RelativeLayout>
