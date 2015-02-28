@@ -6,4 +6,8 @@
     
     <!--Splash-->
     <string name="slogan">¡Tu salud en el bolsillo!</string>
+    <string name="email_hint" translatable="false" >E-mail</string>
+    <string name="pass_hint">Contraseña</string>
+    <string name="loginentrar">Entrar</string>
+    <string name="loginregister">¿No tienes cuenta?, registrate</string>
 </resources>

@@ -8,5 +8,9 @@
     <!--Action bar-->
     <dimen name="buttonsize">50dp</dimen>
     <dimen name="barbuttonmarginleft">15dp</dimen>
+   <!--Login-->
     <dimen name="margintextbar">5dp</dimen>
+    <dimen name="imagesizewidth">200dp</dimen>
+    <dimen name="imagesizeheight">100dp</dimen>
+    <dimen name="imagemargintop">40dp</dimen>
 </resources>

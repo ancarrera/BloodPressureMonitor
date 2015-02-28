@@ -14,7 +14,7 @@ public class LoginActivity extends BPMmasterActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.loginactivitylayout);
 
 
     }

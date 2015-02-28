@@ -1,5 +1,9 @@
 <resources>
 
-<string name="slogan">¡Your health inside the pocket!</string>
+    <!--Splash-->
+
+ <string name="slogan">¡Your health inside the pocket!</string>
+ <string name="pass_hint">Password</string>
+ <string name="loginentrar">Log in</string>
 
 </resources>

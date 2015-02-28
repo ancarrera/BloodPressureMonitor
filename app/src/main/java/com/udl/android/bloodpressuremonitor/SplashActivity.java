@@ -30,6 +30,7 @@ public class SplashActivity extends BPMmasterActivity {
             public void run() {
 
                 startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+                finish();
             }
         },1500);
 
