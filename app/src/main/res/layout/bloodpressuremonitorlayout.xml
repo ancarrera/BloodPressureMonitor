@@ -32,25 +32,35 @@
                 android:layout_marginRight="5dp"
                 android:src="@drawable/heart"
                 android:scaleType="centerInside"
-                android:background="@drawable/shapehomeicons">
+                android:background="@drawable/homebuttonsselector">
             </ImageView>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:textColor="@android:color/black"
                 android:text="@string/heartrate"/>
         </LinearLayout>
-            <ImageView
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/shapehomeicons">
-
-
-            </ImageView>
-
-
-
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/list"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/homebuttonsselector">
+                </ImageView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:text="@string/list"/>
+            </LinearLayout>
         </LinearLayout>
          <LinearLayout
              android:layout_width="match_parent"
@@ -59,28 +69,53 @@
              android:orientation="horizontal">
         <LinearLayout
             android:layout_width="wrap_content"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
 
-             <ImageView
-                 android:layout_width="140dp"
-                 android:layout_height="140dp"
-                 android:layout_marginLeft="5dp"
-                 android:layout_marginRight="5dp"
-                 android:background="@drawable/shapehomeicons">
-             </ImageView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/perfil"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/homebuttonsselector">
+                </ImageView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:text="@string/perfil"/>
+            </LinearLayout>
 
-             <ImageView
-                 android:layout_width="140dp"
-                 android:layout_height="140dp"
-                 android:layout_marginRight="5dp"
-                 android:background="@drawable/shapehomeicons">
-
-
-             </ImageView>
-
-
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="140dp"
+                    android:layout_height="140dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/help"
+                    android:scaleType="centerInside"
+                    android:background="@drawable/homebuttonsselector">
+                </ImageView>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textColor="@android:color/black"
+                    android:text="@string/help"/>
+            </LinearLayout>
 
          </LinearLayout>
      </LinearLayout>
     </LinearLayout>
+</LinearLayout>
 </LinearLayout>

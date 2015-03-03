@@ -11,4 +11,7 @@
 <string name="loginentrar">Entrar</string>
 <string name="loginregister">¿No tienes cuenta?, registrate</string>
 <string name="heartrate">Pulsómetro</string>
+<string name="list">Mediciones</string>
+<string name="help">Ayuda</string>
+<string name="perfil">Perfil</string>
 </resources>

@@ -12,6 +12,7 @@ public class BPMActivity extends BPMmasterActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.bloodpressuremonitorlayout);
+        configureActionBar();
     }
 
     private void configureActionBar(){

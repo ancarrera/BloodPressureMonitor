@@ -15,6 +15,7 @@ public class BPMmasterActivity extends FragmentActivity {
     private Typeface opensansregular;
     private Typeface opensansbold;
     private Typeface opensansitalic;
+    private Typeface mntcorsiva;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class BPMmasterActivity extends FragmentActivity {
         opensansregular = Typeface.createFromAsset(getAssets(),"OpenSans-Regular.ttf");
         opensansbold = Typeface.createFromAsset(getAssets(),"OpenSans-Bold.ttf");
         opensansitalic = Typeface.createFromAsset(getAssets(),"OpenSans-Italic.ttf");
+        mntcorsiva = Typeface.createFromAsset(getAssets(),"mtcorsive.ttf");
         getActionBar().hide();
     }
 
@@ -50,7 +52,7 @@ public class BPMmasterActivity extends FragmentActivity {
     }
 
     protected void configureBaseActionBar(){
-
+        getActionBar().show();
     }
 
     protected View getActionBarView(){
@@ -70,5 +72,7 @@ public class BPMmasterActivity extends FragmentActivity {
     protected Typeface getOpenSansItalic(){
         return opensansitalic;
     }
+
+    protected Typeface getMntcorsiva(){return mntcorsiva;}
 
 }
