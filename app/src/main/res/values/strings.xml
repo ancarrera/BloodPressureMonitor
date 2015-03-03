@@ -1,13 +1,14 @@
 <resources>
-    <string name="app_name">BPM</string>
+<string name="app_name">BPM</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    
-    <!--Splash-->
-    <string name="slogan">¡Tu salud en el bolsillo!</string>
-    <string name="email_hint" translatable="false" >E-mail</string>
-    <string name="pass_hint">Contraseña</string>
-    <string name="loginentrar">Entrar</string>
-    <string name="loginregister">¿No tienes cuenta?, registrate</string>
+<string name="hello_world">Hello world!</string>
+<string name="action_settings">Settings</string>
+
+<!--Splash-->
+<string name="slogan">¡TU SALUD EN EL BOLSILLO!</string>
+<string name="email_hint" translatable="false" >E-mail</string>
+<string name="pass_hint">Contraseña</string>
+<string name="loginentrar">Entrar</string>
+<string name="loginregister">¿No tienes cuenta?, registrate</string>
+<string name="heartrate">Pulsómetro</string>
 </resources>

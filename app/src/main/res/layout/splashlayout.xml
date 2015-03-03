@@ -13,7 +13,7 @@
         android:gravity="center_horizontal"
         android:textSize="23sp"
         android:layout_marginBottom="60dp"
-        android:text="TU SALUD EN EL BOLSILLO"/>
+        android:text="@string/slogan"/>
 
     <ImageView
         android:layout_width="300dp"
