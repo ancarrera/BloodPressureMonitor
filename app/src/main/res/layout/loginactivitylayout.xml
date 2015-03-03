@@ -7,7 +7,6 @@
     android:orientation="vertical"
     >
 
-
     <LinearLayout
         android:id="@+id/imagecontainer"
         android:layout_width="match_parent"
@@ -24,9 +23,10 @@
 
 
     <LinearLayout
+
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@id/imagecontainer"
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -105,15 +105,17 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/registerbutton"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/buttonloginselector"
-            android:textColor="@android:color/white"
-            android:layout_width="match_parent"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/loginregister"
-            android:layout_height="55dp" />
 
     </LinearLayout>
-    </RelativeLayout>
+    <Button
+        android:id="@+id/registerbutton"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/buttonloginselector"
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/loginregister"
+        android:layout_height="55dp" />
+
+</RelativeLayout>

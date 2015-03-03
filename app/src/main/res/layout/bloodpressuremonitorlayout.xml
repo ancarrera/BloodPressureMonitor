@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:background="@color/graybackground"
     android:orientation="vertical"
                 >
 
@@ -26,11 +27,15 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
             <ImageView
+
+                android:id="@+id/heartimage"
                 android:layout_width="140dp"
                 android:layout_height="140dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:src="@drawable/heart"
+                android:tag="1"
+                android:onClick="OnHomeButtonClick"
                 android:scaleType="centerInside"
                 android:background="@drawable/homebuttonsselector">
             </ImageView>
@@ -38,6 +43,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:textColor="@android:color/black"
                 android:text="@string/heartrate"/>
         </LinearLayout>
@@ -46,16 +53,21 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/listimage"
                     android:layout_width="140dp"
                     android:layout_height="140dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:src="@drawable/list"
+                    android:tag="2"
+                    android:onClick="OnHomeButtonClick"
                     android:scaleType="centerInside"
                     android:background="@drawable/homebuttonsselector">
                 </ImageView>
                 <TextView
                     android:layout_width="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@android:color/black"
@@ -77,11 +89,14 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/prefilimage"
                     android:layout_width="140dp"
                     android:layout_height="140dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:src="@drawable/perfil"
+                    android:onClick="OnHomeButtonClick"
+                    android:tag="3"
                     android:scaleType="centerInside"
                     android:background="@drawable/homebuttonsselector">
                 </ImageView>
@@ -89,6 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="8dp"
                     android:textColor="@android:color/black"
                     android:text="@string/perfil"/>
             </LinearLayout>
@@ -98,11 +114,14 @@
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <ImageView
+                    android:id="@+id/helpimage"
                     android:layout_width="140dp"
                     android:layout_height="140dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:src="@drawable/help"
+                    android:tag="4"
+                    android:onClick="OnHomeButtonClick"
                     android:scaleType="centerInside"
                     android:background="@drawable/homebuttonsselector">
                 </ImageView>
@@ -110,6 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:layout_marginTop="8dp"
                     android:textColor="@android:color/black"
                     android:text="@string/help"/>
             </LinearLayout>

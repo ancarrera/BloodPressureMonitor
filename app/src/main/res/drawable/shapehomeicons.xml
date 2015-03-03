@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="oval">
-
-<gradient android:centerColor="@color/textcolor" android:endColor="@color/textcolor"
-    android:startColor="@color/textcolor"
+<gradient android:centerColor="@color/menu_selected" android:endColor="@color/menu_selected"
+    android:startColor="@color/menu_selected"
     android:angle="270"/>
-    </shape>
+</shape>
