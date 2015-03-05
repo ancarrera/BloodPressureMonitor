@@ -14,4 +14,10 @@
 <string name="list">Mediciones</string>
 <string name="help">Ayuda</string>
 <string name="perfil">Perfil</string>
+<string name="bluetoothtext">Obtener medición</string>
+<string name="addmeasurement">Añadir medición</string>
+
+<!--Action bar-->
+
+    <string name="principaltext">Menu Principal</string>
 </resources>

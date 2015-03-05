@@ -2,37 +2,34 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@color/graybackground"
-    android:orientation="vertical"
-                >
+    android:orientation="vertical">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="match_parent"
         android:orientation="vertical"
-        android:layout_height="wrap_content">
-
-     <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         android:orientation="vertical">
-
-
+        android:layout_width="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="13dp"
+        android:orientation="horizontal">
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginTop="20dp"
-            android:orientation="horizontal">
-        <LinearLayout
+            android:id="@+id/topcontainer"
             android:layout_width="wrap_content"
             android:orientation="vertical"
+            android:layout_marginRight="30dp"
             android:layout_height="wrap_content">
             <ImageView
 
                 android:id="@+id/heartimage"
-                android:layout_width="140dp"
-                android:layout_height="140dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:src="@drawable/heart"
                 android:tag="1"
                 android:onClick="OnHomeButtonClick"
@@ -40,22 +37,25 @@
                 android:background="@drawable/homebuttonsselector">
             </ImageView>
             <TextView
+                android:id="@+id/heartratetext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
+                android:textSize="17sp"
                 android:textColor="@android:color/black"
                 android:text="@string/heartrate"/>
         </LinearLayout>
             <LinearLayout
+                android:layout_toRightOf="@+id/topcontainer"
                 android:layout_width="wrap_content"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/listimage"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:src="@drawable/list"
@@ -65,77 +65,142 @@
                     android:background="@drawable/homebuttonsselector">
                 </ImageView>
                 <TextView
+                    android:id="@+id/measurementtext"
                     android:layout_width="match_parent"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
+                    android:textSize="17sp"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textColor="@android:color/black"
                     android:text="@string/list"/>
             </LinearLayout>
-        </LinearLayout>
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:gravity="center"
-             android:orientation="horizontal">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="13dp"
+            android:orientation="horizontal">
+                <LinearLayout
+                    android:id="@+id/midcontainer"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginRight="30dp"
+                    android:layout_height="wrap_content">
+                    <ImageView
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/prefilimage"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/perfil"
-                    android:onClick="OnHomeButtonClick"
-                    android:tag="3"
-                    android:scaleType="centerInside"
-                    android:background="@drawable/homebuttonsselector">
-                </ImageView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@android:color/black"
-                    android:text="@string/perfil"/>
-            </LinearLayout>
+                        android:id="@+id/obtainpressures"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@drawable/mobileconnection"
+                        android:tag="1"
+                        android:onClick="OnHomeButtonClick"
+                        android:scaleType="centerInside"
+                        android:background="@drawable/homebuttonsselector">
+                    </ImageView>
+                    <TextView
+                        android:id="@+id/obtainpressurestext"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:textSize="17sp"
+                        android:layout_marginTop="8dp"
+                        android:textColor="@android:color/black"
+                        android:text="@string/bluetoothtext"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_toRightOf="@+id/midcontainer"
+                    android:layout_width="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/manualmeasurement"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/file"
+                        android:tag="2"
+                        android:onClick="OnHomeButtonClick"
+                        android:scaleType="centerInside"
+                        android:background="@drawable/homebuttonsselector">
+                    </ImageView>
+                    <TextView
+                        android:id="@+id/addmeditiontext"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:textSize="17sp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textColor="@android:color/black"
+                        android:text="@string/addmeasurement"/>
+                </LinearLayout>
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/helpimage"
-                    android:layout_width="140dp"
-                    android:layout_height="140dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:src="@drawable/help"
-                    android:tag="4"
-                    android:onClick="OnHomeButtonClick"
-                    android:scaleType="centerInside"
-                    android:background="@drawable/homebuttonsselector">
-                </ImageView>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginTop="8dp"
-                    android:textColor="@android:color/black"
-                    android:text="@string/help"/>
-            </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/bottomcontainer"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginRight="30dp"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/prefilimage"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:src="@drawable/perfil"
+                            android:onClick="OnHomeButtonClick"
+                            android:tag="3"
+                            android:scaleType="centerInside"
+                            android:background="@drawable/homebuttonsselector">
+                        </ImageView>
+                        <TextView
+                            android:id="@+id/perfiltext"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:layout_marginTop="8dp"
+                            android:textSize="17sp"
+                            android:textColor="@android:color/black"
+                            android:text="@string/perfil"/>
+                    </LinearLayout>
 
-         </LinearLayout>
-     </LinearLayout>
+                    <LinearLayout
+                        android:layout_toRightOf="@+id/bottomcontainer"
+                        android:layout_width="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_height="wrap_content">
+                        <ImageView
+                            android:id="@+id/helpimage"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:src="@drawable/help"
+                            android:tag="4"
+                            android:onClick="OnHomeButtonClick"
+                            android:scaleType="centerInside"
+                            android:background="@drawable/homebuttonsselector">
+                        </ImageView>
+                        <TextView
+                            android:id="@+id/helptext"
+                            android:layout_width="match_parent"
+                            android:layout_height="30dp"
+                            android:gravity="center"
+                            android:layout_marginTop="8dp"
+                            android:textSize="17sp"
+                            android:textColor="@android:color/black"
+                            android:text="@string/help"/>
+                    </LinearLayout>
+
+                </RelativeLayout>
     </LinearLayout>
-</LinearLayout>
+</ScrollView>
 </LinearLayout>
