@@ -17,4 +17,10 @@
 
     <string name="principaltext">Principal Menu</string>
 
+    <string name="datetext">Date</string>
+    <string name="systolicpressure">Systolic P</string>
+    <string name="diastolicpressure">Diastolic P</string>
+    <string name="pulsetext">Pulse</string>
+
+
 </resources>

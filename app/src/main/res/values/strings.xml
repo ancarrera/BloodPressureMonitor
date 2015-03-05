@@ -16,6 +16,11 @@
 <string name="perfil">Perfil</string>
 <string name="bluetoothtext">Obtener medición</string>
 <string name="addmeasurement">Añadir medición</string>
+    
+<string name="datetext">Fecha</string>
+<string name="systolicpressure">P.Sistólica</string>
+<string name="diastolicpressure">P.Diastólica</string>
+<string name="pulsetext">Pulso</string>
 
 <!--Action bar-->
 
