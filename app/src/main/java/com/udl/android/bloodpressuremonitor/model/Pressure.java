@@ -12,10 +12,6 @@ public class Pressure {
     private String pulse;
     private Date date;
 
-    private Pressure(){
-
-
-    }
 
     public String getSystolic() {
         return systolic;

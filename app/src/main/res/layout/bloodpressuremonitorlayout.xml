@@ -7,8 +7,13 @@
 <ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
+     <FrameLayout
+         android:id="@+id/fragmentcontent"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+     </FrameLayout>
     <LinearLayout
+        android:id="@+id/homecontainer"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_gravity="center_vertical"
@@ -94,7 +99,7 @@
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:src="@drawable/mobileconnection"
-                        android:tag="1"
+                        android:tag="3"
                         android:onClick="OnHomeButtonClick"
                         android:scaleType="centerInside"
                         android:background="@drawable/homebuttonsselector">
@@ -121,7 +126,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="5dp"
                         android:src="@drawable/file"
-                        android:tag="2"
+                        android:tag="4"
                         android:onClick="OnHomeButtonClick"
                         android:scaleType="centerInside"
                         android:background="@drawable/homebuttonsselector">
@@ -157,7 +162,7 @@
                             android:layout_height="100dp"
                             android:src="@drawable/perfil"
                             android:onClick="OnHomeButtonClick"
-                            android:tag="3"
+                            android:tag="5"
                             android:scaleType="centerInside"
                             android:background="@drawable/homebuttonsselector">
                         </ImageView>
@@ -184,7 +189,7 @@
                             android:layout_marginLeft="5dp"
                             android:layout_marginRight="5dp"
                             android:src="@drawable/help"
-                            android:tag="4"
+                            android:tag="6"
                             android:onClick="OnHomeButtonClick"
                             android:scaleType="centerInside"
                             android:background="@drawable/homebuttonsselector">
