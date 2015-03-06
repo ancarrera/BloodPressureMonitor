@@ -2,25 +2,33 @@
 
     <!--Splash-->
 
- <string name="slogan">¡YOUR HEALTH INSIDE THE POCKET!</string>
- <string name="pass_hint">Password</string>
- <string name="loginentrar">Log in</string>
-<string name="loginregister">No account?, register here</string>
-<string name="heartrate">Heart rate</string>
-<string name="list">Pressures Measurement</string>
-<string name="help">Help</string>
-<string name="perfil">Profile</string>
-<string name="bluetoothtext">Obtain measurement</string>
-<string name="addmeasurement">Add measurement</string>
+    <string name="slogan">¡YOUR HEALTH INSIDE THE POCKET!</string>
+    <string name="pass_hint">Password</string>
+    <string name="loginentrar">Log in</string>
+    <string name="loginregister">No account?, register here</string>
+    <string name="heartrate">Heart rate</string>
+    <string name="list">Pressures Measurement</string>
+    <string name="help">Help</string>
+    <string name="perfil">Profile</string>
+    <string name="bluetoothtext">Obtain measurement</string>
+    <string name="addmeasurement">Add measurement</string>
 
-    <!--Action bar-->
-
-    <string name="principaltext">Principal Menu</string>
+    <!--Measurement List-->
 
     <string name="datetext">Date</string>
     <string name="systolicpressure">Systolic P</string>
     <string name="diastolicpressure">Diastolic P</string>
     <string name="pulsetext">Pulse</string>
+
+    <!--Action bar-->
+
+    <string name="principaltext">Principal Menu</string>
+    <string name="measurementlistheader">Measurement list</string>
+
+    <!--BPMActivity-->
+    <string name="dialogexit">You are sure that you want to exit?</string>
+    <string name="exit">Exit</string>
+    <string name="cancel">Cancel</string>
 
 
 </resources>

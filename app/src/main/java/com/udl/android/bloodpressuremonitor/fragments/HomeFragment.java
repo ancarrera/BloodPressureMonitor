@@ -6,15 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 
-import com.udl.android.bloodpressuremonitor.BPMActivity;
+import com.udl.android.bloodpressuremonitor.BPMActivityController;
 import com.udl.android.bloodpressuremonitor.R;
-import com.udl.android.bloodpressuremonitor.adapters.MeasurementAdapter;
-import com.udl.android.bloodpressuremonitor.model.Pressure;
-import com.udl.android.bloodpressuremonitor.test.DBMock;
-
-import java.util.List;
 
 /**
  * Created by Adrian on 06/03/2015.
@@ -54,12 +48,12 @@ public class HomeFragment extends Fragment {
         ImageView obtainpressure = (ImageView) view.findViewById(R.id.obtainpressures);
         ImageView manaualmesure = (ImageView) view.findViewById(R.id.manualmeasurement);
 
-        heart.setOnClickListener((BPMActivity)getActivity());
-        list.setOnClickListener((BPMActivity)getActivity());
-        profile.setOnClickListener((BPMActivity)getActivity());
-        help.setOnClickListener((BPMActivity)getActivity());
-        obtainpressure.setOnClickListener((BPMActivity)getActivity());
-        manaualmesure.setOnClickListener((BPMActivity)getActivity());
+        heart.setOnClickListener((BPMActivityController)getActivity());
+        list.setOnClickListener((BPMActivityController)getActivity());
+        profile.setOnClickListener((BPMActivityController)getActivity());
+        help.setOnClickListener((BPMActivityController)getActivity());
+        obtainpressure.setOnClickListener((BPMActivityController)getActivity());
+        manaualmesure.setOnClickListener((BPMActivityController)getActivity());
 
     }
 

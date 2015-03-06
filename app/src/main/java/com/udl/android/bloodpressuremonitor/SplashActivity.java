@@ -1,6 +1,5 @@
 package com.udl.android.bloodpressuremonitor;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +28,7 @@ public class SplashActivity extends BPMmasterActivity {
             @Override
             public void run() {
 
-                startActivity(new Intent(SplashActivity.this,BPMActivity.class));
+                startActivity(new Intent(SplashActivity.this,BPMActivityController.class));
                 finish();
             }
         },1500);

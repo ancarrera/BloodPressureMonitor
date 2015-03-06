@@ -10,26 +10,29 @@
         android:layout_marginLeft="@dimen/barbuttonmarginleft"
         android:layout_width="@dimen/buttonsize"
         android:layout_height="@dimen/buttonsize"
+        android:src="@drawable/ic_action_arrow_left"
+        android:background="@android:color/transparent"
         />
     <TextView
         android:id="@+id/textactionbar"
         android:layout_toRightOf="@+id/actionbarbutton"
         android:layout_marginLeft="@dimen/margintextbar"
+        android:layout_toLeftOf="@+id/fakebutton"
         android:layout_centerVertical="true"
         android:textSize="20sp"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:textColor="@android:color/white"
         android:layout_height="wrap_content"
-        android:text="LOGIN"/>
+        android:text=""/>
 
-    <!--<ImageButton-->
-        <!--android:id="@+id/fakebutton"-->
-        <!--android:layout_width="@dimen/buttonsize"-->
-        <!--android:layout_height="@dimen/buttonsize"-->
-        <!--android:visibility="invisible"-->
-        <!--android:layout_marginRight="@dimen/barbuttonmarginleft"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--/>-->
+    <ImageButton
+        android:id="@+id/fakebutton"
+        android:layout_width="@dimen/buttonsize"
+        android:layout_height="@dimen/buttonsize"
+        android:visibility="invisible"
+        android:layout_marginRight="@dimen/barbuttonmarginleft"
+        android:layout_alignParentRight="true"
+        />
 
 </RelativeLayout>

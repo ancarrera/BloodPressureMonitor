@@ -21,11 +21,11 @@ public class DBMock {
         List<Pressure> list = new ArrayList<>();
         Random random = new Random();
         Calendar calendar = Calendar.getInstance();
-        final int randommax = 40;
-        calendar.add(Calendar.DAY_OF_MONTH,-100);
+        final int max = 40;
+        calendar.add(Calendar.DAY_OF_MONTH,-max);
         Pressure pressure;
 
-        for (int i=0;i<randommax;i++){
+        for (int i=0;i<max;i++){
 
             pressure = new Pressure();
             pressure.setSystolic(String.valueOf(random.nextInt(220)));

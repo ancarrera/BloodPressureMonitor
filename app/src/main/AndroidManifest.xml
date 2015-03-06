@@ -38,7 +38,7 @@
         <activity android:name=".application.BPMmasterActivity"
             android:label="@string/app_name"></activity>
 
-        <activity android:name=".BPMActivity"
+        <activity android:name=".BPMActivityController"
             android:screenOrientation="portrait"
             android:label="@string/app_name"></activity>
 

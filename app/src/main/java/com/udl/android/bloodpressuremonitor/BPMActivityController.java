@@ -1,6 +1,9 @@
 package com.udl.android.bloodpressuremonitor;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.preference.DialogPreference;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,7 +20,7 @@ import com.udl.android.bloodpressuremonitor.fragments.MeasurementsFragment;
 import org.w3c.dom.Text;
 
 
-public class BPMActivity extends BPMmasterActivity
+public class BPMActivityController extends BPMmasterActivity
                          implements View.OnClickListener {
 
     public static enum HomeButton{
@@ -38,7 +41,6 @@ public class BPMActivity extends BPMmasterActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeactivitylayout);
         configureActionBar();
-
         selectFragment(HomeFragment.getNewInstace(),false,false);
 
     }
@@ -50,11 +52,17 @@ public class BPMActivity extends BPMmasterActivity
         headertextview = (TextView) view.findViewById(R.id.textactionbar);
         headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
         buttonbar = (ImageButton) findViewById(R.id.actionbarbutton);
-        buttonbar.setVisibility(View.GONE);
+        buttonbar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
+                selectFragment(HomeFragment.getNewInstace(), true, true);
+                buttonbar.setVisibility(View.INVISIBLE);
+            }
+        });
+        buttonbar.setVisibility(View.INVISIBLE);
     }
 
-
-//
     private void selectFragment(Fragment fragment,boolean isBack,boolean animation){
 
         FragmentManager fragmentManager = this.getSupportFragmentManager();
@@ -69,17 +77,6 @@ public class BPMActivity extends BPMmasterActivity
                         R.anim.fade_out);
             }
         }
-//
-//        if (fragment instanceof HomeFragment){
-//            while (HomeFragmentManager.getInstance(this).getHomeFragmentStack().size() > 1){
-//                HomeFragmentManager.getInstance(this).getHomeFragmentStack().pop();
-//            }
-//            HomeFragmentManager.getInstance(this).setHomeFragment(fragment);
-//        }
-//        Fragment lastFragment = this.getSupportFragmentManager().findFragmentById(R.id.fragmentframe);
-//        if (!isBack)
-//            HomeFragmentManager.getInstance(this).getHomeFragmentStack().push(lastFragment);
-
         if (fragmentManager.findFragmentById(id) == null) {
             fragmentTransaction.add(id, fragment);
             fragmentTransaction.commit();
@@ -87,8 +84,6 @@ public class BPMActivity extends BPMmasterActivity
             fragmentTransaction.replace(id, fragment);
             fragmentTransaction.commit();
         }
-
-
     }
 
 
@@ -103,7 +98,9 @@ public class BPMActivity extends BPMmasterActivity
                 break;
             case 2:
                 MeasurementsFragment measurementsFragment = MeasurementsFragment.getNewInstance();
-                selectFragment(measurementsFragment,false,false);
+                selectFragment(measurementsFragment,false,true);
+                headertextview.setText(getResources().getString(R.string.measurementlistheader).toUpperCase());
+                buttonbar.setVisibility(View.VISIBLE);
                 break;
             case 3:
                 System.out.println("TAG ES 3");
@@ -120,6 +117,41 @@ public class BPMActivity extends BPMmasterActivity
 
         }
 
+    }
+
+    private void onBack(){
+
+        buttonbar.setVisibility(View.INVISIBLE);
+        Fragment lasfragment = getSupportFragmentManager().findFragmentById(R.id.fragmentframe);
+        if(lasfragment instanceof HomeFragment){
+            showExitDialog();
+        }else {
+            headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
+            selectFragment(HomeFragment.getNewInstace(), true, true);
+        }
+    }
+
+    @Override
+    public void onBackPressed(){
+        onBack();
+    }
+
+    private void showExitDialog(){
+
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setMessage(R.string.dialogexit);
+        alert.setPositiveButton(getResources().getString(R.string.exit), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                finish();
+            }
+        });
+        alert.setNegativeButton(getResources().getString(R.string.cancel),new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alert.show();
     }
 
 
