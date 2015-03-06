@@ -1,7 +1,6 @@
 package com.udl.android.bloodpressuremonitor;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 
@@ -12,7 +11,7 @@ public class LoginActivity extends BPMmasterActivity {
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loginactivitylayout);
 

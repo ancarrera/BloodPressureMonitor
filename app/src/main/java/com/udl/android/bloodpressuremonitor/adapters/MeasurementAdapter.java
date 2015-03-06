@@ -51,7 +51,7 @@ public class MeasurementAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(context);
-            inflater.inflate(R.layout.measurementcell,null);
+            convertView = inflater.inflate(R.layout.measurementcell,null);
             holder.date = (TextView) convertView.findViewById(R.id.datecell);
             holder.systolic = (TextView) convertView.findViewById(R.id.systoliccell);
             holder.diastolic = (TextView) convertView.findViewById(R.id.diastoliccell);
