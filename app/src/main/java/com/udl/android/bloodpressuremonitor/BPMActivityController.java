@@ -14,8 +14,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
+import com.udl.android.bloodpressuremonitor.customviews.HeartBeatView;
+import com.udl.android.bloodpressuremonitor.fragments.HearRateMonitorFragment;
 import com.udl.android.bloodpressuremonitor.fragments.HomeFragment;
 import com.udl.android.bloodpressuremonitor.fragments.MeasurementsFragment;
+import com.udl.android.bloodpressuremonitor.fragments.ObtainManualPressures;
 
 import org.w3c.dom.Text;
 
@@ -94,7 +97,10 @@ public class BPMActivityController extends BPMmasterActivity
         switch (tag){
 
             case 1:
-                System.out.println("TAG ES 1");
+                HearRateMonitorFragment hearRateMonitorFragment = HearRateMonitorFragment.getNewInstance();
+                selectFragment(hearRateMonitorFragment,false,true);
+                headertextview.setText(getResources().getString(R.string.heartbeatheader).toUpperCase());
+                buttonbar.setVisibility(View.VISIBLE);
                 break;
             case 2:
                 MeasurementsFragment measurementsFragment = MeasurementsFragment.getNewInstance();
@@ -106,7 +112,10 @@ public class BPMActivityController extends BPMmasterActivity
                 System.out.println("TAG ES 3");
                 break;
             case 4:
-                System.out.println("TAG ES 4");
+                ObtainManualPressures obtainManualPressures = ObtainManualPressures.getNewInstance();
+                selectFragment(obtainManualPressures,false,true);
+                headertextview.setText(getResources().getString(R.string.manualpressure).toUpperCase());
+                buttonbar.setVisibility(View.VISIBLE);
                 break;
             case 5:
                 break;
@@ -123,8 +132,11 @@ public class BPMActivityController extends BPMmasterActivity
 
         buttonbar.setVisibility(View.INVISIBLE);
         Fragment lasfragment = getSupportFragmentManager().findFragmentById(R.id.fragmentframe);
-        if(lasfragment instanceof HomeFragment){
+        if(lasfragment instanceof HomeFragment) {
             showExitDialog();
+
+        }else if(lasfragment instanceof HearRateMonitorFragment){
+            getSupportFragmentManager().beginTransaction().remove(lasfragment).commit();
         }else {
             headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
             selectFragment(HomeFragment.getNewInstace(), true, true);

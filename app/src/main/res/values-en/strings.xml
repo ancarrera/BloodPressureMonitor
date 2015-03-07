@@ -6,7 +6,7 @@
     <string name="pass_hint">Password</string>
     <string name="loginentrar">Log in</string>
     <string name="loginregister">No account?, register here</string>
-    <string name="heartrate">Heart rate</string>
+    <string name="heartrate">Heart beat</string>
     <string name="list">Pressures Measurement</string>
     <string name="help">Help</string>
     <string name="perfil">Profile</string>
@@ -24,11 +24,17 @@
 
     <string name="principaltext">Principal Menu</string>
     <string name="measurementlistheader">Measurement list</string>
+    <string name="heartbeatheader">Heart Beat</string>
+    <string name="manualpressure">Add measurement</string>
 
     <!--BPMActivity-->
     <string name="dialogexit">You are sure that you want to exit?</string>
     <string name="exit">Exit</string>
     <string name="cancel">Cancel</string>
+
+    <!--Hear beat-->
+
+    <string name="hearbeattext">Calculating heart rate...</string>
 
 
 </resources>
