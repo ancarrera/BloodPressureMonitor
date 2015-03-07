@@ -98,10 +98,10 @@ public class ObtainManualPressures extends Fragment {
                 diastolictext.setText("");
                 break;
             case 3:
+                pulsetext.setText("");
                 alert.setMessage(getResources().getString(R.string.pulsepressuredialog));
                 break;
             default:
-                pulsetext.setText("");
                 alert.setMessage(getResources().getString(R.string.mandatoryfields));
                 break;
         }

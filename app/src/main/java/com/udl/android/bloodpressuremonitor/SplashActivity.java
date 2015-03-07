@@ -28,7 +28,7 @@ public class SplashActivity extends BPMmasterActivity {
             @Override
             public void run() {
 
-                startActivity(new Intent(SplashActivity.this,BPMActivityController.class));
+                startActivity(new Intent(SplashActivity.this,RegisterActivity.class));
                 finish();
             }
         },1500);

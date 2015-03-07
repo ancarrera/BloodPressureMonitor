@@ -43,8 +43,21 @@
     <string name="systolicpressuredialog">The systolic pressure is incorrect. The values range between 50 y 240</string>
     <string name="diastolicpressuredialog">The diastolic pressure is incorrect. The values range between 30 y 140</string>
     <string name="pulsepressuredialog">The pulse is incorrect. The values range between 50 y 240</string>
-    <string name="mandatoryfields">The three fields are mandatory</string>
+    <string name="mandatoryfields">All fields are mandatory</string>
     <string name="dialogpositivbutton">OK</string>
+
+    <!--Register Activity-->
+
+    <string name="registertextindication">Complete the mandatory fields for registration</string>
+    <string name="addyourname">Enter your name:</string>
+    <string name="addyoursurnames">Enter your surnames: </string>
+    <string name="addyourage">Enter your years old:</string>
+    <string name="location">Enter your residence place, in case of being in the residence place click button:</string>
+    <string name="addyoutlocation">Auto location</string>
+    <string name="emailregister">Enter a e-mail:</string>
+    <string name="signin">Sign in</string>
+    <string name="dialogemail">Enter a valid e-mail</string>
+    <string name="dialogproblem">Problems trying to access the location</string>
 
 
 </resources>

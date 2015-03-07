@@ -49,6 +49,20 @@
     <string name="systolicpressuredialog">La presión sistólica introducida es incorrecta. Los valores estan entre 50 y 240</string>
     <string name="diastolicpressuredialog">La presión diastólica introducida es incorrecta. Los valores estan entre 30 y 140</string>
     <string name="pulsepressuredialog">El pulso introducida es incorrecto. Los valores estan entre 30 y 240</string>
-    <string name="mandatoryfields">Los tres campos son obligatorios</string>
+    <string name="mandatoryfields">Todos los campos son obligatorios</string>
     <string name="dialogpositivbutton">Aceptar</string>
+
+    <!--Register Activity-->
+
+    <string name="registertextindication">Rellene los campos obligatorios de registro</string>
+    <string name="addyourname">Introduzca su nombre:</string>
+    <string name="addyoursurnames">Introduzca sus apellidos: </string>
+    <string name="addyourage">Introduzca su edad:</string>
+    <string name="location">Introduzca lugar de residencia, en caso de estar en el presione autolocalizacion:</string>
+    <string name="addyoutlocation">Auto localización</string>
+    <string name="signin">Registrarse</string>
+    <string name="emailregister">Introduzca un e-mail:</string>
+    <string name="dialogemail">Introduzca un e-mail valido</string>
+    <string name="addcountry">Introduce el país:</string>
+    <string name="dialogproblem">No se puede obtener una localización</string>
 </resources>
