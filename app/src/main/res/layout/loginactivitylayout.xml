@@ -93,7 +93,7 @@
             <Button
                 android:visibility="visible"
                 android:id="@+id/loginenviar"
-                android:background="@drawable/buttonloginselector"
+                android:background="@drawable/buttonselector"
                 android:textColor="@android:color/white"
                 android:layout_width="250dp"
                 android:layout_marginLeft="30dp"
@@ -110,7 +110,7 @@
     <Button
         android:id="@+id/registerbutton"
         android:layout_marginTop="20dp"
-        android:background="@drawable/buttonloginselector"
+        android:background="@drawable/buttonselector"
         android:textColor="@android:color/white"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"

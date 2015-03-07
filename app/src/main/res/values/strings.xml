@@ -17,7 +17,6 @@
     <string name="bluetoothtext">Obtener medición</string>
     <string name="addmeasurement">Añadir medición</string>
 
-
         <!--Measurement list-->
     <string name="datetext">Fecha</string>
     <string name="systolicpressure">P.Sistólica</string>
@@ -25,23 +24,31 @@
     <string name="pulsetext">Pulso</string>
     <string name="measurememtheader">Mediciones</string>
 
-
     <!--Action bar-->
-
     <string name="principaltext">Menu Principal</string>
     <string name="measurementlistheader">Mediciones</string>
     <string name="heartbeatheader">Ritmo cardíaco</string>
 
 
     <!--BPMActivityConroller-->
-
     <string name="dialogexit">¿Estas seguro que quieres salir?</string>
     <string name="exit">Salir</string>
     <string name="cancel">Cancelar</string>
 
     <!--Hear beat-->
-
     <string name="hearbeattext">Calculando ritmo cardíaco...</string>
     <string name="manualpressure">Añadir medición</string>
 
+    <!--Obtain pressures-->
+    <string name="obtainpressurestext">Introduce tus presiones arteriales</string>
+    <string name="systolictextview">Introduce tu presión sistólica</string>
+    <string name="daistolictextview">Introduce tu presión diastólica</string>
+    <string name="pulsetextview">Introduce tu pulso:</string>
+    <string name="sendbutton">Enviar</string>
+    <string name="dialogincorrectfields">Datos incorrectos</string>
+    <string name="systolicpressuredialog">La presión sistólica introducida es incorrecta. Los valores estan entre 50 y 240</string>
+    <string name="diastolicpressuredialog">La presión diastólica introducida es incorrecta. Los valores estan entre 30 y 140</string>
+    <string name="pulsepressuredialog">El pulso introducida es incorrecto. Los valores estan entre 30 y 240</string>
+    <string name="mandatoryfields">Los tres campos son obligatorios</string>
+    <string name="dialogpositivbutton">Aceptar</string>
 </resources>

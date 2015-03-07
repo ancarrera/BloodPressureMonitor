@@ -1,7 +1,6 @@
 <resources>
 
     <!--Splash-->
-
     <string name="slogan">¡YOUR HEALTH INSIDE THE POCKET!</string>
     <string name="pass_hint">Password</string>
     <string name="loginentrar">Log in</string>
@@ -35,6 +34,17 @@
     <!--Hear beat-->
 
     <string name="hearbeattext">Calculating heart rate...</string>
+    <string name="obtainpressurestext">Enter your blood pressures</string>
+    <string name="systolictextview">Enter your systolic pressure:</string>
+    <string name="daistolictextview">Enter your diastolic pressure:</string>
+    <string name="pulsetextview">Enter your pulse:</string>
+    <string name="sendbutton">Send</string>
+    <string name="dialogincorrectfields">Incorrect data</string>
+    <string name="systolicpressuredialog">The systolic pressure is incorrect. The values range between 50 y 240</string>
+    <string name="diastolicpressuredialog">The diastolic pressure is incorrect. The values range between 30 y 140</string>
+    <string name="pulsepressuredialog">The pulse is incorrect. The values range between 50 y 240</string>
+    <string name="mandatoryfields">The three fields are mandatory</string>
+    <string name="dialogpositivbutton">OK</string>
 
 
 </resources>

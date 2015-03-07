@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="separator">#d1d1d1</color>
-    <color name="menu_background">#f3f0e7</color>
-    <color name="textcolor">#534b42</color>
+    <color name="textviewstroke">#3c342b</color>
     <color name="menu_selected">#eedaa0</color>
     <color name="backgroundlight">#eeedea</color>
     <color name="cursorcolor">#f7c833</color>
     <color name="arrownext">#cca324</color>
-    <color name="ribletetext">#746f6b</color>
     <color name="graydetalle">#aca790</color>
     <color name="graybackground">#e8e8e8</color>
     <color name="sendbuttonlogin">#f0c43c</color>
