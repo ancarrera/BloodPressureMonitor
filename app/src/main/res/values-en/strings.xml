@@ -52,12 +52,16 @@
     <string name="addyourname">Enter your name:</string>
     <string name="addyoursurnames">Enter your surnames: </string>
     <string name="addyourage">Enter your years old:</string>
-    <string name="location">Enter your residence place, in case of being in the residence place click button:</string>
+    <string name="location">Click autolocation for complete the next three steps automatically</string>
     <string name="addyoutlocation">Auto location</string>
     <string name="emailregister">Enter a e-mail:</string>
     <string name="signin">Sign in</string>
     <string name="dialogemail">Enter a valid e-mail</string>
     <string name="dialogproblem">Problems trying to access the location</string>
+    <string name="locationfound">Location found</string>
+    <string name="locationfoundtext">This is your place of residence?</string>
+    <string name="yestext">Yes</string>
+    <string name="notext">No</string>
 
 
 </resources>

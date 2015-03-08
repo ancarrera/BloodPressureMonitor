@@ -11,7 +11,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -47,14 +46,17 @@ public class RegisterActivity extends BPMmasterActivity
        private String sName,sSurname,sAge,sLocation;
 
        private LocationManager locationManager;
-       private String providerBestCriteria;
+       private String providerBestCriteria,providergps,providernetwork;
 
        private boolean locationbuttonpressed=false;
 
 
        private Location lastKnownLocation;
+
+       private String city,province,country;
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.registerlayout);
 
@@ -68,17 +70,23 @@ public class RegisterActivity extends BPMmasterActivity
         email = (EditText) findViewById(R.id.edittextregister3);
         age  = (EditText) findViewById(R.id.edittextregister4);
         locationcity  = (EditText) findViewById(R.id.edittextregister5);
-        locationcountry = (EditText) findViewById(R.id.edittextregister6);
+        locationprovince = (EditText) findViewById(R.id.edittextregister6);
+        locationcountry = (EditText) findViewById(R.id.edittextregister7);
 
         defineListeners();
 
         locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
 
 
-        providerBestCriteria = locationManager.getBestProvider(new Criteria(),true);
-        if (providerBestCriteria != null) {
-            lastKnownLocation = locationManager.getLastKnownLocation(providerBestCriteria);
-        }
+        final boolean gpsenabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        final boolean networkenabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if(networkenabled)
+            lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        if(gpsenabled && lastKnownLocation == null)
+            lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+       providerBestCriteria = locationManager.getBestProvider(new Criteria(),true);
 
     }
 
@@ -86,7 +94,7 @@ public class RegisterActivity extends BPMmasterActivity
     public void onResume(){
         super.onResume();
         if (providerBestCriteria != null)
-        locationManager.requestLocationUpdates(providerBestCriteria, 30000, 1, this);
+          locationManager.requestLocationUpdates(providerBestCriteria, 30000,1,this);
     }
 
     @Override
@@ -102,6 +110,7 @@ public class RegisterActivity extends BPMmasterActivity
                 locationbuttonpressed = true;
                 if (lastKnownLocation!=null){
                     obtainLocationData(lastKnownLocation);
+                    showDialogEvents(AlertsID.LOCATION_FINDED);
                 }else{
                     showDialogEvents(AlertsID.PROBLEM_LOCATION);
                 }
@@ -123,7 +132,9 @@ public class RegisterActivity extends BPMmasterActivity
                 || surnames.getText().toString().equals("")
                 || age.getText().toString().equals("")
                 || email.getText().toString().equals("")
-                || locationcity.getText().toString().equals("")){
+                || locationcity.getText().toString().equals("")
+                || locationprovince.getText().toString().equals("")
+                || locationcountry.getText().toString().equals("")){
 
             showDialogEvents(AlertsID.PROBLEM_MANDATORY_FIELDS);
         }else if (!email.getText().toString().contains("@") || !email.getText().toString().contains(".")){
@@ -135,6 +146,12 @@ public class RegisterActivity extends BPMmasterActivity
 
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(getResources().getString(R.string.dialogincorrectfields));
+        alert.setPositiveButton(getResources().getString(R.string.dialogpositivbutton), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
 
         switch (type){
             case PROBLEM_MAIL:
@@ -147,13 +164,28 @@ public class RegisterActivity extends BPMmasterActivity
             case PROBLEM_LOCATION:
                 alert.setMessage(getResources().getString(R.string.dialogproblem));
                 break;
-        }
-        alert.setPositiveButton(getResources().getString(R.string.dialogpositivbutton), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            case LOCATION_FINDED:
+                alert.setTitle(getResources().getString(R.string.locationfound));
+                String linebreak = System.getProperty("line.separator");
+                alert.setMessage(getResources().getString(R.string.locationfoundtext)
+                        +linebreak+city+", "+province+" ("+country+")");
+                alert.setPositiveButton(getResources().getString(R.string.yestext), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
+                        locationcity.setText(city);
+                        locationprovince.setText(province);
+                        locationcountry.setText(country);
+                    }
+                });
+                alert.setNegativeButton(R.string.notext, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                break;
+        }
         AlertDialog center = alert.show();
         TextView messageText = (TextView)center.findViewById(android.R.id.message);
         messageText.setGravity(Gravity.CENTER);
@@ -182,7 +214,7 @@ public class RegisterActivity extends BPMmasterActivity
 
     }
 
-    public String obtainLocationData(Location location){
+    public void obtainLocationData(Location location){
 
         double lat = location.getLatitude();
         double lng = location.getLongitude();
@@ -191,20 +223,22 @@ public class RegisterActivity extends BPMmasterActivity
         StringBuilder builder = new StringBuilder();
         try {
             List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
-            int maxLines = address.get(0).getMaxAddressLineIndex();
-            for (int i=0; i<maxLines; i++) {
-                String addressStr = address.get(0).getAddressLine(i);
-                builder.append(addressStr);
-                builder.append(" ");
+
+            city = address.get(0).getAddressLine(1).split(" ")[1];
+            province = address.get(0).getAddressLine(2);
+            country = address.get(0).getAddressLine(3);
+            if (country==null){
+
+                country = province;
+                province = city;
             }
 
-            String fnialAddress = builder.toString(); //This is the complete address.
-            String p = " ";
+        }catch(IOException e) {
 
-        } catch (IOException e) {}
-        catch (NullPointerException e) {}
+        }catch (NullPointerException e) {
+
+        }
         locationbuttonpressed = false;
-        return "";
     }
 
 

@@ -119,12 +119,38 @@
             android:layout_width="match_parent"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginBottom="10dp"
             android:text="@string/addyoutlocation"
             android:layout_height="wrap_content" />
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:text="@string/citytext"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"/>
+
         <EditText
             android:id="@+id/edittextregister5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:ems="12"
+            android:maxLines="1"
+            android:text=""
+            android:inputType="text"
+            android:background="@drawable/edittextshape"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:text="@string/provincetext"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"/>
+
+        <EditText
+            android:id="@+id/edittextregister6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -143,7 +169,7 @@
             android:gravity="start"/>
 
         <EditText
-            android:id="@+id/edittextregister6"
+            android:id="@+id/edittextregister7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -153,18 +179,14 @@
             android:inputType="text"
             android:gravity="start"
             android:background="@drawable/edittextshape"/>
-
-
-
         <Button
             android:visibility="visible"
             android:id="@+id/signingbutton"
             android:background="@drawable/buttonselector"
             android:textColor="@android:color/white"
             android:layout_width="match_parent"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginTop="25dp"
+            android:layout_marginBottom="15dp"
             android:layout_gravity="center_horizontal"
             android:text="@string/signin"
             android:layout_height="40dp" />

@@ -3,7 +3,6 @@ package com.udl.android.bloodpressuremonitor;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.Nullable;
 import android.widget.TextView;
 
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
@@ -15,9 +14,10 @@ public class SplashActivity extends BPMmasterActivity {
 
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashlayout);
+
 
         TextView textView = (TextView) findViewById(R.id.splashtextview);
         textView.setTypeface(getOpenSansItalic());

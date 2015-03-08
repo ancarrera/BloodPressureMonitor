@@ -58,11 +58,17 @@
     <string name="addyourname">Introduzca su nombre:</string>
     <string name="addyoursurnames">Introduzca sus apellidos: </string>
     <string name="addyourage">Introduzca su edad:</string>
-    <string name="location">Introduzca lugar de residencia, en caso de estar en el presione autolocalizacion:</string>
+    <string name="location">Pulse autolocalización para completar los tres siguientes campos:</string>
     <string name="addyoutlocation">Auto localización</string>
     <string name="signin">Registrarse</string>
     <string name="emailregister">Introduzca un e-mail:</string>
     <string name="dialogemail">Introduzca un e-mail valido</string>
-    <string name="addcountry">Introduce el país:</string>
+    <string name="citytext">Introduzca su ciudad</string>
+    <string name="provincetext">Introduzca su provincia</string>
+    <string name="addcountry">Introduzca su país:</string>
     <string name="dialogproblem">No se puede obtener una localización</string>
+    <string name="locationfound">Ubicación encontrada</string>
+    <string name="locationfoundtext">¿Es este tu lugar de residencia?</string>
+    <string name="yestext">Si</string>
+    <string name="notext">No</string>
 </resources>
