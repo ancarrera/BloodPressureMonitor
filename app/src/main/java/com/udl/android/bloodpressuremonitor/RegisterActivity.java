@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Criteria;
 import android.location.Geocoder;
@@ -53,7 +54,7 @@ public class RegisterActivity extends BPMmasterActivity
 
        private Location lastKnownLocation;
 
-       private String city,province,country;
+       private String city,administration,country;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -88,6 +89,12 @@ public class RegisterActivity extends BPMmasterActivity
 
        providerBestCriteria = locationManager.getBestProvider(new Criteria(),true);
 
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -110,13 +117,15 @@ public class RegisterActivity extends BPMmasterActivity
                 locationbuttonpressed = true;
                 if (lastKnownLocation!=null){
                     obtainLocationData(lastKnownLocation);
-                    showDialogEvents(AlertsID.LOCATION_FINDED);
+                    if (country!=null && administration!=null && city!= null)
+                        showDialogEvents(AlertsID.LOCATION_FINDED);
+                    else
+                        showDialogEvents(AlertsID.PROBLEM_LOCATION);
                 }else{
                     showDialogEvents(AlertsID.PROBLEM_LOCATION);
                 }
             }
         });
-
         siginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,13 +177,13 @@ public class RegisterActivity extends BPMmasterActivity
                 alert.setTitle(getResources().getString(R.string.locationfound));
                 String linebreak = System.getProperty("line.separator");
                 alert.setMessage(getResources().getString(R.string.locationfoundtext)
-                        +linebreak+city+", "+province+" ("+country+")");
+                        +linebreak+city+", "+administration+" ("+country+")");
                 alert.setPositiveButton(getResources().getString(R.string.yestext), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
                         locationcity.setText(city);
-                        locationprovince.setText(province);
+                        locationprovince.setText(administration);
                         locationcountry.setText(country);
                     }
                 });
@@ -224,19 +233,17 @@ public class RegisterActivity extends BPMmasterActivity
         try {
             List<Address> address = geoCoder.getFromLocation(lat, lng, 1);
 
-            city = address.get(0).getAddressLine(1).split(" ")[1];
-            province = address.get(0).getAddressLine(2);
-            country = address.get(0).getAddressLine(3);
-            if (country==null){
+        if (address.size() > 0){
+            Address foundAddress = address.get(0);
+            country = foundAddress.getCountryName();
+            city = foundAddress.getLocality();
+            administration = foundAddress.getAdminArea();
 
-                country = province;
-                province = city;
-            }
-
+        }
         }catch(IOException e) {
-
+            e.printStackTrace();
         }catch (NullPointerException e) {
-
+            e.printStackTrace();
         }
         locationbuttonpressed = false;
     }

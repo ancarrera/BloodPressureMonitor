@@ -32,7 +32,6 @@
     <string name="cancel">Cancel</string>
 
     <!--Hear beat-->
-
     <string name="hearbeattext">Calculating heart rate...</string>
     <string name="obtainpressurestext">Enter your blood pressures</string>
     <string name="systolictextview">Enter your systolic pressure:</string>
@@ -57,11 +56,27 @@
     <string name="emailregister">Enter a e-mail:</string>
     <string name="signin">Sign in</string>
     <string name="dialogemail">Enter a valid e-mail</string>
+    <string name="citytext">Enter your city:</string>
+    <string name="provincetext">Enter your administration:</string>
+    <string name="addcountry">Enter your country:</string>
     <string name="dialogproblem">Problems trying to access the location</string>
     <string name="locationfound">Location found</string>
     <string name="locationfoundtext">This is your place of residence?</string>
     <string name="yestext">Yes</string>
     <string name="notext">No</string>
+
+
+    <!--Preference activity-->
+
+    <string name="networkpreferencestitle">Measurement</string>
+    <string name="summarynetwork">Allow choose the connection for downloading the measurements</string>
+
+    <string-array name="preferencesnetwork">
+        <item>Only when WiFi is connected</item>
+        <item>When any is connected</item>
+    </string-array>
+
+    <string name="headernetwork">Network preferences</string>
 
 
 </resources>

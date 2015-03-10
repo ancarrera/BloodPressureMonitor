@@ -10,14 +10,14 @@
         android:layout_marginLeft="@dimen/barbuttonmarginleft"
         android:layout_width="@dimen/buttonsize"
         android:layout_height="@dimen/buttonsize"
-        android:src="@drawable/ic_action_arrow_left"
+        android:src="@drawable/buttonbararrowselector"
         android:background="@android:color/transparent"
         />
     <TextView
         android:id="@+id/textactionbar"
         android:layout_toRightOf="@+id/actionbarbutton"
         android:layout_marginLeft="@dimen/margintextbar"
-        android:layout_toLeftOf="@+id/fakebutton"
+        android:layout_toLeftOf="@+id/secondbutton"
         android:layout_centerVertical="true"
         android:textSize="20sp"
         android:gravity="center_horizontal"
@@ -27,10 +27,11 @@
         android:text=""/>
 
     <ImageButton
-        android:id="@+id/fakebutton"
+        android:id="@+id/secondbutton"
         android:layout_width="@dimen/buttonsize"
         android:layout_height="@dimen/buttonsize"
-        android:visibility="invisible"
+        android:src="@drawable/buttonbarsettingselector"
+        android:background="@android:color/transparent"
         android:layout_marginRight="@dimen/barbuttonmarginleft"
         android:layout_alignParentRight="true"
         />

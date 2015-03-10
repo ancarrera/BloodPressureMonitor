@@ -17,7 +17,7 @@
     <string name="bluetoothtext">Obtener medición</string>
     <string name="addmeasurement">Añadir medición</string>
 
-        <!--Measurement list-->
+    <!--Measurement list-->
     <string name="datetext">Fecha</string>
     <string name="systolicpressure">P.Sistólica</string>
     <string name="diastolicpressure">P.Diastólica</string>
@@ -53,7 +53,6 @@
     <string name="dialogpositivbutton">Aceptar</string>
 
     <!--Register Activity-->
-
     <string name="registertextindication">Rellene los campos obligatorios de registro</string>
     <string name="addyourname">Introduzca su nombre:</string>
     <string name="addyoursurnames">Introduzca sus apellidos: </string>
@@ -64,11 +63,28 @@
     <string name="emailregister">Introduzca un e-mail:</string>
     <string name="dialogemail">Introduzca un e-mail valido</string>
     <string name="citytext">Introduzca su ciudad</string>
-    <string name="provincetext">Introduzca su provincia</string>
+    <string name="provincetext">Introduzca su administración(CA)</string>
     <string name="addcountry">Introduzca su país:</string>
     <string name="dialogproblem">No se puede obtener una localización</string>
     <string name="locationfound">Ubicación encontrada</string>
     <string name="locationfoundtext">¿Es este tu lugar de residencia?</string>
     <string name="yestext">Si</string>
     <string name="notext">No</string>
+
+    <!--Preference activity-->
+
+    <string name="networkpreferencestitle">Mediciones</string>
+    <string name="summarynetwork">Permite elegir la conexión a internet utilizada para descargar las mediciones</string>
+    <string-array name="preferencesnetwork">
+            <item>Solo con WiFi conectado</item>
+            <item>Con WiFi o datos móviles</item>
+    </string-array>
+
+    <string-array name="preferencesnetworkvalues">
+        <item>WiFi</item>
+        <item>All</item>
+    </string-array>
+
+    <string name="headernetwork">Preferencias de red</string>
+
 </resources>

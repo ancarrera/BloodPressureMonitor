@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory android:title="@string/headernetwork">
+        <ListPreference
+            android:title="@string/networkpreferencestitle"
+            android:summary="@string/summarynetwork"
+            android:key="networkList"
+            android:defaultValue="WiFi"
+            android:entries="@array/preferencesnetwork"
+            android:entryValues="@array/preferencesnetworkvalues"
+            />
+    </PreferenceCategory>
+</PreferenceScreen>

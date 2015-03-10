@@ -12,7 +12,6 @@
         android:id="@+id/homecontainer"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_gravity="center_vertical"
         android:layout_height="match_parent">
     <RelativeLayout
         android:layout_width="match_parent"
