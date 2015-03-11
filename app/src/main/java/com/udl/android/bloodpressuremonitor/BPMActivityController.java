@@ -64,17 +64,23 @@ public class BPMActivityController extends BPMmasterActivity
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+
+        receiver = new NetworkStatusReceiver();
+
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(receiver, filter);
+
+    }
+
+    @Override
     public void onResume(){
         super.onResume();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         networkconnectionstatus = preferences.getString("networkList", "WiFi");
         checkStatusConnectionPreferences(this);
-
-        receiver = new NetworkStatusReceiver();
-
-        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        registerReceiver(receiver, filter);
     }
 
     private void configureActionBar(){
