@@ -10,6 +10,7 @@ import android.preference.PreferenceFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -82,6 +83,8 @@ public class BPMpreferencesActivity extends PreferenceActivity{
         View view = inflater.inflate(R.layout.actionbarlayout,null);
         ImageButton back = (ImageButton) view.findViewById(R.id.actionbarbutton);
         view.findViewById(R.id.secondbutton).setVisibility(View.INVISIBLE);
+        TextView headertextview = (TextView) view.findViewById(R.id.textactionbar);
+        headertextview.setText(getResources().getString(R.string.headeractivity));
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

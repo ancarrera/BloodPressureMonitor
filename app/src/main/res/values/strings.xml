@@ -34,6 +34,11 @@
     <string name="dialogexit">¿Estas seguro que quieres salir?</string>
     <string name="exit">Salir</string>
     <string name="cancel">Cancelar</string>
+    <string name="nonsupportedbluetooth">Este dispositivo no soporta bluetooth</string>
+    <string name="non_enabledbluetooth">El bluetooth no esta conectado. ¿Desea conectarlo?</string>
+    <string name="dialogtitlebluetooth" traslatable="false">Bluetooth</string>
+    <string name="failenablebluetooth">No se puede activar al bluetooth</string>
+    <string name="dialogdevices">Escoge el tensiómetro</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculando ritmo cardíaco...</string>
@@ -86,5 +91,6 @@
     </string-array>
 
     <string name="headernetwork">Preferencias de red</string>
+    <string name="headeractivity">Opciones</string>
 
 </resources>

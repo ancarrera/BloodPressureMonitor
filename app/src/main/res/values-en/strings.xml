@@ -30,6 +30,10 @@
     <string name="dialogexit">You are sure that you want to exit?</string>
     <string name="exit">Exit</string>
     <string name="cancel">Cancel</string>
+    <string name="nonsupportedbluetooth">This device doesn\'t support bluetooth connection</string>
+    <string name="non_enabledbluetooth">The bluetooth is not enabled. Wish you connect it?</string>
+    <string name="failenablebluetooth">Can not enabled</string>
+    <string name="dialogdevices">Choose the blood pressure monitor</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculating heart rate...</string>
@@ -77,6 +81,8 @@
     </string-array>
 
     <string name="headernetwork">Network preferences</string>
+
+    <string name="headeractivity">Settings</string>
 
 
 </resources>

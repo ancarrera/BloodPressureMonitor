@@ -1,6 +1,8 @@
 package com.udl.android.bloodpressuremonitor;
 
 import android.app.AlertDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,7 +19,9 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,6 +37,8 @@ import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
 
 import org.w3c.dom.Text;
 
+import java.util.Set;
+
 
 public class BPMActivityController extends BPMmasterActivity
                          implements View.OnClickListener {
@@ -46,12 +52,26 @@ public class BPMActivityController extends BPMmasterActivity
         BLUETOOTH
     }
 
+    public static enum BluetoothDialog{
+
+        NOT_SUPPORTED,
+        NOT_ENABLED,
+        COULD_NOT_CONNECTED
+
+
+    }
+
     private TextView headertextview;
     private ImageButton buttonbar,secondbuttonbar;
     private NetworkStatusReceiver receiver;
 
     private static String networkconnectionstatus;
     public static boolean downloadAllMeasurements = true;
+
+    public static int BLUETOOTH_ENABLE_PROCESS = 288;
+
+    private BluetoothAdapter bluetoothAdapter;
+
 
 
     @Override
@@ -60,6 +80,7 @@ public class BPMActivityController extends BPMmasterActivity
         setContentView(R.layout.homeactivitylayout);
         configureActionBar();
         selectFragment(HomeFragment.getNewInstace(),false,false);
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
     }
 
@@ -157,7 +178,18 @@ public class BPMActivityController extends BPMmasterActivity
                 secondbuttonbar.setVisibility(View.INVISIBLE);
                 break;
             case 3:
-                System.out.println("TAG ES 3");
+
+                if (bluetoothAdapter == null) {
+                    showDialogBluetoothCases(BluetoothDialog.NOT_SUPPORTED);
+                }else{
+                    if (!bluetoothAdapter.isEnabled()) {
+
+                        showDialogBluetoothCases(BluetoothDialog.NOT_ENABLED);
+                    }else{
+
+                    }
+                }
+
                 buttonbar.setVisibility(View.VISIBLE);
                 secondbuttonbar.setVisibility(View.INVISIBLE);
                 break;
@@ -264,5 +296,103 @@ public class BPMActivityController extends BPMmasterActivity
 
 
     }
+
+    private void showDialogBluetoothCases(BluetoothDialog type){
+
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setTitle(getResources().getString(R.string.dialogtitlebluetooth));
+        if (type == BluetoothDialog.NOT_SUPPORTED){
+
+            alert.setMessage(R.string.nonsupportedbluetooth);
+            alert.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            });
+
+        }else if (type == BluetoothDialog.NOT_ENABLED){
+
+            alert.setMessage(R.string.non_enabledbluetooth);
+            alert.setPositiveButton(getResources().getString(android.R.string.yes), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                        startActivityForResult(enableBtIntent,BLUETOOTH_ENABLE_PROCESS );
+
+                }
+            });
+            alert.setNegativeButton(getResources().getString(android.R.string.no),new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            });
+        }else if (type == BluetoothDialog.COULD_NOT_CONNECTED ){
+
+            alert.setMessage(R.string.failenablebluetooth);
+            alert.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            });
+        }
+
+        AlertDialog dialog = alert.show();
+        TextView messageText = (TextView)dialog.findViewById(android.R.id.message);
+        messageText.setGravity(Gravity.CENTER);
+        dialog.show();
+
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                   Intent data) {
+        if (requestCode == BLUETOOTH_ENABLE_PROCESS) {
+            if (resultCode == RESULT_OK) {
+
+            }else{
+                showDialogBluetoothCases(BluetoothDialog.COULD_NOT_CONNECTED);
+            }
+        }
+    }
+
+    private String[] findBluetoothDevices(){
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        String[] devices=null;
+        if (pairedDevices.size() > 0) {
+             devices = new String[pairedDevices.size()];
+            int count = 0;
+            for (BluetoothDevice device : pairedDevices) {
+                devices[0] =device.getName() + "\n" + device.getAddress();
+                count++;
+            }
+        }
+        return devices;
+    }
+
+    private void findAndShowBluetoothDevices(){
+        String[] devices = findBluetoothDevices();
+        if (devices != null){
+
+        }
+    }
+
+    private void showDevicesDialog(String[] devices){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getResources().getString(R.string.dialogdevices));
+        builder.setItems(devices, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                
+
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
 
 }
