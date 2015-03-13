@@ -39,6 +39,9 @@
     <string name="dialogtitlebluetooth" traslatable="false">Bluetooth</string>
     <string name="failenablebluetooth">No se puede activar al bluetooth</string>
     <string name="dialogdevices">Escoge el tensiómetro</string>
+    <string name="searchdevices">Buscando dispositivos</string>
+    <string name="connectionbluetooth">Conexión establecida</string>
+    <string name="connectionrefbluetooth">Fallo en la conexión</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculando ritmo cardíaco...</string>

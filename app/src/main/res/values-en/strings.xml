@@ -34,6 +34,9 @@
     <string name="non_enabledbluetooth">The bluetooth is not enabled. Wish you connect it?</string>
     <string name="failenablebluetooth">Can not enabled</string>
     <string name="dialogdevices">Choose the blood pressure monitor</string>
+    <string name="searchdevices">Searching devices</string>
+    <string name="connectionbluetooth">Connection established</string>
+    <string name="connectionrefbluetooth">Connection refused</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculating heart rate...</string>

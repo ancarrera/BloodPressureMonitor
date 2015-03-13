@@ -1,8 +1,11 @@
 package com.udl.android.bloodpressuremonitor;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,18 +17,24 @@ import android.graphics.drawable.StateListDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
 import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.customviews.HeartBeatView;
@@ -37,7 +46,15 @@ import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
 
 import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
+import java.util.logging.LogRecord;
 
 
 public class BPMActivityController extends BPMmasterActivity
@@ -72,19 +89,80 @@ public class BPMActivityController extends BPMmasterActivity
 
     private BluetoothAdapter bluetoothAdapter;
 
+    private Map<String,BluetoothDevice> map;
+
+    private boolean connectedbluetooth = false;
+    private ArrayAdapter<String> adapterdialog;
+    private ArrayList<BluetoothDevice> devicesfound;
+    private ProgressDialog progressDialog;
+
+    private Handler mainhandler;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeactivitylayout);
         configureActionBar();
         selectFragment(HomeFragment.getNewInstace(),false,false);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        devicesfound = new ArrayList<>();
+
+        mainhandler = new Handler(){
+
+            @Override
+            public void handleMessage(Message msg) {
+
+                switch (msg.what){
+
+                    case 0:
+                        createDialog("Conexión establecida. Esperando envio de la medición...");
+                        progressDialog.show();
+                        break;
+                    case 1:
+                        Toast.makeText(BPMActivityController.this,(String)msg.obj,Toast.LENGTH_LONG).show();
+                        break;
+                    case 2:
+                        progressDialog.dismiss();
+                        break;
+                }
+
+
+            }
+        };
+
+
 
     }
 
-    @Override
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+
+            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
+                //discovery starts, we can show progress dialog or perform other tasks
+                progressDialog.show();
+                Log.d("BLUETOOTH","EMPEZANDO A BUSCAR");
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                //discovery finishes, dismis progress dialog
+                Log.d("BLUETOOTH","BUSQUEDA FINALIZADA");
+                progressDialog.dismiss();
+
+            } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+                //bluetooth device found
+                Log.d("BLUETOOTH","DISPOSITIVO ENCONTRADO");
+                BluetoothDevice device = (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                adapterdialog.add(device.getName());
+                adapterdialog.notifyDataSetChanged();
+                devicesfound.add(device);
+
+            }
+        }
+    };
+
+
+        @Override
     public void onStart(){
         super.onStart();
 
@@ -187,11 +265,12 @@ public class BPMActivityController extends BPMmasterActivity
                         showDialogBluetoothCases(BluetoothDialog.NOT_ENABLED);
                     }else{
 
+                        onActivityResult(BLUETOOTH_ENABLE_PROCESS,RESULT_OK,null);
                     }
                 }
-
                 buttonbar.setVisibility(View.VISIBLE);
                 secondbuttonbar.setVisibility(View.INVISIBLE);
+                createDialog("Buscando dispositivos");
                 break;
             case 4:
                 ObtainManualPressures obtainManualPressures = ObtainManualPressures.getNewInstance();
@@ -264,13 +343,8 @@ public class BPMActivityController extends BPMmasterActivity
 
     @Override
     public void onPause(){
-        if (receiver!=null) unregisterReceiver(receiver);
-        super.onPause();
-    }
 
-    @Override
-    public void onDestroy(){
-        super.onDestroy();
+        super.onPause();
     }
 
     private static void checkStatusConnectionPreferences(Context context){
@@ -320,6 +394,7 @@ public class BPMActivityController extends BPMmasterActivity
                         Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
                         startActivityForResult(enableBtIntent,BLUETOOTH_ENABLE_PROCESS );
 
+
                 }
             });
             alert.setNegativeButton(getResources().getString(android.R.string.no),new DialogInterface.OnClickListener() {
@@ -351,48 +426,133 @@ public class BPMActivityController extends BPMmasterActivity
                                    Intent data) {
         if (requestCode == BLUETOOTH_ENABLE_PROCESS) {
             if (resultCode == RESULT_OK) {
-
+                findAndShowBluetoothDevices();
             }else{
                 showDialogBluetoothCases(BluetoothDialog.COULD_NOT_CONNECTED);
             }
         }
     }
 
-    private String[] findBluetoothDevices(){
-        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
-        String[] devices=null;
-        if (pairedDevices.size() > 0) {
-             devices = new String[pairedDevices.size()];
-            int count = 0;
-            for (BluetoothDevice device : pairedDevices) {
-                devices[0] =device.getName() + "\n" + device.getAddress();
-                count++;
-            }
-        }
-        return devices;
-    }
-
     private void findAndShowBluetoothDevices(){
-        String[] devices = findBluetoothDevices();
-        if (devices != null){
 
+        AlertDialog.Builder builderdevicesdialog = new AlertDialog.Builder(this);
+        builderdevicesdialog.setTitle(getResources().getString(R.string.dialogdevices));
+        IntentFilter filter = new IntentFilter();
+        adapterdialog =new ArrayAdapter<String>(
+                this, android.R.layout.simple_selectable_list_item);
+
+        filter.addAction(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+
+        registerReceiver(mReceiver, filter);
+        if (bluetoothAdapter.isDiscovering()) {
+            bluetoothAdapter.cancelDiscovery();
         }
-    }
 
-    private void showDevicesDialog(String[] devices){
+        bluetoothAdapter.startDiscovery();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getResources().getString(R.string.dialogdevices));
-        builder.setItems(devices, new DialogInterface.OnClickListener() {
+        builderdevicesdialog.setAdapter(adapterdialog, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                
 
+                BluetoothDevice device = devicesfound.get(item);
+                bluetoothAdapter.cancelDiscovery();
+                Thread connection = new AcceptThread(device);
+                connection.start();
                 dialog.dismiss();
             }
         });
-        AlertDialog alert = builder.create();
+        AlertDialog alert = builderdevicesdialog.create();
         alert.show();
+
     }
 
+    private void createDialog(String message){
+
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage(message);
+
+    }
+
+
+
+        private final BroadcastReceiver mPairReceiver = new BroadcastReceiver() {
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+
+                if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
+                    final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
+                    final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
+
+                    if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
+                        Toast.makeText(BPMActivityController.this, "Paired", Toast.LENGTH_LONG);
+                    } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
+                        Toast.makeText(BPMActivityController.this, "UnPaired", Toast.LENGTH_LONG);
+                    }
+
+                }
+            }
+
+        };
+    private class AcceptThread extends Thread {
+        private BluetoothSocket connectionSocket = null;
+        private UUID uuid = UUID.fromString("00001101-0000-1000-8000-00805f9b34fb");
+        private BluetoothDevice device;
+
+        public AcceptThread(BluetoothDevice bluetoothdevicename) {
+
+
+            this.device = bluetoothdevicename;
+
+            Message msg = mainhandler.obtainMessage(0);
+            try {
+                connectionSocket = bluetoothdevicename.createRfcommSocketToServiceRecord(uuid);
+                msg.obj = getResources().getString(R.string.connectionbluetooth);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                msg.obj = getResources().getString(R.string.connectionrefbluetooth);
+            }
+            if (msg == null) msg = new Message();
+            mainhandler.sendMessage(msg);
+        }
+
+        public void run() {
+
+            BluetoothServerSocket socket = null;
+            BluetoothSocket BPMsocket = null;
+
+            try {
+
+                if (connectionSocket != null) {
+
+                    socket =  bluetoothAdapter.listenUsingRfcommWithServiceRecord(device.getName(),UUID.fromString("00001101-0000-1000-8000-00805f9b3434"));
+
+                    BPMsocket = socket.accept();
+                    InputStream stream = BPMsocket.getInputStream();
+                    String hola = "datosssss";
+                    mainhandler.sendEmptyMessage(2);
+                    System.out.println("Llego");
+                }
+
+
+
+                   if (BPMsocket != null) BPMsocket.close();
+                   if (connectionSocket != null)connectionSocket.close();
+                   if (socket != null)connectionSocket.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy(){
+        if (receiver!=null) unregisterReceiver(receiver);
+        if (mReceiver != null) unregisterReceiver(mReceiver);
+        super.onDestroy();
+    }
 
 }

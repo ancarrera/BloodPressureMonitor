@@ -31,10 +31,10 @@ public class BPMmasterActivity extends FragmentActivity {
         getActionBar().hide();
     }
 
-    @Override
-    public BPMmasterActivity getApplicationContext(){
-        return (BPMmasterActivity) super.getApplicationContext();
-    }
+
+//    public BPMmasterActivity getApplicationContext(){
+//        return (BPMmasterActivity) super.getApplicationContext();
+//    }
 
     public void showDialog(boolean isCancelable){
 
