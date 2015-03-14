@@ -48,6 +48,7 @@ import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,43 +99,12 @@ public class BPMActivityController extends BPMmasterActivity
 
     private Handler mainhandler;
 
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.homeactivitylayout);
-        configureActionBar();
-        selectFragment(HomeFragment.getNewInstace(),false,false);
-        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        devicesfound = new ArrayList<>();
-
-        mainhandler = new Handler(){
-
-            @Override
-            public void handleMessage(Message msg) {
-
-                switch (msg.what){
-
-                    case 0:
-                        createDialog("Conexión establecida. Esperando envio de la medición...");
-                        progressDialog.show();
-                        break;
-                    case 1:
-                        Toast.makeText(BPMActivityController.this,(String)msg.obj,Toast.LENGTH_LONG).show();
-                        break;
-                    case 2:
-                        progressDialog.dismiss();
-                        break;
-                }
-
-
-            }
-        };
-
-
-
-    }
+    private InputStream  inputStream;
+    Thread workerThread;
+    byte[] readBuffer;
+    int readBufferPosition;
+    int counter;
+    volatile boolean stopWorker;
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
@@ -162,6 +132,50 @@ public class BPMActivityController extends BPMmasterActivity
     };
 
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.homeactivitylayout);
+        configureActionBar();
+        selectFragment(HomeFragment.getNewInstace(),false,false);
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        devicesfound = new ArrayList<>();
+
+        mainhandler = new Handler(){
+
+            @Override
+            public void handleMessage(Message msg) {
+
+                switch (msg.what){
+
+                    case 0:
+                        Toast.makeText(BPMActivityController.this,(String)msg.obj,Toast.LENGTH_LONG).show();
+                        break;
+
+                    case 1:
+                        createDialog("Conexión establecida. Esperando envio de la medición...");
+                        progressDialog.show();
+                        break;
+
+                    case 2:
+                        progressDialog.dismiss();
+                        break;
+                }
+
+
+            }
+        };
+
+
+
+
+
+    }
+
+
+
+
         @Override
     public void onStart(){
         super.onStart();
@@ -170,6 +184,14 @@ public class BPMActivityController extends BPMmasterActivity
 
         IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
         registerReceiver(receiver, filter);
+
+        IntentFilter filtersearch = new IntentFilter();
+
+        filtersearch.addAction(BluetoothDevice.ACTION_FOUND);
+        filtersearch.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+        filtersearch.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+
+        registerReceiver(mReceiver, filtersearch);
 
     }
 
@@ -435,17 +457,16 @@ public class BPMActivityController extends BPMmasterActivity
 
     private void findAndShowBluetoothDevices(){
 
+        Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 3000);
+        startActivity(discoverableIntent);
+
         AlertDialog.Builder builderdevicesdialog = new AlertDialog.Builder(this);
         builderdevicesdialog.setTitle(getResources().getString(R.string.dialogdevices));
-        IntentFilter filter = new IntentFilter();
         adapterdialog =new ArrayAdapter<String>(
                 this, android.R.layout.simple_selectable_list_item);
 
-        filter.addAction(BluetoothDevice.ACTION_FOUND);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
 
-        registerReceiver(mReceiver, filter);
         if (bluetoothAdapter.isDiscovering()) {
             bluetoothAdapter.cancelDiscovery();
         }
@@ -456,15 +477,89 @@ public class BPMActivityController extends BPMmasterActivity
             public void onClick(DialogInterface dialog, int item) {
 
                 BluetoothDevice device = devicesfound.get(item);
-                bluetoothAdapter.cancelDiscovery();
-                Thread connection = new AcceptThread(device);
-                connection.start();
-                dialog.dismiss();
+
+//                SocconnectionSocket = bluetoothdevicename.createRfcommSocketToServiceRecord(uuid);
+//                Thread connection = new AcceptThread(device);
+//                connection.start();
+
+
+
+                UUID uuid = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
+
+                try {
+                   BluetoothSocket socket = device.createRfcommSocketToServiceRecord(device.getUuids()[0].getUuid());
+
+                    socket.connect();
+                    inputStream = socket.getInputStream();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                beginListenForData();
+
+
             }
         });
         AlertDialog alert = builderdevicesdialog.create();
         alert.show();
 
+    }
+
+    public void beginListenForData()
+    {
+        final Handler handler = new Handler();
+        final byte delimiter = 10; //This is the ASCII code for a newline character
+
+        stopWorker = false;
+        readBufferPosition = 0;
+        readBuffer = new byte[1024];
+        workerThread = new Thread(new Runnable()
+        {
+            public void run()
+            {
+                while(!Thread.currentThread().isInterrupted() && !stopWorker)
+                {
+                    try
+                    {
+                        int bytesAvailable = inputStream.available();
+                        if(bytesAvailable > 0)
+                        {
+                            byte[] packetBytes = new byte[bytesAvailable];
+                            inputStream.read(packetBytes);
+                            for(int i=0;i<bytesAvailable;i++)
+                            {
+                                byte b = packetBytes[i];
+                                if(b == delimiter)
+                                {
+                                    byte[] encodedBytes = new byte[readBufferPosition];
+                                    System.arraycopy(readBuffer, 0, encodedBytes, 0, encodedBytes.length);
+                                    final String data = new String(encodedBytes, "US-ASCII");
+                                    readBufferPosition = 0;
+
+                                    handler.post(new Runnable()
+                                    {
+                                        public void run()
+                                        {
+                                            myLabel.setText(data);
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    readBuffer[readBufferPosition++] = b;
+                                }
+                            }
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        stopWorker = true;
+                    }
+                }
+            }
+        });
+
+        workerThread.start();
     }
 
     private void createDialog(String message){
@@ -510,12 +605,13 @@ public class BPMActivityController extends BPMmasterActivity
             try {
                 connectionSocket = bluetoothdevicename.createRfcommSocketToServiceRecord(uuid);
                 msg.obj = getResources().getString(R.string.connectionbluetooth);
-
-            } catch (IOException e) {
+                connectionSocket.connect();
+            } catch (Exception e) {
                 e.printStackTrace();
                 msg.obj = getResources().getString(R.string.connectionrefbluetooth);
             }
             if (msg == null) msg = new Message();
+
             mainhandler.sendMessage(msg);
         }
 
@@ -527,21 +623,25 @@ public class BPMActivityController extends BPMmasterActivity
             try {
 
                 if (connectionSocket != null) {
+                    bluetoothAdapter.cancelDiscovery();
+                    InputStream stream = connectionSocket.getInputStream();
+                    while (stream.available()==0){
 
-                    socket =  bluetoothAdapter.listenUsingRfcommWithServiceRecord(device.getName(),UUID.fromString("00001101-0000-1000-8000-00805f9b3434"));
 
-                    BPMsocket = socket.accept();
-                    InputStream stream = BPMsocket.getInputStream();
-                    String hola = "datosssss";
-                    mainhandler.sendEmptyMessage(2);
+
+                    }
+//                    socket =  bluetoothAdapter.listenUsingRfcommWithServiceRecord(device.getName(),UUID.fromString("00001101-0000-1000-8000-00805f9b34fc"));
+//                    //mainhandler.sendEmptyMessage(1);
+//                    BPMsocket = socket.accept();
+//                    InputStream stream = BPMsocket.getInputStream();
+//                    String hola = "datosssss";
+//                    mainhandler.sendEmptyMessage(2);
                     System.out.println("Llego");
                 }
 
+               // if (connectionSocket != null) connectionSocket.close();
 
-
-                   if (BPMsocket != null) BPMsocket.close();
-                   if (connectionSocket != null)connectionSocket.close();
-                   if (socket != null)connectionSocket.close();
+                if (BPMsocket != null) BPMsocket.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -550,9 +650,10 @@ public class BPMActivityController extends BPMmasterActivity
 
     @Override
     public void onDestroy(){
+        super.onDestroy();
         if (receiver!=null) unregisterReceiver(receiver);
         if (mReceiver != null) unregisterReceiver(mReceiver);
-        super.onDestroy();
+
     }
 
 }
