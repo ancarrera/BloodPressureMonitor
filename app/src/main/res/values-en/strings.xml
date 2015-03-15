@@ -37,6 +37,8 @@
     <string name="searchdevices">Searching devices</string>
     <string name="connectionbluetooth">Connection established</string>
     <string name="connectionrefbluetooth">Connection refused</string>
+    <string name="connectionstablished">"Connection established.Waiting measurement sent."</string>
+    <string name="waitconnection">"Waiting connection..."</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculating heart rate...</string>

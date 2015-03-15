@@ -42,6 +42,8 @@
     <string name="searchdevices">Buscando dispositivos</string>
     <string name="connectionbluetooth">Conexión establecida</string>
     <string name="connectionrefbluetooth">Fallo en la conexión</string>
+    <string name="connectionstablished">"Conexión establecida. Esperando envio de la medición..."</string>
+    <string name="waitconnection">"Esperando conexión..."</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculando ritmo cardíaco...</string>
