@@ -39,6 +39,10 @@
     <string name="connectionrefbluetooth">Connection refused</string>
     <string name="connectionstablished">"Connection established.Waiting measurement sent."</string>
     <string name="waitconnection">"Waiting connection..."</string>
+    <string name="socketconnfail">Connection are lost</string>
+    <string name="systolic">Systolica pressure </string>
+    <string name="diastolic">Diastolic pressure </string>
+    <string name="pulse">Pulse</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculating heart rate...</string>
@@ -73,6 +77,7 @@
     <string name="locationfoundtext">This is your place of residence?</string>
     <string name="yestext">Yes</string>
     <string name="notext">No</string>
+
 
 
     <!--Preference activity-->

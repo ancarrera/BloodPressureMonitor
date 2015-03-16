@@ -46,7 +46,12 @@ import com.udl.android.bloodpressuremonitor.fragments.MeasurementsFragment;
 import com.udl.android.bloodpressuremonitor.fragments.ObtainManualPressures;
 import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
 
+import junit.framework.Test;
+
+import org.w3c.dom.Element;
 import org.w3c.dom.Text;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -80,16 +85,19 @@ public class BPMActivityController extends BPMmasterActivity
 
         NOT_SUPPORTED,
         NOT_ENABLED,
-        COULD_NOT_CONNECTED
+        COULD_NOT_CONNECTED,
 
 
     }
+
+    private String TAG_RECEIVER_XML="BLUETOOTH_XML";
 
 
     private final int SHOW_TOAST = 0;
     private final int PROGRESSDIALOG_WAITCONN = 1;
     private final int PROGRESSDIALOGDISSMIS_WAITCONN = 2;
     private final int BLUETOOTHDATA_RESULT = 3;
+    private final int DISMISS_FAIL = 4;
 
     private TextView headertextview;
     private ImageButton buttonbar,secondbuttonbar;
@@ -111,7 +119,11 @@ public class BPMActivityController extends BPMmasterActivity
 
     private Handler mainhandler;
 
-    private InputStream  inputStream;
+    private String systolicPressure;
+    private String diastolicPressure;
+    private String pulse;
+
+
 
 
 
@@ -124,6 +136,7 @@ public class BPMActivityController extends BPMmasterActivity
         selectFragment(HomeFragment.getNewInstace(),false,false);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         devicesfound = new ArrayList<>();
+
 
         mainhandler = new Handler(){
 
@@ -140,12 +153,46 @@ public class BPMActivityController extends BPMmasterActivity
                         createDialog(getResources().getString(R.string.connectionstablished));
                         progressDialog.show();
                         break;
+                    case DISMISS_FAIL:
+                        progressDialog.dismiss();
+                        final AlertDialog.Builder dialog= new AlertDialog.Builder(BPMActivityController.this);
+                        dialog.setMessage(getResources().getString(R.string.socketconnfail));
+                        dialog.setPositiveButton(getResources().getString(android.R.string.ok),new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                        break;
                     case PROGRESSDIALOGDISSMIS_WAITCONN:
                         progressDialog.dismiss();
                         break;
                     case BLUETOOTHDATA_RESULT:
-                        System.out.println((String)msg.obj);
+                        final String linebreak = System.getProperty("line.separator");
+                        final String pressure_unit = "mm Hg";
+                        final String pulse_unit = "bpm";
+
+                        final  AlertDialog.Builder dialogresult = new AlertDialog.Builder(BPMActivityController.this);
+
+                        dialogresult.setMessage(getResources().getString(R.string.measurements)+
+                                linebreak+linebreak+getResources().getString(R.string.systolic)+" "+systolicPressure+" "+pressure_unit
+                                +linebreak+getResources().getString(R.string.diastolic)+" "+diastolicPressure+" "+pressure_unit+linebreak
+                                +getResources().getString(R.string.pulse)+" "+pulse+ " "+pulse_unit);
+
+                        dialogresult.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialogresult.show();
+
+//
+//                        Log.d(TAG_RECEIVER_XML,"Systolic: "+systolicPressure);
+//                        Log.d(TAG_RECEIVER_XML,"Diastolic: "+diastolicPressure);
+//                        Log.d(TAG_RECEIVER_XML,"Pulse: "+pulse);
                         break;
                 }
 
@@ -262,9 +309,7 @@ public class BPMActivityController extends BPMmasterActivity
                         onActivityResult(BLUETOOTH_ENABLE_PROCESS,RESULT_OK,null);
                     }
                 }
-                buttonbar.setVisibility(View.VISIBLE);
-                secondbuttonbar.setVisibility(View.INVISIBLE);
-                createDialog("Buscando dispositivos");
+                secondbuttonbar.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 ObtainManualPressures obtainManualPressures = ObtainManualPressures.getNewInstance();
@@ -292,9 +337,9 @@ public class BPMActivityController extends BPMmasterActivity
             showExitDialog();
         }else if(lasfragment instanceof HearRateMonitorFragment){
             getSupportFragmentManager().beginTransaction().remove(lasfragment).commit();
+            putHomeFragmentInTop(true);
         }else {
-            headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
-            selectFragment(HomeFragment.getNewInstace(), true, true);
+            putHomeFragmentInTop(true);
 
         }
 
@@ -422,8 +467,7 @@ public class BPMActivityController extends BPMmasterActivity
         if (requestCode == BLUETOOTH_ENABLE_PROCESS) {
             if (resultCode == RESULT_OK) {
                 findAndShowBluetoothDevices();
-                createDialog(getResources().getString(R.string.waitconnection));
-               // progressDialog.show();
+
             }else{
                 showDialogBluetoothCases(BluetoothDialog.COULD_NOT_CONNECTED);
             }
@@ -431,6 +475,9 @@ public class BPMActivityController extends BPMmasterActivity
     }
 
     private void findAndShowBluetoothDevices(){
+
+        createDialog(getResources().getString(R.string.waitconnection));
+        progressDialog.show();
 
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, MAX_TIME_DISCOVERABLE);
@@ -452,10 +499,13 @@ public class BPMActivityController extends BPMmasterActivity
 
     private void createDialog(String message){
 
-
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage(message);
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage(message);
+        }else{
+            progressDialog.setMessage(message);
+        }
 
     }
 
@@ -470,28 +520,21 @@ public class BPMActivityController extends BPMmasterActivity
             BluetoothSocket socket = null;
             try {
                 serverSocket = bluetoothAdapter.listenUsingRfcommWithServiceRecord("BPMRFCOMM",UUID.fromString("b7746a40-c758-4868-aa19-7ac6b3475dfc"));
-                socket = serverSocket.accept();
-                ///mainhandler.sendEmptyMessage(PROGRESSDIALOGDISSMIS_WAITCONN);
+                socket = serverSocket.accept(30000);
+                mainhandler.sendEmptyMessage(PROGRESSDIALOGDISSMIS_WAITCONN);
                 if (socket != null) {
-                    //mainhandler.sendEmptyMessage(PROGRESSDIALOG_WAITCONN);
-                    String measurements = null;
+                    mainhandler.sendEmptyMessage(PROGRESSDIALOG_WAITCONN);
                     InputStream stream = socket.getInputStream();
+                    while (stream.available()<=0){}
                     if(stream.available()>0){
-                        byte[] measurementsbytes = new byte[stream.available()];
-                        BufferedInputStream streambuffer = new BufferedInputStream(stream);
-                        streambuffer.read(measurementsbytes,0,measurementsbytes.length);
-                        measurements = new String(measurementsbytes,"UTF-8");
-                        Message message = new Message();
-                        message.what=BLUETOOTHDATA_RESULT;
-                        message.obj = measurements;
-                        mainhandler.sendMessage(message);
+                        xmlParsePressures(stream);
+
                     }
-                    String joder = measurements;
-                    String uhhhhh="seeeeee";
                 }
-               // mainhandler.sendEmptyMessage(PROGRESSDIALOGDISSMIS_WAITCONN);
+               mainhandler.sendEmptyMessage(PROGRESSDIALOGDISSMIS_WAITCONN);
 
             } catch (IOException e) {
+                mainhandler.sendEmptyMessage(DISMISS_FAIL);
                 e.printStackTrace();
             }
         }
@@ -503,6 +546,58 @@ public class BPMActivityController extends BPMmasterActivity
         super.onDestroy();
         if (receiver!=null) unregisterReceiver(receiver);
 
+    }
+
+    private void xmlParsePressures(InputStream stream){
+
+        try {
+
+
+            XmlPullParserFactory xmlFactoryObject = XmlPullParserFactory.newInstance();
+            XmlPullParser parser = xmlFactoryObject.newPullParser();
+            parser.setInput(new InputStreamReader(stream));
+
+            int eventType = parser.getEventType();
+            String element = "";
+            boolean END_DOCUMENT = false;
+            while (!END_DOCUMENT) {
+
+
+                if (eventType == XmlPullParser.START_TAG){
+                    element = parser.getName();
+                }
+                else if(eventType == XmlPullParser.TEXT) {
+
+                    if(element.equals("systolic-pressure")){
+                        systolicPressure =parser.getText();
+                        //Log.d("XML","ParseNext "+systolicPressure);
+                    }
+                    if (element.equals("diastolic-pressure")){
+                        diastolicPressure = parser.getText();
+                        //Log.d("XML","ParseNext "+diastolicPressure);
+                    }
+                    if (element.equals("pulse")){
+                        pulse = parser.getText();
+                        END_DOCUMENT = true;
+                        //Log.d("XML","ParseNext "+pulse);
+                    }
+                }
+                eventType = parser.next();
+            }
+
+            Message message = new Message();
+            message.what=BLUETOOTHDATA_RESULT;
+            mainhandler.sendMessage(message);
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+    }
+
+    private void putHomeFragmentInTop(boolean back){
+        headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
+        selectFragment(HomeFragment.getNewInstace(), true, back);
     }
 
 }

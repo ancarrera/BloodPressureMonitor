@@ -44,6 +44,11 @@
     <string name="connectionrefbluetooth">Fallo en la conexión</string>
     <string name="connectionstablished">"Conexión establecida. Esperando envio de la medición..."</string>
     <string name="waitconnection">"Esperando conexión..."</string>
+    <string name="socketconnfail">Se ha perdido la conexión</string>
+    <string name="measurements">Medición recibida</string>
+    <string name="systolic">Presión sistólica </string>
+    <string name="diastolic">Presión diastólica </string>
+    <string name="pulse">Pulso</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculando ritmo cardíaco...</string>

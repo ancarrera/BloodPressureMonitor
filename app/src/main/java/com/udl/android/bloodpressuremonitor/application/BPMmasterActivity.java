@@ -32,10 +32,6 @@ public class BPMmasterActivity extends FragmentActivity {
     }
 
 
-//    public BPMmasterActivity getApplicationContext(){
-//        return (BPMmasterActivity) super.getApplicationContext();
-//    }
-
     public void showDialog(boolean isCancelable){
 
         if (dialog != null){
