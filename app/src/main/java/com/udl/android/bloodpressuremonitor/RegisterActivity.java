@@ -3,6 +3,7 @@ package com.udl.android.bloodpressuremonitor;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Address;
@@ -89,6 +90,13 @@ public class RegisterActivity extends BPMmasterActivity
 
        providerBestCriteria = locationManager.getBestProvider(new Criteria(),true);
 
+        final Button regButton = (Button) findViewById(R.id.signingbutton);
+        regButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RegisterActivity.this,BPMActivityController.class));
+            }
+        });
 
     }
 
