@@ -30,6 +30,7 @@
 
         <activity
             android:name=".SplashActivity"
+            android:configChanges="locale"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,7 +58,7 @@
 
         <activity android:name=".BPMpreferencesActivity"
             android:label="@string/app_name"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize|locale">
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
                 <category android:name="android.intent.category.DEFAULT" />

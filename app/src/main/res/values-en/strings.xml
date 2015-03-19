@@ -93,6 +93,17 @@
     <string name="headernetwork">Network preferences</string>
 
     <string name="headeractivity">Settings</string>
+    <string name="headerlanguage">Language</string>
+
+    <string-array name="preferenceslanguageentries">
+        <item>Spanish</item>
+        <item>English</item>
+    </string-array>
+
+
+    <string name="appPreferences">Aplication preferences</string>
+    <string name="summarylanguage">Allow choose the language in application</string>
+
 
 
 </resources>

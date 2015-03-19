@@ -1,18 +1,26 @@
 package com.udl.android.bloodpressuremonitor.application;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.udl.android.bloodpressuremonitor.R;
 
+import java.util.Locale;
+
 /**
  * Created by Adrian on 27/02/2015.
  */
+
 public class BPMmasterActivity extends FragmentActivity {
 
     private ProgressDialog dialog;
@@ -84,4 +92,18 @@ public class BPMmasterActivity extends FragmentActivity {
 
     protected Typeface getMntcorsiva(){return mntcorsiva;}
 
+    protected void changeLenguage(String lang,Activity activity){
+
+        if (lang.equalsIgnoreCase(""))
+            return;
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        res.updateConfiguration(conf, dm);
+        Intent refresh = new Intent(this, activity.getClass());
+        startActivity(refresh);
+
+    }
 }

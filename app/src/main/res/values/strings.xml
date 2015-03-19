@@ -102,5 +102,17 @@
 
     <string name="headernetwork">Preferencias de red</string>
     <string name="headeractivity">Opciones</string>
+    <string name="headerlanguage">Idioma</string>
+
+    <string-array name="preferenceslanguageentries">
+        <item>Español</item>
+        <item>Inglés</item>
+    </string-array>
+    <string-array name="preferenceslanguagevalues">
+        <item>es</item>
+        <item>en</item>
+    </string-array>
+    <string name="appPreferences">Preferencias de la aplicación</string>
+    <string name="summarylanguage">Permite escoger el idioma de la aplicación</string>
 
 </resources>

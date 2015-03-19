@@ -7,12 +7,16 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.udl.android.bloodpressuremonitor.utils.Language;
+
 import java.util.List;
+import java.util.prefs.Preferences;
 
 /**
  * Created by adrian on 10/3/15.
@@ -45,6 +49,11 @@ public class BPMpreferencesActivity extends PreferenceActivity{
 
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+            String lang = sharedPreferences.getString(key,"");
+            if (!lang.equals("")) {
+                    Language.changeApplicationLanguage(lang, getActivity());
+            }
             getPreferenceScreen().getSharedPreferences()
                     .registerOnSharedPreferenceChangeListener(this);
         }
@@ -94,4 +103,5 @@ public class BPMpreferencesActivity extends PreferenceActivity{
         getActionBar().setCustomView(view);
         getActionBar().show();
     }
+
 }

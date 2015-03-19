@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-
     <PreferenceCategory android:title="@string/headernetwork">
         <ListPreference
             android:title="@string/networkpreferencestitle"
@@ -12,4 +11,17 @@
             android:entryValues="@array/preferencesnetworkvalues"
             />
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/appPreferences">
+        <ListPreference
+            android:title="@string/headerlanguage"
+            android:summary="@string/summarylanguage"
+            android:key="languageList"
+            android:defaultValue="es"
+            android:entries="@array/preferenceslanguageentries"
+            android:entryValues="@array/preferenceslanguagevalues"
+            >
+        </ListPreference>
+    </PreferenceCategory>
+
 </PreferenceScreen>

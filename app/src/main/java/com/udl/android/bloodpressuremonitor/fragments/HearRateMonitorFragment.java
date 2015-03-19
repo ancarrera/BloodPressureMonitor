@@ -91,9 +91,7 @@ public class HearRateMonitorFragment extends Fragment {
         camera = Camera.open();
         startTime = System.currentTimeMillis();
     }
-    /**
-     * {@inheritDoc}
-     */
+
     @Override
     public void onPause() {
         super.onPause();
