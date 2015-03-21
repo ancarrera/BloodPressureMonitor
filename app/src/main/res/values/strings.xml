@@ -115,4 +115,22 @@
     <string name="appPreferences">Preferencias de la aplicación</string>
     <string name="summarylanguage">Permite escoger el idioma de la aplicación</string>
 
+
+    <!--Profile-->
+    <string name="headerprofile">Perfil</string>
+    <string name="name">Nombre:</string>
+    <string name="surname">Apellidos:</string>
+    <string name="email">E-mail:</string>
+    <string name="Age">Edad:</string>
+    <string name="city">Población:</string>
+    <string name="administration">Administración:</string>
+    <string name="country">País:</string>
+
+    <!--Help-->
+    <string name="helpheader">Ayuda</string>
+    <string name="bluetoothinfoheader">Información sobre la obtención de mediciones</string>
+    <string name="bluetoothinfo">Para obtener los datos desde el tensiómetro, primero tienes que pulsar el botón obtener medición en el menú principal, de esta forma el bluetooth se activara sino esta activado, y estará esperando la conexión de un dispositivo externo. \nCuando el tensiómetro envia la medición en un archivo XML el dispositvo se encarga de tratarlo, de esta forma obtiene los valores de la medición. Una vez se ha recibido la medición se guarda en el cloud.</string>
+    <string name="hearrateinfoheader">información acerca del sensor de pulsaciones</string>
+    <string name="heartrateinfo">Para realizar un buen uso del sensor de pulsaciones tienes que poner el móvil en un posición plana, después mantener la punta del dedo sobre la cámara (sin apretar), una vez este la pantalla en rojo y se vea la pulsación reflejada en la imagen, saldrá la medición.</string>
+
 </resources>

@@ -104,6 +104,21 @@
     <string name="appPreferences">Aplication preferences</string>
     <string name="summarylanguage">Allow choose the language in application</string>
 
+    <!--Profile-->
+    <string name="headerprofile">Profile</string>
+    <string name="name">Name:</string>
+    <string name="surname">Surnames:</string>
+    <string name="email">E-mail:</string>
+    <string name="Age">Age:</string>
+    <string name="city">City:</string>
+    <string name="administration">Administration:</string>
+    <string name="country">Country:</string>
 
+    <!--Help-->
+    <string name="bluetoothinfoheader">Information about of obtaining measurement</string>
+    <string name="bluetoothinfo">For obtaining the data from blood pressure , first you have to press the button “obtain measurement” in principal menu, in this manner the bluetooth sensor will be activated but it but has been activated before, and it will be expecting the external device connection. When the blood pressure sent the measurement in XML file, the device is responsible to treat it. One time the measurement is obtained, it is saved in cloud.</string>
+    <string name="hearrateinfoheader">Information about of heart rate sensor</string>
+    <string name="heartrateinfo">For realizing a measurement with hear rate, you have to put the phone in plane position,then keep your fingertip on the camera (loosely), one time the camera view will take red color and the screen shows a image changing color, the measurement will be displayed.</string>
+    <string name="helpheader">Help</string>
 
 </resources>

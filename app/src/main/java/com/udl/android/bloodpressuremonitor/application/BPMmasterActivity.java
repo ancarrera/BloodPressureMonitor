@@ -92,18 +92,4 @@ public class BPMmasterActivity extends FragmentActivity {
 
     protected Typeface getMntcorsiva(){return mntcorsiva;}
 
-    protected void changeLenguage(String lang,Activity activity){
-
-        if (lang.equalsIgnoreCase(""))
-            return;
-        Locale myLocale = new Locale(lang);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
-        Intent refresh = new Intent(this, activity.getClass());
-        startActivity(refresh);
-
-    }
 }

@@ -21,6 +21,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Created by Adrian on 06/03/2015.
  */
+
+@SuppressWarnings("deprecation")
 public class HearRateMonitorFragment extends Fragment {
 
     private static final String TAG = "HeartRateMonitor";

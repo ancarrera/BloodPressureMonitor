@@ -1,6 +1,7 @@
 package com.udl.android.bloodpressuremonitor;
 
 import android.app.AlertDialog;
+import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -26,6 +27,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Xml;
 import android.view.Gravity;
@@ -33,17 +35,21 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.udl.android.bloodpressuremonitor.adapters.ViewPagerHelpAdapter;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.customviews.HeartBeatView;
 import com.udl.android.bloodpressuremonitor.fragments.HearRateMonitorFragment;
+import com.udl.android.bloodpressuremonitor.fragments.HelpFragment;
 import com.udl.android.bloodpressuremonitor.fragments.HomeFragment;
 import com.udl.android.bloodpressuremonitor.fragments.MeasurementsFragment;
 import com.udl.android.bloodpressuremonitor.fragments.ObtainManualPressures;
+import com.udl.android.bloodpressuremonitor.fragments.ProfileFragment;
 import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
 
 import junit.framework.Test;
@@ -63,6 +69,8 @@ import java.io.StringWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -90,6 +98,12 @@ public class BPMActivityController extends BPMmasterActivity
 
     }
 
+    public static enum ViewPagerType{
+
+        BLUETOOTH_EXAMPLE,
+        HEARTRATE_EXPLAIN
+    }
+
     private String TAG_RECEIVER_XML="BLUETOOTH_XML";
 
 
@@ -105,6 +119,9 @@ public class BPMActivityController extends BPMmasterActivity
 
     private static String networkconnectionstatus;
     public static boolean downloadAllMeasurements = true;
+
+    private ViewPager viewPagerview;
+    private FrameLayout frameLayout;
 
     public static final int BLUETOOTH_ENABLE_PROCESS = 288;
     private final int MAX_TIME_DISCOVERABLE= 300;
@@ -125,8 +142,6 @@ public class BPMActivityController extends BPMmasterActivity
 
 
 
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
@@ -137,6 +152,8 @@ public class BPMActivityController extends BPMmasterActivity
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         devicesfound = new ArrayList<>();
 
+        frameLayout = (FrameLayout) findViewById(R.id.fragmentframe);
+        viewPagerview = (ViewPager) findViewById(R.id.viewpager);
 
         mainhandler = new Handler(){
 
@@ -280,6 +297,7 @@ public class BPMActivityController extends BPMmasterActivity
     @Override
     public void onClick(View view) {
 
+
         int tag = Integer.parseInt((String)view.getTag());
         switch (tag){
             case 1:
@@ -319,8 +337,25 @@ public class BPMActivityController extends BPMmasterActivity
                 secondbuttonbar.setVisibility(View.INVISIBLE);
                 break;
             case 5:
+                ProfileFragment profileFragment = ProfileFragment.getNewInstance();
+                selectFragment(profileFragment,false,true);
+                headertextview.setText(getResources().getString(R.string.headerprofile));
+                buttonbar.setVisibility(View.VISIBLE);
+                secondbuttonbar.setVisibility(View.INVISIBLE);
                 break;
             case 6:
+                buttonbar.setVisibility(View.VISIBLE);
+                secondbuttonbar.setVisibility(View.INVISIBLE);
+                headertextview.setText(getResources().getString(R.string.help));
+                frameLayout.setVisibility(View.GONE);
+                viewPagerview.setVisibility(View.VISIBLE);
+                List<Fragment> fragments = new ArrayList<>();
+                HelpFragment bluetoothpage = HelpFragment.getNewInstance(ViewPagerType.BLUETOOTH_EXAMPLE);
+                fragments.add(bluetoothpage);
+                HelpFragment heartrate = HelpFragment.getNewInstance(ViewPagerType.HEARTRATE_EXPLAIN);
+                fragments.add(heartrate);
+                ViewPagerHelpAdapter adapter = new ViewPagerHelpAdapter(getSupportFragmentManager(),fragments);
+                viewPagerview.setAdapter(adapter);
                 break;
             default:
                 break;
@@ -330,11 +365,18 @@ public class BPMActivityController extends BPMmasterActivity
     }
 
     private void onBack(){
+
+
         secondbuttonbar.setVisibility(View.VISIBLE);
         buttonbar.setVisibility(View.INVISIBLE);
         Fragment lasfragment = getSupportFragmentManager().findFragmentById(R.id.fragmentframe);
-        if(lasfragment instanceof HomeFragment) {
+
+        if (lasfragment instanceof HomeFragment && frameLayout.getVisibility()==View.VISIBLE ) {
             showExitDialog();
+        } else if(viewPagerview.getVisibility()==View.VISIBLE) {
+            removeViewPager();
+            headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
+
         }else if(lasfragment instanceof HearRateMonitorFragment){
             getSupportFragmentManager().beginTransaction().remove(lasfragment).commit();
             putHomeFragmentInTop(true);
@@ -342,6 +384,9 @@ public class BPMActivityController extends BPMmasterActivity
             putHomeFragmentInTop(true);
 
         }
+
+        frameLayout.setVisibility(View.VISIBLE);
+        viewPagerview.setVisibility(View.GONE);
 
     }
 
@@ -599,5 +644,14 @@ public class BPMActivityController extends BPMmasterActivity
         headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
         selectFragment(HomeFragment.getNewInstace(), true, back);
     }
+
+    private void removeViewPager() {
+
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.viewpager);
+        if (fragment!=null) {
+            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+        }
+    }
+    
 
 }

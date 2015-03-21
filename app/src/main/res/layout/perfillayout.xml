@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="@color/graybackground"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+   <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:background="@android:color/transparent">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:text="@string/name"
+            />
+
+        <TextView
+            android:id="@+id/nametextview"
+            android:layout_marginBottom="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"
+            android:gravity="left"
+
+            />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:gravity="left"
+           android:textStyle="bold"
+           android:text="@string/surname"
+           />
+
+       <TextView
+           android:id="@+id/surnametextview"
+           android:layout_marginBottom="10dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:layout_marginTop="10dp"
+           android:gravity="left"
+
+           />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:gravity="left"
+           android:textStyle="bold"
+           android:text="@string/email"
+           />
+
+       <TextView
+           android:id="@+id/textviewemail"
+           android:layout_marginBottom="10dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:layout_marginTop="10dp"
+           android:gravity="left"
+
+           />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:gravity="left"
+           android:textStyle="bold"
+           android:text="@string/Age"
+           />
+
+       <TextView
+           android:id="@+id/agetextview"
+           android:layout_marginBottom="10dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:layout_marginTop="10dp"
+           android:gravity="left"
+
+           />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:gravity="left"
+           android:textStyle="bold"
+           android:text="@string/city"
+           />
+
+       <TextView
+           android:id="@+id/citytextview"
+           android:layout_marginBottom="10dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:layout_marginTop="10dp"
+           android:gravity="left"
+
+           />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:gravity="left"
+           android:textStyle="bold"
+           android:text="@string/administration"
+           />
+
+       <TextView
+           android:id="@+id/administrationtextview"
+           android:layout_marginBottom="10dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:layout_marginTop="10dp"
+           android:gravity="left"
+
+           />
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:gravity="left"
+           android:textStyle="bold"
+           android:text="@string/country"
+           />
+
+       <TextView
+           android:id="@+id/countrytextview"
+           android:layout_marginBottom="10dp"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:textSize="20sp"
+           android:layout_marginTop="10dp"
+           android:gravity="left"
+
+           />
+
+
+    </LinearLayout>
+       </ScrollView>
+</LinearLayout>
