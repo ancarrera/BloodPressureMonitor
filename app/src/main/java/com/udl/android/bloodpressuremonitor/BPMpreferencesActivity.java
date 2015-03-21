@@ -2,6 +2,7 @@ package com.udl.android.bloodpressuremonitor;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -53,9 +54,18 @@ public class BPMpreferencesActivity extends PreferenceActivity{
             String lang = sharedPreferences.getString(key,"");
             if (!lang.equals("")) {
                     Language.changeApplicationLanguage(lang, getActivity());
+
+                getActivity().startActivity(new Intent(getActivity(),BPMActivityController.class));
+                getPreferenceScreen().getSharedPreferences()
+                        .registerOnSharedPreferenceChangeListener(this);
+                getActivity().setResult(RESULT_OK);
+                getActivity().finish();
+
+                return;
             }
             getPreferenceScreen().getSharedPreferences()
                     .registerOnSharedPreferenceChangeListener(this);
+            getActivity().setResult(RESULT_CANCELED);
         }
 
         @Override

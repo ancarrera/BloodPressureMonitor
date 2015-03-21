@@ -124,6 +124,7 @@ public class BPMActivityController extends BPMmasterActivity
     private FrameLayout frameLayout;
 
     public static final int BLUETOOTH_ENABLE_PROCESS = 288;
+    public static final int SIGNAL_KILL_CONTROLLER = 111;
     private final int MAX_TIME_DISCOVERABLE= 300;
 
     private BluetoothAdapter bluetoothAdapter;
@@ -260,7 +261,7 @@ public class BPMActivityController extends BPMmasterActivity
             @Override
             public void onClick(View v) {
 
-                startActivity(new Intent(BPMActivityController.this,BPMpreferencesActivity.class));
+                startActivityForResult(new Intent(BPMActivityController.this,BPMpreferencesActivity.class),SIGNAL_KILL_CONTROLLER);
             }
         });
     }
@@ -516,6 +517,11 @@ public class BPMActivityController extends BPMmasterActivity
             }else{
                 showDialogBluetoothCases(BluetoothDialog.COULD_NOT_CONNECTED);
             }
+        }else if (requestCode==SIGNAL_KILL_CONTROLLER){
+            if(resultCode == RESULT_OK){
+                finish();
+            }
+
         }
     }
 

@@ -21,8 +21,7 @@ public class SplashActivity extends BPMmasterActivity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-//        Log.d("Lan", Language.checkAppLanguage());
-//        Log.d("Lan", Language.getAppCompleteStringLanguage(true));
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String lang = preferences.getString(PreferenceConstants.LANGUAGEPREFERENCESKEY,"null");
        if (lang.equals("null")){ //is first time that app is running
@@ -38,12 +37,14 @@ public class SplashActivity extends BPMmasterActivity {
         TextView textView = (TextView) findViewById(R.id.splashtextview);
         textView.setTypeface(getOpenSansItalic());
 
+
+
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
 
-                startActivity(new Intent(SplashActivity.this,BPMActivityController.class));
+                startActivity(new Intent(SplashActivity.this,LoginActivity.class));
                 finish();
             }
         },1500);
