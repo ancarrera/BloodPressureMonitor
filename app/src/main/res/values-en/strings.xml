@@ -43,6 +43,7 @@
     <string name="systolic">Systolica pressure </string>
     <string name="diastolic">Diastolic pressure </string>
     <string name="pulse">Pulse</string>
+    <string name="processcanceled">The bluetooth needs to be activated for being recognized for others devices. Process canceled.</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculating heart rate...</string>

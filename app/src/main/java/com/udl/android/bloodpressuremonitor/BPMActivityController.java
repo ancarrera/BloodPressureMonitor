@@ -94,6 +94,7 @@ public class BPMActivityController extends BPMmasterActivity
         NOT_SUPPORTED,
         NOT_ENABLED,
         COULD_NOT_CONNECTED,
+        DISCOVER_CANCELLED,
 
 
     }
@@ -126,6 +127,8 @@ public class BPMActivityController extends BPMmasterActivity
     public static final int BLUETOOTH_ENABLE_PROCESS = 288;
     public static final int SIGNAL_KILL_CONTROLLER = 111;
     private final int MAX_TIME_DISCOVERABLE= 300;
+    private final int MAX_TIME_WAIT_OTHER_DEVICE=30000;
+    private final int DISCOVERABLE_BLUETOOTH_PROCESS=333;
 
     private BluetoothAdapter bluetoothAdapter;
 
@@ -140,6 +143,8 @@ public class BPMActivityController extends BPMmasterActivity
     private String systolicPressure;
     private String diastolicPressure;
     private String pulse;
+
+    private boolean initbluetoothprocess = true;
 
 
 
@@ -496,6 +501,13 @@ public class BPMActivityController extends BPMmasterActivity
 
                 }
             });
+        }else if (type==BluetoothDialog.DISCOVER_CANCELLED){
+            alert.setMessage(getResources().getString(R.string.processcanceled));
+            alert.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+
+                }
+            });
         }
 
         AlertDialog dialog = alert.show();
@@ -512,7 +524,7 @@ public class BPMActivityController extends BPMmasterActivity
 
         if (requestCode == BLUETOOTH_ENABLE_PROCESS) {
             if (resultCode == RESULT_OK) {
-                findAndShowBluetoothDevices();
+                initBluetoothProcess();
 
             }else{
                 showDialogBluetoothCases(BluetoothDialog.COULD_NOT_CONNECTED);
@@ -522,27 +534,22 @@ public class BPMActivityController extends BPMmasterActivity
                 finish();
             }
 
+        }else if (requestCode==DISCOVERABLE_BLUETOOTH_PROCESS){
+            if (resultCode == RESULT_CANCELED){
+                showDialogBluetoothCases(BluetoothDialog.DISCOVER_CANCELLED);
+            }else{
+                bluetoothProcess();
+            }
+
         }
     }
 
-    private void findAndShowBluetoothDevices(){
-
-        createDialog(getResources().getString(R.string.waitconnection));
-        progressDialog.show();
+    private void initBluetoothProcess(){
 
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, MAX_TIME_DISCOVERABLE);
-        startActivity(discoverableIntent);
+        startActivityForResult(discoverableIntent,DISCOVERABLE_BLUETOOTH_PROCESS);
 
-
-        if (bluetoothAdapter.isDiscovering()) {
-            bluetoothAdapter.cancelDiscovery();
-        }
-
-        bluetoothAdapter.startDiscovery();
-
-            Thread thread = new AcceptThread();
-            thread.start();
 
     }
 
@@ -571,7 +578,7 @@ public class BPMActivityController extends BPMmasterActivity
             BluetoothSocket socket = null;
             try {
                 serverSocket = bluetoothAdapter.listenUsingRfcommWithServiceRecord("BPMRFCOMM",UUID.fromString("b7746a40-c758-4868-aa19-7ac6b3475dfc"));
-                socket = serverSocket.accept(30000);
+                socket = serverSocket.accept(MAX_TIME_WAIT_OTHER_DEVICE);
                 mainhandler.sendEmptyMessage(PROGRESSDIALOGDISSMIS_WAITCONN);
                 if (socket != null) {
                     mainhandler.sendEmptyMessage(PROGRESSDIALOG_WAITCONN);
@@ -579,6 +586,7 @@ public class BPMActivityController extends BPMmasterActivity
                     while (stream.available()<=0){}
                     if(stream.available()>0){
                         xmlParsePressures(stream);
+                        socket.close();
 
                     }
                 }
@@ -657,6 +665,21 @@ public class BPMActivityController extends BPMmasterActivity
         if (fragment!=null) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
+    }
+
+    private void bluetoothProcess(){
+
+        createDialog(getResources().getString(R.string.waitconnection));
+        progressDialog.show();
+
+        if (bluetoothAdapter.isDiscovering()) {
+            bluetoothAdapter.cancelDiscovery();
+        }
+
+        bluetoothAdapter.startDiscovery();
+
+        Thread thread = new AcceptThread();
+        thread.start();
     }
     
 

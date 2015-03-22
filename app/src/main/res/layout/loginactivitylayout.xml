@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_gravity="center"
-    android:background="@android:color/white"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     >
 
@@ -11,7 +14,7 @@
         android:id="@+id/imagecontainer"
         android:layout_width="match_parent"
         android:gravity="center_horizontal"
-        android:layout_marginTop="@dimen/imagemargintop"
+        android:background="@android:color/white"
         android:layout_height="wrap_content">
         <ImageView
             android:layout_width="@dimen/imagesizewidth"
@@ -67,8 +70,6 @@
             </EditText>
 
 
-
-
             <EditText
                 android:id="@+id/login_passwd"
                 android:layout_width="match_parent"
@@ -105,17 +106,18 @@
 
         </LinearLayout>
 
-
+        <Button
+            android:id="@+id/registerbutton"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/buttonselector"
+            android:textColor="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:text="@string/loginregister"
+            android:layout_height="55dp" />
     </LinearLayout>
-    <Button
-        android:id="@+id/registerbutton"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/buttonselector"
-        android:textColor="@android:color/white"
-        android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/loginregister"
-        android:layout_height="55dp" />
+
 
 </RelativeLayout>
+
+</ScrollView>

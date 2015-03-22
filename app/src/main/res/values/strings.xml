@@ -49,6 +49,7 @@
     <string name="systolic">Presión sistólica </string>
     <string name="diastolic">Presión diastólica </string>
     <string name="pulse">Pulso</string>
+    <string name="processcanceled">El bluetooth necesita ser visible para ser reconocido por otro dispositivo. Proceso Cancelado</string>
 
     <!--Hear beat-->
     <string name="hearbeattext">Calculando ritmo cardíaco...</string>
