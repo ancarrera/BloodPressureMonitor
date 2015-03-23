@@ -90,14 +90,6 @@ public class RegisterActivity extends BPMmasterActivity
 
        providerBestCriteria = locationManager.getBestProvider(new Criteria(),true);
 
-        final Button regButton = (Button) findViewById(R.id.signingbutton);
-        regButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(RegisterActivity.this,BPMActivityController.class));
-            }
-        });
-
     }
 
     @Override
@@ -137,13 +129,17 @@ public class RegisterActivity extends BPMmasterActivity
         siginbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkSentData();
+                if (isDataCorrect()){
+                    startActivity(new Intent(RegisterActivity.this,BPMActivityController.class));
+                    setResult(RESULT_OK);
+                    finish();
+                }
 
             }
         });
     }
 
-    private void checkSentData(){
+    private boolean isDataCorrect(){
 
         if (name.getText().toString().equals("")
                 || surnames.getText().toString().equals("")
@@ -154,9 +150,13 @@ public class RegisterActivity extends BPMmasterActivity
                 || locationcountry.getText().toString().equals("")){
 
             showDialogEvents(AlertsID.PROBLEM_MANDATORY_FIELDS);
+            return true;
         }else if (!email.getText().toString().contains("@") || !email.getText().toString().contains(".")){
             showDialogEvents(AlertsID.PROBLEM_MAIL);
+            return true;
         }
+
+        return false;
     }
 
     private void showDialogEvents(AlertsID type){

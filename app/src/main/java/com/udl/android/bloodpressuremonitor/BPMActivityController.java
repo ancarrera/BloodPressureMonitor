@@ -105,7 +105,7 @@ public class BPMActivityController extends BPMmasterActivity
         HEARTRATE_EXPLAIN
     }
 
-    private String TAG_RECEIVER_XML="BLUETOOTH_XML";
+    private final String TAG_RECEIVER_XML="BLUETOOTH_XML";
 
 
     private final int SHOW_TOAST = 0;
@@ -549,10 +549,7 @@ public class BPMActivityController extends BPMmasterActivity
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, MAX_TIME_DISCOVERABLE);
         startActivityForResult(discoverableIntent,DISCOVERABLE_BLUETOOTH_PROCESS);
-
-
     }
-
 
 
     private void createDialog(String message){
@@ -577,7 +574,8 @@ public class BPMActivityController extends BPMmasterActivity
         public void run() {
             BluetoothSocket socket = null;
             try {
-                serverSocket = bluetoothAdapter.listenUsingRfcommWithServiceRecord("BPMRFCOMM",UUID.fromString("b7746a40-c758-4868-aa19-7ac6b3475dfc"));
+                serverSocket = bluetoothAdapter.listenUsingRfcommWithServiceRecord("BPMRFCOMM",
+                        UUID.fromString("b7746a40-c758-4868-aa19-7ac6b3475dfc"));
                 socket = serverSocket.accept(MAX_TIME_WAIT_OTHER_DEVICE);
                 mainhandler.sendEmptyMessage(PROGRESSDIALOGDISSMIS_WAITCONN);
                 if (socket != null) {
@@ -656,7 +654,7 @@ public class BPMActivityController extends BPMmasterActivity
 
     private void putHomeFragmentInTop(boolean back){
         headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
-        selectFragment(HomeFragment.getNewInstace(), true, back);
+        selectFragment(HomeFragment.getNewInstace(), back, true);
     }
 
     private void removeViewPager() {
