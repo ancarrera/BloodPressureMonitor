@@ -175,7 +175,7 @@ public class HearRateMonitorFragment extends Fragment {
                     }
                 }
                 int beatsAvg = (beatsArrayAvg / beatsArrayCnt);
-                text.setText(String.valueOf(beatsAvg)+" bps");
+                text.setText(String.valueOf(beatsAvg)+" bpm");
                 startTime = System.currentTimeMillis();
                 beats = 0;
             }

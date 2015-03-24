@@ -150,13 +150,13 @@ public class RegisterActivity extends BPMmasterActivity
                 || locationcountry.getText().toString().equals("")){
 
             showDialogEvents(AlertsID.PROBLEM_MANDATORY_FIELDS);
-            return true;
+            return false;
         }else if (!email.getText().toString().contains("@") || !email.getText().toString().contains(".")){
             showDialogEvents(AlertsID.PROBLEM_MAIL);
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     private void showDialogEvents(AlertsID type){
