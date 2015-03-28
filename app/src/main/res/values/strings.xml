@@ -134,4 +134,6 @@
     <string name="hearrateinfoheader">información acerca del sensor de pulsaciones</string>
     <string name="heartrateinfo">Para realizar un buen uso del sensor de pulsaciones tienes que poner el móvil en un posición plana, después mantener la punta del dedo sobre la cámara (sin apretar), una vez este la pantalla en rojo y se vea la pulsación reflejada en la imagen, saldrá la medición.</string>
 
+    <!--GCM strings-->
+    <string name="recoveryregidOK">Dispositivo registrado en GCM</string>
 </resources>

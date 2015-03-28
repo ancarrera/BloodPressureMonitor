@@ -47,6 +47,7 @@ import com.udl.android.bloodpressuremonitor.fragments.MeasurementsFragment;
 import com.udl.android.bloodpressuremonitor.fragments.ObtainManualPressures;
 import com.udl.android.bloodpressuremonitor.fragments.ProfileFragment;
 import com.udl.android.bloodpressuremonitor.utils.GCMConstants;
+import com.udl.android.bloodpressuremonitor.utils.GCMRegister;
 import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -134,13 +135,14 @@ public class BPMActivityController extends BPMmasterActivity
 
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.homeactivitylayout);
         configureActionBar();
-        selectFragment(HomeFragment.getNewInstace(),false,false);
+        selectFragment(HomeFragment.getNewInstace(), false, false);
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         devicesfound = new ArrayList<>();
 
@@ -215,9 +217,11 @@ public class BPMActivityController extends BPMmasterActivity
 
             if (registrationid.isEmpty()) {
                 new registerTask().execute();
+            }else{
+                Toast.makeText(this,getResources().getString(R.string.recoveryregidOK),Toast.LENGTH_LONG).show();
             }
         } else {
-            Log.d(GCMConstants.GCM_TAG, "Google Cloud Services not found");
+            Log.d(GCMConstants.TAG, "Google Cloud Services not found");
         }
 
 
@@ -263,7 +267,8 @@ public class BPMActivityController extends BPMmasterActivity
             @Override
             public void onClick(View v) {
 
-                startActivityForResult(new Intent(BPMActivityController.this,BPMpreferencesActivity.class),SIGNAL_KILL_CONTROLLER);
+        startActivityForResult(new Intent(BPMActivityController.this,
+                BPMpreferencesActivity.class),SIGNAL_KILL_CONTROLLER);
             }
         });
     }
@@ -685,7 +690,7 @@ public class BPMActivityController extends BPMmasterActivity
                 GooglePlayServicesUtil.getErrorDialog(resultCode,
                         this, GCMConstants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-                Log.d(GCMConstants.GCM_TAG, "This device is not supported.");
+                Log.d(GCMConstants.TAG, "This device is not supported.");
                 finish();
             }
             return false;
@@ -746,7 +751,8 @@ public class BPMActivityController extends BPMmasterActivity
                 }
                regid = gcm.register(GCMConstants.SENDER_ID);
 
-                //sendRegistrationToBackend();
+                GCMRegister.getInstance()
+                        .executeSendRegistration(BPMActivityController.this,regid);
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -757,12 +763,14 @@ public class BPMActivityController extends BPMmasterActivity
         @Override
         public void onPostExecute(String result){
             String msg;
-            if (registrationid.isEmpty())
+            if (result.isEmpty()) {
                 msg = "Registration not found";
-            else
+            }else {
                 msg = result;
+                storeNewRegId(BPMActivityController.this, result);
+            }
 
-          Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
+            Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
         }
     }
 
