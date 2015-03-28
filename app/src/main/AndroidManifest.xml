@@ -2,32 +2,48 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.udl.android.bloodpressuremonitor" >
 
-   <uses-sdk
-       android:minSdkVersion="14"
-       android:targetSdkVersion="14"/>
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="14" />
 
-    <uses-feature android:name="android.hardware.bluetooth" android:required="false" />
-
+    <uses-feature
+        android:name="android.hardware.bluetooth"
+        android:required="false" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.BLUETOOTH"  />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.flash"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.flash" />
 
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
+    <permission
+        android:name="com.example.gcm.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.example.gcm.permission.C2D_MESSAGE" />
+
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-
         <activity
             android:name=".SplashActivity"
             android:configChanges="locale"
@@ -38,29 +54,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name=".application.BPMmasterActivity"
-            android:label="@string/app_name"
-            android:configChanges="orientation|screenSize|locale"></activity>
-
-        <activity android:name=".BPMActivityController"
-            android:label="@string/app_name"
-            android:configChanges="orientation|screenSize|locale"></activity>
-
-        <activity android:name=".LoginActivity"
-            android:label="@string/app_name"
-            android:configChanges="orientation|screenSize"></activity>
-
-        <activity android:name=".RegisterActivity"
-            android:label="@string/app_name"
-            android:configChanges="orientation|screenSize"></activity>
-
-        <activity android:name=".BPMpreferencesActivity"
-            android:label="@string/app_name"
-            android:configChanges="orientation|screenSize|locale">
+        <activity
+            android:name=".application.BPMmasterActivity"
+            android:configChanges="orientation|screenSize|locale"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".BPMActivityController"
+            android:configChanges="orientation|screenSize|locale"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".LoginActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".RegisterActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".BPMpreferencesActivity"
+            android:configChanges="orientation|screenSize|locale"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

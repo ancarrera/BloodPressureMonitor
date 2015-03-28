@@ -1,7 +1,6 @@
 package com.udl.android.bloodpressuremonitor;
 
 import android.app.AlertDialog;
-import android.app.ListFragment;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -13,68 +12,52 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.drawable.StateListDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.Message;
-import android.os.Parcelable;
-import android.preference.DialogPreference;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.util.Xml;
 import android.view.Gravity;
 import android.view.View;
-import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.udl.android.bloodpressuremonitor.adapters.ViewPagerHelpAdapter;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
-import com.udl.android.bloodpressuremonitor.customviews.HeartBeatView;
 import com.udl.android.bloodpressuremonitor.fragments.HearRateMonitorFragment;
 import com.udl.android.bloodpressuremonitor.fragments.HelpFragment;
 import com.udl.android.bloodpressuremonitor.fragments.HomeFragment;
 import com.udl.android.bloodpressuremonitor.fragments.MeasurementsFragment;
 import com.udl.android.bloodpressuremonitor.fragments.ObtainManualPressures;
 import com.udl.android.bloodpressuremonitor.fragments.ProfileFragment;
+import com.udl.android.bloodpressuremonitor.utils.GCMConstants;
 import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
 
-import junit.framework.Test;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
-import java.util.logging.LogRecord;
 
 
 public class BPMActivityController extends BPMmasterActivity
@@ -145,6 +128,9 @@ public class BPMActivityController extends BPMmasterActivity
     private String pulse;
 
     private boolean initbluetoothprocess = true;
+
+    private GoogleCloudMessaging gcm;
+    private String registrationid;
 
 
 
@@ -223,10 +209,21 @@ public class BPMActivityController extends BPMmasterActivity
             }
         };
 
+        if (checkGooglePlayServicesAvailable()) {
+            gcm = GoogleCloudMessaging.getInstance(this);
+            registrationid = getRegID(getApplicationContext());
+
+            if (registrationid.isEmpty()) {
+                new registerTask().execute();
+            }
+        } else {
+            Log.d(GCMConstants.GCM_TAG, "Google Cloud Services not found");
+        }
+
 
     }
 
-        @Override
+    @Override
     public void onStart(){
         super.onStart();
 
@@ -679,6 +676,94 @@ public class BPMActivityController extends BPMmasterActivity
         Thread thread = new AcceptThread();
         thread.start();
     }
-    
+
+    private boolean checkGooglePlayServicesAvailable(){
+
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode,
+                        this, GCMConstants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.d(GCMConstants.GCM_TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
+
+    }
+
+    private String getRegID(Context appcontext){
+        final SharedPreferences preferences = getSharedPreferences(
+                PreferenceConstants.GCM_PREFERENCES,Context.MODE_PRIVATE);
+        String regid = preferences.getString(PreferenceConstants.REG_ID,"");
+        if (regid.equals("")){
+
+            return "";
+        }
+
+
+        int appversion = preferences.getInt(PreferenceConstants.APP_VERSION,1);
+        if (appversion != getAppVersion(appcontext)){
+            return "";
+        }
+
+       return regid;
+
+    }
+
+    private int getAppVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+
+            throw new RuntimeException("Package name not found");
+        }
+    }
+
+    private void storeNewRegId(Context context,String newregid){
+        final SharedPreferences preferences = context.getSharedPreferences(
+                PreferenceConstants.GCM_PREFERENCES,Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(PreferenceConstants.REG_ID,newregid);
+        editor.putInt(PreferenceConstants.APP_VERSION, getAppVersion(context));
+        editor.commit();
+    }
+
+    private class registerTask extends AsyncTask<Void,Void,String> {
+
+        @Override
+        public String doInBackground(Void... params) {
+
+            String regid="";
+            try {
+                if (gcm == null) {
+                    gcm = GoogleCloudMessaging.getInstance(BPMActivityController.this);
+                }
+               regid = gcm.register(GCMConstants.SENDER_ID);
+
+                //sendRegistrationToBackend();
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            return regid;
+        }
+
+        @Override
+        public void onPostExecute(String result){
+            String msg;
+            if (registrationid.isEmpty())
+                msg = "Registration not found";
+            else
+                msg = result;
+
+          Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
+        }
+    }
 
 }
