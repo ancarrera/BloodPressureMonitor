@@ -1,6 +1,7 @@
 package com.udl.android.bloodpressuremonitor.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.adrian.myapplication.backend.registration.Registration;
@@ -33,7 +34,13 @@ public class GCMRegister {
     private static Registration registerInDebugMode(){
 
         Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                .setRootUrl(GCMConstants.LOCAL_TEST_EMULATOR_URL);
+        .setRootUrl(GCMConstants.SELF_MACHINE_SERVER_ADDRESS)
+        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+            @Override
+            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                abstractGoogleClientRequest.setDisableGZipContent(true);
+            }
+        });
 
 
         return  builder.build();
@@ -52,12 +59,14 @@ public class GCMRegister {
         try {
             if (isDebug)
                 registration =registerInDebugMode();
+
             else
                 registration = registerInRealeaseMode();
 
-            if (registration!=null)
-                registration.register(regid);
-            else
+            if (registration!=null) {
+                registration.register(regid).execute();
+                Log.d("SEND", "Good send" + regid);
+            }else
                 throw new IOException();
         } catch (IOException e) {
             e.printStackTrace();

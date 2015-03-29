@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.14'
+        classpath 'com.google.appengine:gradle-appengine-plugin:1.9.18'
     }
 }
 
@@ -33,6 +33,7 @@ dependencies {
 appengine {
     downloadSdk = true
     httpPort= 8080
+    httpAddress="0.0.0.0" //ALLOW ALL CONNECTIONS INSIDE THE NETWORK
     appcfg {
         oauth2 = true
     }

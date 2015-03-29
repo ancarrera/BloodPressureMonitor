@@ -38,6 +38,10 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.adapters.ViewPagerHelpAdapter;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.fragments.HearRateMonitorFragment;
@@ -59,6 +63,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import backend.myapplication.adrian.example.com.helloapi.Helloapi;
+import backend.myapplication.adrian.example.com.helloapi.Helloapi.*;
 
 
 public class BPMActivityController extends BPMmasterActivity
@@ -214,7 +221,7 @@ public class BPMActivityController extends BPMmasterActivity
         if (checkGooglePlayServicesAvailable()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             registrationid = getRegID(getApplicationContext());
-
+            greetBPMController();
             if (registrationid.isEmpty()) {
                 new registerTask().execute();
             }else{
@@ -772,6 +779,35 @@ public class BPMActivityController extends BPMmasterActivity
 
             Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void greetBPMController() {
+
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... nothing) {
+                Helloapi.Builder build = new Helloapi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                        .setRootUrl(GCMConstants.SELF_MACHINE_SERVER_ADDRESS)
+                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                            @Override
+                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                                abstractGoogleClientRequest.setDisableGZipContent(true);
+                            }
+                        });
+
+                Helloapi helloapi = build.build();
+
+                try{
+                    String message = "I'am here.In BPMController!";
+                    helloapi.greet(message).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d("HELLOAPI", "ERROR IN GREET");
+                }
+                return null;
+            }
+
+        }.execute();
     }
 
 }
