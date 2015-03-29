@@ -33,15 +33,8 @@ public class GCMRegister {
     private static Registration registerInDebugMode(){
 
         Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                .setRootUrl(GCMConstants.PC_URL)
-                .setApplicationName("BPM")
-                .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                    @Override
-                    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest)
-                            throws IOException {
-                        abstractGoogleClientRequest.setDisableGZipContent(true);
-                    }
-                });
+                .setRootUrl(GCMConstants.LOCAL_TEST_EMULATOR_URL);
+
 
         return  builder.build();
     }
@@ -53,7 +46,7 @@ public class GCMRegister {
 
     }
 
-    public void executeSendRegistration(Context context,String regid){
+    public void executeSendRegistrationToBackend(Context context,String regid){
 
         Registration registration =null;
         try {

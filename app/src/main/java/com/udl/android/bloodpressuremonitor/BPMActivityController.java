@@ -752,7 +752,7 @@ public class BPMActivityController extends BPMmasterActivity
                regid = gcm.register(GCMConstants.SENDER_ID);
 
                 GCMRegister.getInstance()
-                        .executeSendRegistration(BPMActivityController.this,regid);
+                        .executeSendRegistrationToBackend(BPMActivityController.this,regid);
 
             } catch (IOException ex) {
                 ex.printStackTrace();

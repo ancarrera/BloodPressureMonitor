@@ -12,6 +12,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.inject.Named;
@@ -44,6 +45,7 @@ public class RegistrationEndpoint {
             log.info("Device " + regId + " already registered, skipping register");
             return;
         }
+        log.info(regId);
         RegistrationRecord record = new RegistrationRecord();
         record.setRegId(regId);
         ofy().save().entity(record).now();
