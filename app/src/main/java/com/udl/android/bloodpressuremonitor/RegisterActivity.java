@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Criteria;
@@ -12,6 +11,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -19,11 +19,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.adrian.myapplication.backend.bpmApiRegister.model.User;
+import com.example.adrian.myapplication.backend.bpmApiRegister.BpmApiRegister;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
+import com.udl.android.bloodpressuremonitor.utils.GCMConstants;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
+
 
 /**
  * Created by Adrian on 28/02/2015.
@@ -36,19 +44,19 @@ public class RegisterActivity extends BPMmasterActivity
         PROBLEM_MAIL,
         PROBLEM_MANDATORY_FIELDS,
         PROBLEM_LOCATION,
-        LOCATION_FINDED
+        LOCATION_FINDED,
+        PASSWORDS_NOTMATCHING
     }
 
 
        private Button autobutton;
        private Button siginbutton;
 
-       private EditText name,surnames,age,locationcity,locationprovince,locationcountry,email;
-
-       private String sName,sSurname,sAge,sLocation;
+       private EditText name,surnames,age,locationcity,locationprovince,locationcountry,email,
+                        password1,password2;
 
        private LocationManager locationManager;
-       private String providerBestCriteria,providergps,providernetwork;
+       private String providerBestCriteria;
 
        private boolean locationbuttonpressed=false;
 
@@ -70,10 +78,13 @@ public class RegisterActivity extends BPMmasterActivity
         name  = (EditText) findViewById(R.id.edittextregister1);
         surnames  = (EditText) findViewById(R.id.edittextregister2);
         email = (EditText) findViewById(R.id.edittextregister3);
-        age  = (EditText) findViewById(R.id.edittextregister4);
-        locationcity  = (EditText) findViewById(R.id.edittextregister5);
-        locationprovince = (EditText) findViewById(R.id.edittextregister6);
-        locationcountry = (EditText) findViewById(R.id.edittextregister7);
+        password1 = (EditText) findViewById(R.id.edittextregister4);
+        password2 = (EditText) findViewById(R.id.edittextregister5);
+        age  = (EditText) findViewById(R.id.edittextregister6);
+
+        locationcity  = (EditText) findViewById(R.id.edittextregister7);
+        locationprovince = (EditText) findViewById(R.id.edittextregister8);
+        locationcountry = (EditText) findViewById(R.id.edittextregister9);
 
         defineListeners();
 
@@ -130,16 +141,17 @@ public class RegisterActivity extends BPMmasterActivity
             @Override
             public void onClick(View v) {
                 if (isDataCorrect()){
-                    startActivity(new Intent(RegisterActivity.this,BPMActivityController.class));
-                    setResult(RESULT_OK);
-                    finish();
+                    new registerNewUser().execute();
+//                    startActivity(new Intent(RegisterActivity.this,BPMActivityController.class));
+//                    setResult(RESULT_OK);
+//                    finish();
                 }
 
             }
         });
     }
 
-    private boolean isDataCorrect(){
+    private boolean isDataCorrect() {
 
         if (name.getText().toString().equals("")
                 || surnames.getText().toString().equals("")
@@ -147,15 +159,19 @@ public class RegisterActivity extends BPMmasterActivity
                 || email.getText().toString().equals("")
                 || locationcity.getText().toString().equals("")
                 || locationprovince.getText().toString().equals("")
-                || locationcountry.getText().toString().equals("")){
+                || locationcountry.getText().toString().equals("")
+                || password1.getText().toString().equals("")
+                || password2.getText().toString().equals("")) {
 
             showDialogEvents(AlertsID.PROBLEM_MANDATORY_FIELDS);
             return false;
-        }else if (!email.getText().toString().contains("@") || !email.getText().toString().contains(".")){
+        } else if (!email.getText().toString().contains("@") || !email.getText().toString().contains(".")) {
             showDialogEvents(AlertsID.PROBLEM_MAIL);
             return false;
+        } else if (!arePasswordFieldsMatching(password1.getText().toString(), password2.getText().toString())){
+            showDialogEvents(AlertsID.PASSWORDS_NOTMATCHING);
+            return false;
         }
-
         return true;
     }
 
@@ -180,6 +196,9 @@ public class RegisterActivity extends BPMmasterActivity
                 break;
             case PROBLEM_LOCATION:
                 alert.setMessage(getResources().getString(R.string.dialogproblem));
+                break;
+            case PASSWORDS_NOTMATCHING:
+                alert.setMessage(getResources().getString(R.string.passnotmatching));
                 break;
             case LOCATION_FINDED:
                 alert.setTitle(getResources().getString(R.string.locationfound));
@@ -256,5 +275,64 @@ public class RegisterActivity extends BPMmasterActivity
         locationbuttonpressed = false;
     }
 
+    private boolean arePasswordFieldsMatching(String passfield1,String passfield2){
+
+        return passfield1.equals(passfield2);
+
+    }
+
+    private class registerNewUser extends AsyncTask<Void,Void,User>{
+
+        @Override
+        public void onPreExecute(){
+            showDialog(false);
+        }
+        @Override
+        public User doInBackground(Void... param){
+            BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                    .setRootUrl(GCMConstants.SELF_MACHINE_SERVER_ADDRESS)
+                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                        @Override
+                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                            abstractGoogleClientRequest.setDisableGZipContent(true);
+                        }
+                    });
+            User user = createUser();
+            BpmApiRegister registerapi = builder.build();
+            try {
+                return registerapi.create(user).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(User create){
+            dialogDismiss();
+            User ffsd = create;
+            String hola="gfdgdfg";
+        }
+
+    }
+
+    private User createUser(){
+
+        User user = new User();
+
+        user.setName(name.getText().toString());
+        String[] surnamesarray = surnames.getText().toString().split("");
+        user.setFirstsurname(surnamesarray[0]);
+        user.setSecondsurname(surnamesarray[1]);
+        user.setCity(locationcity.getText().toString());
+        user.setCountry(locationcountry.getText().toString());
+        user.setAge(age.getText().toString());
+        user.setEmail(email.getText().toString());
+        user.setPassword(password1.getText().toString());
+        user.setProvince(locationprovince.getText().toString());
+
+        return user;
+    }
 
 }

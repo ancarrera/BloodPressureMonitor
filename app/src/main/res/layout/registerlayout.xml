@@ -86,13 +86,51 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_marginTop="20dp"
-            android:text="@string/addyourage"
+            android:text="@string/pass"
             android:layout_marginBottom="10dp"
             android:layout_height="wrap_content"
             android:gravity="start"/>
 
         <EditText
             android:id="@+id/edittextregister4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:ems="12"
+            android:maxLines="1"
+            android:text=""
+            android:inputType="textPassword"
+            android:background="@drawable/edittextshape"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:text="@string/repeatpass"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"/>
+
+        <EditText
+            android:id="@+id/edittextregister5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:ems="12"
+            android:maxLines="1"
+            android:text=""
+            android:inputType="textPassword"
+            android:background="@drawable/edittextshape"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
+            android:text="@string/addyourage"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="start"/>
+
+        <EditText
+            android:id="@+id/edittextregister6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -131,7 +169,7 @@
             android:gravity="start"/>
 
         <EditText
-            android:id="@+id/edittextregister5"
+            android:id="@+id/edittextregister7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -150,7 +188,7 @@
             android:gravity="start"/>
 
         <EditText
-            android:id="@+id/edittextregister6"
+            android:id="@+id/edittextregister8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"
@@ -169,7 +207,7 @@
             android:gravity="start"/>
 
         <EditText
-            android:id="@+id/edittextregister7"
+            android:id="@+id/edittextregister9"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="8dp"

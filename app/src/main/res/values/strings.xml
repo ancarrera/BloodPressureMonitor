@@ -84,6 +84,9 @@
     <string name="dialogproblem">No se puede obtener una localización</string>
     <string name="locationfound">Ubicación encontrada</string>
     <string name="locationfoundtext">¿Es este tu lugar de residencia?</string>
+    <string name="pass">Introduce una contraseña:</string>
+    <string name="repeatpass">Repite la contraseña:</string>
+    <string name="passnotmatching">Las contraseñas no coinciden</string>
     <string name="yestext">Si</string>
     <string name="notext">No</string>
 
@@ -126,6 +129,7 @@
     <string name="city">Población:</string>
     <string name="administration">Administración:</string>
     <string name="country">País:</string>
+
 
     <!--Help-->
     <string name="helpheader">Ayuda</string>

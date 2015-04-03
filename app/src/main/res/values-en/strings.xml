@@ -76,6 +76,9 @@
     <string name="dialogproblem">Problems trying to access the location</string>
     <string name="locationfound">Location found</string>
     <string name="locationfoundtext">This is your place of residence?</string>
+    <string name="pass">Password:</string>
+    <string name="repeatpass">Repeat the password:</string>
+    <string name="passnotmatching">The passwords not matching</string>
     <string name="yestext">Yes</string>
     <string name="notext">No</string>
 
