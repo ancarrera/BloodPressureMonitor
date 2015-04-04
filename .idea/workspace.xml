@@ -26,20 +26,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="034b6b3b-79df-4a92-9546-353d4760420f" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/GCMConstants.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/BPMActivityController.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/BPMActivityController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/BloodPressureMonitor.iml" afterPath="$PROJECT_DIR$/BloodPressureMonitor.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/GCMIntentService.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/GCMIntentService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/GCMRegister.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/GCMRegister.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/appengine_api_1_0_sdk_1_9_18.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/appengine_endpoints_1_9_18.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/appengine_endpoints_deps_1_9_18.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/gcm_server_1_0_2.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/guava_18_0.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/json_simple_1_1.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/objectify_5_1_5.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/libraries/servlet_api_2_5.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/model/SessionUser.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/LoginActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/LoginActivity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/fragments/ProfileFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/fragments/ProfileFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/RegisterActivity.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/RegisterActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/Adrian/myapplication/backend/RegistrationEndpoint.java" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/Adrian/myapplication/backend/RegistrationEndpoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/backend.iml" afterPath="$PROJECT_DIR$/backend/backend.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" afterPath="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/perfillayout.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/perfillayout.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="BloodPressureMonitor.iws" />
@@ -94,20 +93,9 @@
       <file leaf-file-name="LoginActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/LoginActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-59.037037">
-              <caret line="131" column="16" selection-start-line="131" selection-start-column="16" selection-end-line="131" selection-end-column="25" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2043#2684#0" expanded="true" />
-                <element signature="e#2683#2684#0" expanded="true" />
-                <element signature="e#3123#3179#0" expanded="true" />
-                <element signature="e#3214#3268#0" expanded="true" />
-                <element signature="e#3454#3503#0" expanded="true" />
-                <element signature="e#3834#3835#0" expanded="true" />
-                <element signature="e#3875#3876#0" expanded="true" />
-                <element signature="e#4206#4539#0" expanded="true" />
-                <element signature="e#4538#4539#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0">
+              <caret line="19" column="74" selection-start-line="19" selection-start-column="74" selection-end-line="19" selection-end-column="74" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -115,17 +103,45 @@
       <file leaf-file-name="ProfileFragment.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/fragments/ProfileFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5990566">
-              <caret line="77" column="53" selection-start-line="77" selection-start-column="38" selection-end-line="77" selection-end-column="53" />
+            <state vertical-scroll-proportion="0.16811092">
+              <caret line="77" column="23" selection-start-line="77" selection-start-column="23" selection-end-line="77" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2722#3055#0" expanded="true" />
-                <element signature="e#3054#3055#0" expanded="true" />
-                <element signature="e#4041#4092#0" expanded="true" />
-                <element signature="e#4127#4181#0" expanded="true" />
-                <element signature="e#4367#4416#0" expanded="true" />
+                <element signature="e#2449#2450#0" expanded="true" />
+                <element signature="e#2498#2499#0" expanded="true" />
               </folding>
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="perfillayout.xml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/perfillayout.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.448276">
+              <caret line="132" column="50" selection-start-line="132" selection-start-column="28" selection-end-line="132" selection-end-column="50" />
+              <folding>
+                <element signature="e#960#974#0" expanded="true" />
+                <element signature="e#1569#1586#0" expanded="true" />
+                <element signature="e#2174#2189#0" expanded="true" />
+                <element signature="e#2775#2788#0" expanded="true" />
+                <element signature="e#3372#3386#0" expanded="true" />
+                <element signature="e#3971#3995#0" expanded="true" />
+                <element signature="e#4589#4606#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
           </provider>
         </entry>
       </file>
@@ -135,8 +151,15 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="183" column="6" selection-start-line="183" selection-start-column="6" selection-end-line="183" selection-end-column="6" />
               <folding>
-                <element signature="e#3374#6315#0" expanded="true" />
-                <element signature="e#6314#6315#0" expanded="true" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#1468#1469#0" expanded="false" />
+                <element signature="e#1502#1503#0" expanded="false" />
+                <element signature="e#8133#8134#0" expanded="false" />
+                <element signature="e#8163#8164#0" expanded="false" />
+                <element signature="e#8207#8208#0" expanded="false" />
+                <element signature="e#8240#8241#0" expanded="false" />
+                <element signature="e#8288#8289#0" expanded="false" />
+                <element signature="e#8325#8326#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -152,44 +175,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LoginEndpoint.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/backend/src/main/java/com/example/Adrian/myapplication/backend/LoginEndpoint.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.36">
-              <caret line="134" column="4" selection-start-line="134" selection-start-column="4" selection-end-line="134" selection-end-column="84" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/res/values-en/strings.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.56">
-              <caret line="120" column="34" selection-start-line="120" selection-start-column="18" selection-end-line="120" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="BPMmasterActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/application/BPMmasterActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="49" column="40" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#2512#2513#0" expanded="false" />
+                <element signature="e#2547#2548#0" expanded="false" />
+                <element signature="e#2592#2593#0" expanded="false" />
+                <element signature="e#2629#2630#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -198,30 +195,9 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/RegisterActivity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="313" column="16" selection-start-line="313" selection-start-column="16" selection-end-line="313" selection-end-column="16" />
+              <caret line="318" column="25" selection-start-line="318" selection-start-column="25" selection-end-line="318" selection-end-column="25" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#4377#4990#0" expanded="true" />
-                <element signature="e#4989#4990#0" expanded="true" />
-                <element signature="e#5032#5258#0" expanded="true" />
-                <element signature="e#5257#5258#0" expanded="true" />
-                <element signature="e#6517#6573#0" expanded="true" />
-                <element signature="e#6608#6662#0" expanded="true" />
-                <element signature="e#6910#6956#0" expanded="true" />
-                <element signature="e#7093#7143#0" expanded="true" />
-                <element signature="e#7237#7285#0" expanded="true" />
-                <element signature="e#7384#7434#0" expanded="true" />
-                <element signature="e#7534#7589#0" expanded="true" />
-                <element signature="e#7680#7728#0" expanded="true" />
-                <element signature="e#7837#7889#0" expanded="true" />
-                <element signature="e#8009#8051#0" expanded="true" />
-                <element signature="e#8053#8416#0" expanded="true" />
-                <element signature="e#8415#8416#0" expanded="true" />
-                <element signature="e#8459#8474#0" expanded="true" />
-                <element signature="e#10341#10342#0" expanded="true" />
-                <element signature="e#10382#10383#0" expanded="true" />
-                <element signature="e#10717#11050#0" expanded="true" />
-                <element signature="e#11049#11050#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -233,8 +209,15 @@
             <state vertical-scroll-proportion="0.0">
               <caret line="572" column="5" selection-start-line="572" selection-start-column="5" selection-end-line="572" selection-end-column="5" />
               <folding>
-                <element signature="e#28655#29008#0" expanded="true" />
-                <element signature="e#29007#29008#0" expanded="true" />
+                <element signature="imports" expanded="false" />
+                <element signature="e#10022#10023#0" expanded="false" />
+                <element signature="e#10064#10065#0" expanded="false" />
+                <element signature="e#15776#15777#0" expanded="false" />
+                <element signature="e#15800#15801#0" expanded="false" />
+                <element signature="e#16136#16137#0" expanded="false" />
+                <element signature="e#16176#16177#0" expanded="false" />
+                <element signature="e#16393#16394#0" expanded="false" />
+                <element signature="e#16440#16441#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -1910,11 +1893,12 @@
         <option value="$PROJECT_DIR$/backend/src/main/java/com/example/Adrian/myapplication/backend/RegistrationEndpoint.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/model/SessionUser.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/Constants.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/LoginActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/values-en/strings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/RegisterActivity.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/application/BPMmasterActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/LoginActivity.java" />
+        <option value="$PROJECT_DIR$/app/src/main/res/layout/perfillayout.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/fragments/ProfileFragment.java" />
       </list>
     </option>
@@ -2310,8 +2294,20 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="BloodPressureMonitor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="AndroidView">
         <subPane>
           <PATH>
@@ -2464,20 +2460,8 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="BloodPressureMonitor" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="app" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -2761,8 +2745,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852808" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.45994064" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32789317" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.0" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.323217" sideWeight="0.10385757" order="2" side_tool="true" content_ui="tabs" />
@@ -2770,7 +2753,7 @@
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32789317" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32937685" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.10237389" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2784,6 +2767,7 @@
       <window_info id="Memory Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32789317" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -2803,19 +2787,13 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/fragments/ProfileFragment.java</url>
-          <line>79</line>
-          <properties />
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/LoginActivity.java</url>
-          <line>75</line>
+          <line>74</line>
           <properties />
           <option name="timeStamp" value="57" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="58" />
+      <option name="time" value="59" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -2958,7 +2936,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="19" column="32" selection-start-line="19" selection-start-column="32" selection-end-line="19" selection-end-column="32" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2966,26 +2943,23 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="15" column="46" selection-start-line="15" selection-start-column="46" selection-end-line="15" selection-end-column="46" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/registerlayout.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="120" column="43" selection-start-line="120" selection-start-column="43" selection-end-line="120" selection-end-column="43" />
-          <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -2993,7 +2967,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3001,7 +2974,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="17" column="13" selection-start-line="17" selection-start-column="13" selection-end-line="17" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3009,7 +2981,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="18" column="77" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="77" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3017,7 +2988,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="23" column="0" selection-start-line="23" selection-start-column="0" selection-end-line="23" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3025,9 +2995,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="30" selection-start-line="10" selection-start-column="30" selection-end-line="10" selection-end-column="30" />
-          <folding>
-            <element signature="e#226#227#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3035,9 +3002,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="34" column="61" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="61" />
-          <folding>
-            <element signature="e#0#3749#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3045,10 +3009,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding>
-            <element signature="e#256#257#0" expanded="false" />
-            <element signature="e#297#298#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3056,7 +3016,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="62" column="16" selection-start-line="62" selection-start-column="16" selection-end-line="62" selection-end-column="16" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3064,7 +3023,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="33" column="40" selection-start-line="33" selection-start-column="40" selection-end-line="33" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3072,7 +3030,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3080,9 +3037,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="31" column="13" selection-start-line="31" selection-start-column="13" selection-end-line="31" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3090,56 +3044,24 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/loginactivitylayout.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="6.206897">
           <caret line="50" column="43" selection-start-line="50" selection-start-column="33" selection-end-line="50" selection-end-column="43" />
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/perfillayout.xml">
       <provider editor-type-id="android-designer">
         <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="24.827587">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/model/SessionUser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="13" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
-          <folding />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/backend/src/main/java/com/example/Adrian/myapplication/backend/User.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="80" column="39" selection-start-line="35" selection-start-column="3" selection-end-line="113" selection-end-column="5" />
-          <folding>
-            <element signature="e#2121#2122#0" expanded="true" />
-            <element signature="e#2152#2153#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -3147,7 +3069,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="22" column="13" selection-start-line="22" selection-start-column="13" selection-end-line="22" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -3156,14 +3077,14 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.36">
+        <state vertical-scroll-proportion="0.0">
           <caret line="134" column="4" selection-start-line="134" selection-start-column="4" selection-end-line="134" selection-end-column="84" />
           <folding />
         </state>
@@ -3171,7 +3092,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values-en/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.56">
+        <state vertical-scroll-proportion="0.0">
           <caret line="120" column="34" selection-start-line="120" selection-start-column="18" selection-end-line="120" selection-end-column="34" />
           <folding />
         </state>
@@ -3182,8 +3103,15 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="183" column="6" selection-start-line="183" selection-start-column="6" selection-end-line="183" selection-end-column="6" />
           <folding>
-            <element signature="e#3374#6315#0" expanded="true" />
-            <element signature="e#6314#6315#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#1468#1469#0" expanded="false" />
+            <element signature="e#1502#1503#0" expanded="false" />
+            <element signature="e#8133#8134#0" expanded="false" />
+            <element signature="e#8163#8164#0" expanded="false" />
+            <element signature="e#8207#8208#0" expanded="false" />
+            <element signature="e#8240#8241#0" expanded="false" />
+            <element signature="e#8288#8289#0" expanded="false" />
+            <element signature="e#8325#8326#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3196,60 +3124,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/RegisterActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="313" column="16" selection-start-line="313" selection-start-column="16" selection-end-line="313" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4377#4990#0" expanded="true" />
-            <element signature="e#4989#4990#0" expanded="true" />
-            <element signature="e#5032#5258#0" expanded="true" />
-            <element signature="e#5257#5258#0" expanded="true" />
-            <element signature="e#6517#6573#0" expanded="true" />
-            <element signature="e#6608#6662#0" expanded="true" />
-            <element signature="e#6910#6956#0" expanded="true" />
-            <element signature="e#7093#7143#0" expanded="true" />
-            <element signature="e#7237#7285#0" expanded="true" />
-            <element signature="e#7384#7434#0" expanded="true" />
-            <element signature="e#7534#7589#0" expanded="true" />
-            <element signature="e#7680#7728#0" expanded="true" />
-            <element signature="e#7837#7889#0" expanded="true" />
-            <element signature="e#8009#8051#0" expanded="true" />
-            <element signature="e#8053#8416#0" expanded="true" />
-            <element signature="e#8415#8416#0" expanded="true" />
-            <element signature="e#8459#8474#0" expanded="true" />
-            <element signature="e#10341#10342#0" expanded="true" />
-            <element signature="e#10382#10383#0" expanded="true" />
-            <element signature="e#10717#11050#0" expanded="true" />
-            <element signature="e#11049#11050#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/application/BPMmasterActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="49" column="40" selection-start-line="49" selection-start-column="40" selection-end-line="49" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/LoginActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-59.037037">
-          <caret line="131" column="16" selection-start-line="131" selection-start-column="16" selection-end-line="131" selection-end-column="25" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2043#2684#0" expanded="true" />
-            <element signature="e#2683#2684#0" expanded="true" />
-            <element signature="e#3123#3179#0" expanded="true" />
-            <element signature="e#3214#3268#0" expanded="true" />
-            <element signature="e#3454#3503#0" expanded="true" />
-            <element signature="e#3834#3835#0" expanded="true" />
-            <element signature="e#3875#3876#0" expanded="true" />
-            <element signature="e#4206#4539#0" expanded="true" />
-            <element signature="e#4538#4539#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#2512#2513#0" expanded="false" />
+            <element signature="e#2547#2548#0" expanded="false" />
+            <element signature="e#2592#2593#0" expanded="false" />
+            <element signature="e#2629#2630#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -3259,23 +3143,72 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="572" column="5" selection-start-line="572" selection-start-column="5" selection-end-line="572" selection-end-column="5" />
           <folding>
-            <element signature="e#28655#29008#0" expanded="true" />
-            <element signature="e#29007#29008#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#10022#10023#0" expanded="false" />
+            <element signature="e#10064#10065#0" expanded="false" />
+            <element signature="e#15776#15777#0" expanded="false" />
+            <element signature="e#15800#15801#0" expanded="false" />
+            <element signature="e#16136#16137#0" expanded="false" />
+            <element signature="e#16176#16177#0" expanded="false" />
+            <element signature="e#16393#16394#0" expanded="false" />
+            <element signature="e#16440#16441#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/fragments/ProfileFragment.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/utils/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5990566">
-          <caret line="77" column="53" selection-start-line="77" selection-start-column="38" selection-end-line="77" selection-end-column="53" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/RegisterActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="318" column="25" selection-start-line="318" selection-start-column="25" selection-end-line="318" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2722#3055#0" expanded="true" />
-            <element signature="e#3054#3055#0" expanded="true" />
-            <element signature="e#4041#4092#0" expanded="true" />
-            <element signature="e#4127#4181#0" expanded="true" />
-            <element signature="e#4367#4416#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/LoginActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="74" selection-start-line="19" selection-start-column="74" selection-end-line="19" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/res/layout/perfillayout.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-11.448276">
+          <caret line="132" column="50" selection-start-line="132" selection-start-column="28" selection-end-line="132" selection-end-column="50" />
+          <folding>
+            <element signature="e#960#974#0" expanded="true" />
+            <element signature="e#1569#1586#0" expanded="true" />
+            <element signature="e#2174#2189#0" expanded="true" />
+            <element signature="e#2775#2788#0" expanded="true" />
+            <element signature="e#3372#3386#0" expanded="true" />
+            <element signature="e#3971#3995#0" expanded="true" />
+            <element signature="e#4589#4606#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/udl/android/bloodpressuremonitor/fragments/ProfileFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.16811092">
+          <caret line="77" column="23" selection-start-line="77" selection-start-column="23" selection-end-line="77" selection-end-column="23" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2449#2450#0" expanded="true" />
+            <element signature="e#2498#2499#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -18,7 +18,6 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
-import com.udl.android.bloodpressuremonitor.model.SessionUser;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 
 import java.io.IOException;
@@ -127,7 +126,7 @@ public class LoginActivity extends BPMmasterActivity {
         public void onPostExecute(User user){
             dialogDismiss();
             if (user!=null){
-                SessionUser.TOKEN_ID = user.getId();
+                Constants.SESSION_USER_ID = user.getId();
                 startActivity(new Intent(LoginActivity.this, BPMActivityController.class));
                 finish();
             }

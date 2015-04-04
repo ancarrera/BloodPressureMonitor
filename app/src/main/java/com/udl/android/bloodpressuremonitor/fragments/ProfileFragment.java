@@ -39,7 +39,7 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreateView(inflater,container,savedInstanceState);
         View view = inflater.inflate(R.layout.perfillayout, null);
         name = (TextView) view.findViewById(R.id.nametextview);
         surname = (TextView) view.findViewById(R.id.surnametextview);
@@ -48,12 +48,13 @@ public class ProfileFragment extends Fragment {
         administration = (TextView) view.findViewById(R.id.administrationtextview);
         country = (TextView)view.findViewById(R.id.countrytextview);
         context = (BPMActivityController)getActivity();
+
         return view;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-
+        super.onViewCreated(view,savedInstanceState);
         new getUserProfile().execute();
     }
 
@@ -61,7 +62,7 @@ public class ProfileFragment extends Fragment {
 
         @Override
         public void onPreExecute(){
-            //context.showDialog(false);
+            context.showDialog(false);
         }
 
         @Override
@@ -75,7 +76,6 @@ public class ProfileFragment extends Fragment {
                             abstractGoogleClientRequest.setDisableGZipContent(true);
                         }
                     });
-            long variable = Constants.SESSION_USER_ID;
             try {
                 return builder.build().receive(Constants.SESSION_USER_ID).execute();
             } catch (IOException e) {
@@ -86,7 +86,7 @@ public class ProfileFragment extends Fragment {
 
         @Override
         public void onPostExecute(User user){
-           // context.dialogDismiss();
+            context.dialogDismiss();
             if (user!=null){
                 name.setText(user.getName());
                 surname.setText(user.getFirstsurname()+" "+user.getSecondsurname());
