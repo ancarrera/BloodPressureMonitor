@@ -87,8 +87,11 @@
     <string name="pass">Introduce una contraseña:</string>
     <string name="repeatpass">Repite la contraseña:</string>
     <string name="passnotmatching">Las contraseñas no coinciden</string>
+    <string name="registerprocesserror">Error en el proceso de registro</string>
     <string name="yestext">Si</string>
     <string name="notext">No</string>
+
+    <string name="loginincorrect">El email o contraseña son incorrectos</string>
 
     <!--Preference activity-->
 
@@ -129,6 +132,7 @@
     <string name="city">Población:</string>
     <string name="administration">Administración:</string>
     <string name="country">País:</string>
+    <string name="erroruserprofile">Error al recuperar los datos de usuario</string>
 
 
     <!--Help-->

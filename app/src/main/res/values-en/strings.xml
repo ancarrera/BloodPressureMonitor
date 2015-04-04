@@ -79,6 +79,7 @@
     <string name="pass">Password:</string>
     <string name="repeatpass">Repeat the password:</string>
     <string name="passnotmatching">The passwords not matching</string>
+    <string name="registerprocesserror">Error in register process</string>
     <string name="yestext">Yes</string>
     <string name="notext">No</string>
 
@@ -117,6 +118,7 @@
     <string name="city">City:</string>
     <string name="administration">Administration:</string>
     <string name="country">Country:</string>
+    <string name="erroruserprofile">Failed to receive user data</string>
 
     <!--Help-->
     <string name="bluetoothinfoheader">Information about of obtaining measurement</string>

@@ -50,7 +50,7 @@ import com.udl.android.bloodpressuremonitor.fragments.HomeFragment;
 import com.udl.android.bloodpressuremonitor.fragments.MeasurementsFragment;
 import com.udl.android.bloodpressuremonitor.fragments.ObtainManualPressures;
 import com.udl.android.bloodpressuremonitor.fragments.ProfileFragment;
-import com.udl.android.bloodpressuremonitor.utils.GCMConstants;
+import com.udl.android.bloodpressuremonitor.utils.Constants;
 import com.udl.android.bloodpressuremonitor.utils.GCMRegister;
 import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
 
@@ -65,7 +65,6 @@ import java.util.List;
 import java.util.UUID;
 
 import backend.myapplication.adrian.example.com.helloapi.Helloapi;
-import backend.myapplication.adrian.example.com.helloapi.Helloapi.*;
 
 
 public class BPMActivityController extends BPMmasterActivity
@@ -228,7 +227,7 @@ public class BPMActivityController extends BPMmasterActivity
                 Toast.makeText(this,getResources().getString(R.string.recoveryregidOK),Toast.LENGTH_LONG).show();
             }
         } else {
-            Log.d(GCMConstants.TAG, "Google Cloud Services not found");
+            Log.d(Constants.TAG, "Google Cloud Services not found");
         }
 
 
@@ -695,9 +694,9 @@ public class BPMActivityController extends BPMmasterActivity
         if (resultCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
                 GooglePlayServicesUtil.getErrorDialog(resultCode,
-                        this, GCMConstants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
+                        this, Constants.PLAY_SERVICES_RESOLUTION_REQUEST).show();
             } else {
-                Log.d(GCMConstants.TAG, "This device is not supported.");
+                Log.d(Constants.TAG, "This device is not supported.");
                 finish();
             }
             return false;
@@ -756,7 +755,7 @@ public class BPMActivityController extends BPMmasterActivity
                 if (gcm == null) {
                     gcm = GoogleCloudMessaging.getInstance(BPMActivityController.this);
                 }
-               regid = gcm.register(GCMConstants.SENDER_ID);
+               regid = gcm.register(Constants.SENDER_ID);
 
                 GCMRegister.getInstance()
                         .executeSendRegistrationToBackend(BPMActivityController.this,regid);
@@ -787,7 +786,7 @@ public class BPMActivityController extends BPMmasterActivity
             @Override
             protected Void doInBackground(Void... nothing) {
                 Helloapi.Builder build = new Helloapi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                        .setRootUrl(GCMConstants.SELF_MACHINE_SERVER_ADDRESS)
+                        .setRootUrl(Constants.SELF_MACHINE_SERVER_ADDRESS)
                         .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                             @Override
                             public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {

@@ -26,7 +26,7 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
-import com.udl.android.bloodpressuremonitor.utils.GCMConstants;
+import com.udl.android.bloodpressuremonitor.utils.Constants;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,7 +45,8 @@ public class RegisterActivity extends BPMmasterActivity
         PROBLEM_MANDATORY_FIELDS,
         PROBLEM_LOCATION,
         LOCATION_FINDED,
-        PASSWORDS_NOTMATCHING
+        PASSWORDS_NOTMATCHING,
+        ERROR_REGISTER_PROCESS
     }
 
 
@@ -142,9 +143,6 @@ public class RegisterActivity extends BPMmasterActivity
             public void onClick(View v) {
                 if (isDataCorrect()){
                     new registerNewUser().execute();
-//                    startActivity(new Intent(RegisterActivity.this,BPMActivityController.class));
-//                    setResult(RESULT_OK);
-//                    finish();
                 }
 
             }
@@ -199,6 +197,9 @@ public class RegisterActivity extends BPMmasterActivity
                 break;
             case PASSWORDS_NOTMATCHING:
                 alert.setMessage(getResources().getString(R.string.passnotmatching));
+                break;
+            case ERROR_REGISTER_PROCESS:
+                alert.setMessage(getResources().getString(R.string.registerprocesserror));
                 break;
             case LOCATION_FINDED:
                 alert.setTitle(getResources().getString(R.string.locationfound));
@@ -290,7 +291,7 @@ public class RegisterActivity extends BPMmasterActivity
         @Override
         public User doInBackground(Void... param){
             BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl(GCMConstants.SELF_MACHINE_SERVER_ADDRESS)
+                    .setRootUrl(Constants.LOCAL_TEST_EMULATOR_URL)
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
@@ -309,11 +310,17 @@ public class RegisterActivity extends BPMmasterActivity
         }
 
         @Override
-        public void onPostExecute(User create){
+        public void onPostExecute(User user){
             dialogDismiss();
-            User ffsd = create;
-            String hola="gfdgdfg";
-        }
+            if (user!=null) {
+                Constants.SESSION_USER_ID = user.getId();
+                startActivity(new Intent(RegisterActivity.this, BPMActivityController.class));
+                setResult(RESULT_OK);
+                finish();
+            }else{
+                showDialogEvents(AlertsID.ERROR_REGISTER_PROCESS);
+            }
+}
 
     }
 

@@ -8,9 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.udl.android.bloodpressuremonitor.BPMActivityController;
@@ -76,6 +74,6 @@ public class GCMIntentService extends IntentService {
                         .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(GCMConstants.NOTIFICATION, mBuilder.build());
+        mNotificationManager.notify(Constants.NOTIFICATION, mBuilder.build());
     }
 }
