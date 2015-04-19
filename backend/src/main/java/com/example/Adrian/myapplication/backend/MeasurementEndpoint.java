@@ -25,6 +25,7 @@ public class MeasurementEndpoint {
         Measurement measurement = ofy().load().type(Measurement.class).id(id).now();
         return measurement;
     }
+
     @ApiMethod(name = "insertMeasurement")
     public Measurement insertMeasurement(Measurement measurement) {
         logger.info("Calling insertMeasurement method");

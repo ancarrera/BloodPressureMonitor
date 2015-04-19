@@ -3,6 +3,7 @@ package com.udl.android.bloodpressuremonitor.fragments;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,11 +11,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.example.adrian.myapplication.backend.measurementApi.MeasurementApi;
+import com.example.adrian.myapplication.backend.measurementApi.model.Measurement;
+import com.google.api.client.extensions.android.http.AndroidHttp;
+import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
+import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.R;
 import com.udl.android.bloodpressuremonitor.adapters.MeasurementAdapter;
 import com.udl.android.bloodpressuremonitor.model.Pressure;
 import com.udl.android.bloodpressuremonitor.test.DBMock;
+import com.udl.android.bloodpressuremonitor.utils.Constants;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -47,7 +56,6 @@ public class MeasurementsFragment extends Fragment {
         listview.setAdapter(adapter);
 
     }
-
 
 
 

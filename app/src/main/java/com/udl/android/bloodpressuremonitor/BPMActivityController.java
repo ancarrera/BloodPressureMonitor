@@ -36,6 +36,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.adrian.myapplication.backend.measurementApi.MeasurementApi;
+import com.example.adrian.myapplication.backend.measurementApi.model.Measurement;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -785,7 +787,7 @@ public class BPMActivityController extends BPMmasterActivity
             Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
         }
     }
-    
+
     private class unregisterTask extends AsyncTask<Void,Void,String> {
 
         @Override
@@ -800,7 +802,7 @@ public class BPMActivityController extends BPMmasterActivity
                 regid = getRegID(BPMActivityController.this);
                 registrationid = removeRegID(BPMActivityController.this);
                 GCMRegister.getInstance()
-                        .executeSendUnRegistrationToBackend(BPMActivityController.this,regid);
+                        .executeSendUnRegistrationToBackend(BPMActivityController.this, regid);
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -822,6 +824,38 @@ public class BPMActivityController extends BPMmasterActivity
         }
     }
 
+    private class NewMeasurement extends AsyncTask<Measurement,Void,Measurement> {
+
+        @Override
+        public Measurement doInBackground(Measurement... params) {
+
+            try {
+                MeasurementApi.Builder builder = new MeasurementApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                        .setRootUrl(Constants.LOCAL_TEST_EMULATOR_URL)
+                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                            @Override
+                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                                abstractGoogleClientRequest.setDisableGZipContent(true);
+                            }
+                        });
+                MeasurementApi measurementApi = builder.build();
+
+                    return measurementApi.insertMeasurement(params[0]).execute();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return null;
+
+        }
+
+        @Override
+        public void onPostExecute(Measurement result){
+          if (result!=null){
+
+          }
+        }
+    }
 
     private void registerGCM(){
 
