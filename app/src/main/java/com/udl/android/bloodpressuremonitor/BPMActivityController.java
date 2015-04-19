@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.hardware.SensorEvent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -216,6 +217,8 @@ public class BPMActivityController extends BPMmasterActivity
 
             }
         };
+
+
 
         if (checkGooglePlayServicesAvailable()) {
             gcm = GoogleCloudMessaging.getInstance(this);
@@ -786,7 +789,7 @@ public class BPMActivityController extends BPMmasterActivity
             @Override
             protected Void doInBackground(Void... nothing) {
                 Helloapi.Builder build = new Helloapi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                        .setRootUrl(Constants.SELF_MACHINE_SERVER_ADDRESS)
+                        .setRootUrl(Constants.LOCAL_TEST_EMULATOR_URL)
                         .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                             @Override
                             public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
