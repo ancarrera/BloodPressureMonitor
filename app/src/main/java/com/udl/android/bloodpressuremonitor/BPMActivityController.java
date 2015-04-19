@@ -64,7 +64,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import backend.myapplication.adrian.example.com.helloapi.Helloapi;
 
 
 public class BPMActivityController extends BPMmasterActivity
@@ -217,18 +216,7 @@ public class BPMActivityController extends BPMmasterActivity
             }
         };
 
-        if (checkGooglePlayServicesAvailable()) {
-            gcm = GoogleCloudMessaging.getInstance(this);
-            registrationid = getRegID(getApplicationContext());
-            greetBPMController();
-            if (registrationid.isEmpty()) {
-                new registerTask().execute();
-            }else{
-                Toast.makeText(this,getResources().getString(R.string.recoveryregidOK),Toast.LENGTH_LONG).show();
-            }
-        } else {
-            Log.d(Constants.TAG, "Google Cloud Services not found");
-        }
+      registerGCM();
 
 
     }
@@ -273,8 +261,8 @@ public class BPMActivityController extends BPMmasterActivity
             @Override
             public void onClick(View v) {
 
-        startActivityForResult(new Intent(BPMActivityController.this,
-                BPMpreferencesActivity.class),SIGNAL_KILL_CONTROLLER);
+                startActivityForResult(new Intent(BPMActivityController.this,
+                        BPMpreferencesActivity.class), SIGNAL_KILL_CONTROLLER);
             }
         });
     }
@@ -537,8 +525,18 @@ public class BPMActivityController extends BPMmasterActivity
             }else{
                 showDialogBluetoothCases(BluetoothDialog.COULD_NOT_CONNECTED);
             }
-        }else if (requestCode==SIGNAL_KILL_CONTROLLER){
-            if(resultCode == RESULT_OK){
+        }else if (requestCode==SIGNAL_KILL_CONTROLLER) {
+            String notification = "";
+            if (data != null) {
+                notification = data.getExtras().getString("notifications", "");
+            }
+            if (!notification.equals("")){
+                if (notification.equals("yes")){
+                    registerGCM();
+                }else if (notification.equals("no")){
+                    unregisterGCM();
+                }
+            }else if(resultCode == RESULT_OK){
                 finish();
             }
 
@@ -715,13 +713,20 @@ public class BPMActivityController extends BPMmasterActivity
         }
 
 
-        int appversion = preferences.getInt(PreferenceConstants.APP_VERSION,1);
+        int appversion = preferences.getInt(PreferenceConstants.APP_VERSION, 1);
         if (appversion != getAppVersion(appcontext)){
             return "";
         }
 
        return regid;
 
+    }
+
+    private String removeRegID(Context context){
+        final SharedPreferences preferences = getSharedPreferences(
+                PreferenceConstants.GCM_PREFERENCES, Context.MODE_PRIVATE);
+        preferences.edit().putString(PreferenceConstants.REG_ID,"").commit();
+        return "";
     }
 
     private int getAppVersion(Context context) {
@@ -780,33 +785,67 @@ public class BPMActivityController extends BPMmasterActivity
         }
     }
 
-    private void greetBPMController() {
+    private class unregisterTask extends AsyncTask<Void,Void,String> {
 
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... nothing) {
-                Helloapi.Builder build = new Helloapi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                        .setRootUrl(Constants.SELF_MACHINE_SERVER_ADDRESS)
-                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                            @Override
-                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                                abstractGoogleClientRequest.setDisableGZipContent(true);
-                            }
-                        });
+        @Override
+        public String doInBackground(Void... params) {
 
-                Helloapi helloapi = build.build();
-
-                try{
-                    String message = "I'am here.In BPMController!";
-                    helloapi.greet(message).execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    Log.d("HELLOAPI", "ERROR IN GREET");
+            String regid="";
+            try {
+                if (gcm == null) {
+                    gcm = GoogleCloudMessaging.getInstance(BPMActivityController.this);
                 }
-                return null;
+                gcm.unregister();
+                regid = getRegID(BPMActivityController.this);
+                registrationid = removeRegID(BPMActivityController.this);
+                GCMRegister.getInstance()
+                        .executeSendUnRegistrationToBackend(BPMActivityController.this,regid);
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            return regid;
+        }
+
+        @Override
+        public void onPostExecute(String result){
+            String msg;
+            if (result.isEmpty()) {
+                msg = "Registration not found";
+            }else {
+                msg = result;
+                storeNewRegId(BPMActivityController.this, result);
             }
 
-        }.execute();
+            Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    private void registerGCM(){
+
+        if (checkGooglePlayServicesAvailable()) {
+            gcm = GoogleCloudMessaging.getInstance(this);
+            registrationid = getRegID(getApplicationContext());
+            //greetBPMController();
+            if (registrationid.isEmpty()) {
+                new registerTask().execute();
+            }else{
+                Toast.makeText(this,getResources().getString(R.string.recoveryregidOK),Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Log.d(Constants.TAG, "Google Cloud Services not found");
+        }
+    }
+
+    private void unregisterGCM(){
+
+        if (checkGooglePlayServicesAvailable()) {
+            gcm = GoogleCloudMessaging.getInstance(this);
+            new unregisterTask().execute();
+        } else {
+            Log.d(Constants.TAG, "Google Cloud Services not found");
+        }
     }
 
 }

@@ -26,10 +26,10 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
     <permission
-        android:name="com.udl.android.bloodpressuremonitor.C2D_MESSAGE"
+        android:name="com.udl.android.bloodpressuremonitor.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="com.udl.android.bloodpressuremonitor.C2D_MESSAGE" />
+    <uses-permission android:name="com.udl.android.bloodpressuremonitor.permission.C2D_MESSAGE" />
 
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -74,20 +74,19 @@
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MANAGE_NETWORK_USAGE" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-            <receiver
-                android:name=".GCMBroadcastReceiver"
-                android:permission="com.google.android.c2dm.permission.SEND" >
-                <intent-filter>
-                    <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-                    <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
-                    <category android:name="com.udl.android.bloodpressuremonitor" />
-                </intent-filter>
-            </receiver>
-            <service android:name=".GCMIntentService" />
         </activity>
+        <receiver
+            android:name=".utils.GCMBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION"/>
+                <category android:name="com.udl.android.bloodpressuremonitor" />
+            </intent-filter>
+        </receiver>
+        <service android:name=".utils.GCMIntentService" />
     </application>
 
 </manifest>

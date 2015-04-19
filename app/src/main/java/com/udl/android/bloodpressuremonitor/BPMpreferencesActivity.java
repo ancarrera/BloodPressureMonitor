@@ -9,11 +9,15 @@ import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.udl.android.bloodpressuremonitor.utils.Constants;
 import com.udl.android.bloodpressuremonitor.utils.Language;
 
 import java.util.List;
@@ -51,21 +55,33 @@ public class BPMpreferencesActivity extends PreferenceActivity{
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 
-            String lang = sharedPreferences.getString(key,"");
-            if (!lang.equals("")) {
+            if (key.equals("languageList")) {
+                String lang = sharedPreferences.getString(key, "");
+                if (!lang.equals("")) {
                     Language.changeApplicationLanguage(lang, getActivity());
 
-                getActivity().startActivity(new Intent(getActivity(),BPMActivityController.class));
+                    getActivity().startActivity(new Intent(getActivity(), BPMActivityController.class));
+                    getPreferenceScreen().getSharedPreferences()
+                            .registerOnSharedPreferenceChangeListener(this);
+                    getActivity().setResult(RESULT_OK);
+                    getActivity().finish();
+
+                    return;
+                } else {
+                    getPreferenceScreen().getSharedPreferences()
+                            .registerOnSharedPreferenceChangeListener(this);
+                    getActivity().setResult(RESULT_CANCELED);
+                }
+            }else if (key.equals("notifications")){
+                String option = sharedPreferences.getString(key, "");
+                getActivity().setResult(RESULT_OK,new Intent().putExtra("notifications",option));
                 getPreferenceScreen().getSharedPreferences()
                         .registerOnSharedPreferenceChangeListener(this);
-                getActivity().setResult(RESULT_OK);
                 getActivity().finish();
 
-                return;
             }
-            getPreferenceScreen().getSharedPreferences()
-                    .registerOnSharedPreferenceChangeListener(this);
-            getActivity().setResult(RESULT_CANCELED);
+
+
         }
 
         @Override

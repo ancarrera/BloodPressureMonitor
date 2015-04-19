@@ -96,7 +96,7 @@
     </string-array>
 
     <string name="headernetwork">Network preferences</string>
-
+    <string name="headernotification">Notifications</string>
     <string name="headeractivity">Settings</string>
     <string name="headerlanguage">Language</string>
 
@@ -105,9 +105,19 @@
         <item>English</item>
     </string-array>
 
+    <string-array name="preferencesnotifications">
+        <item>yes</item>
+        <item>>no</item>
+    </string-array>
+
+    <string-array name="preferencesnotificationsidiom">
+        <item>yes</item>
+        <item>no</item>
+    </string-array>
 
     <string name="appPreferences">Aplication preferences</string>
     <string name="summarylanguage">Allow choose the language in application</string>
+    <string name="notifications">Choose if you want receive notifications about yout health</string>
 
     <!--Profile-->
     <string name="headerprofile">Profile</string>

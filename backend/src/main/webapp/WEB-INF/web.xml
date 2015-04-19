@@ -15,9 +15,9 @@
             <param-name>services</param-name>
             <param-value>com.example.Adrian.myapplication.backend.RegistrationEndpoint,
                 com.example.Adrian.myapplication.backend.MessagingEndpoint,
-                com.example.Adrian.myapplication.backend.HelloEndpoint,
                 com.example.Adrian.myapplication.backend.UserRegisterEndpoint,
-                com.example.Adrian.myapplication.backend.LoginEndpoint</param-value>
+                com.example.Adrian.myapplication.backend.LoginEndpoint,
+                com.example.Adrian.myapplication.backend.MeasurementEndpoint</param-value>
         </init-param>
     </servlet>
     <servlet-mapping>

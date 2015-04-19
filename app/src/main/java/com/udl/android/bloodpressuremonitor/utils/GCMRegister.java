@@ -34,7 +34,7 @@ public class GCMRegister {
     private static Registration registerInDebugMode(){
 
         Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-        .setRootUrl(Constants.SELF_MACHINE_SERVER_ADDRESS)
+        .setRootUrl(Constants.LOCAL_TEST_EMULATOR_URL)
         .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
             @Override
             public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
@@ -66,6 +66,27 @@ public class GCMRegister {
             if (registration!=null) {
                 registration.register(regid).execute();
                 Log.d("SEND", "Good send" + regid);
+            }else
+                throw new IOException();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context,"Error sending register regid",Toast.LENGTH_LONG);
+        }
+    }
+
+    public void executeSendUnRegistrationToBackend(Context context,String regid){
+
+        Registration registration =null;
+        try {
+            if (isDebug)
+                registration =registerInDebugMode();
+
+            else
+                registration = registerInRealeaseMode();
+
+            if (registration!=null) {
+                registration.unregister(regid).execute();
+                Log.d("SEND", "Good send unregister" + regid);
             }else
                 throw new IOException();
         } catch (IOException e) {

@@ -13,15 +13,24 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/appPreferences">
-        <ListPreference
-            android:title="@string/headerlanguage"
-            android:summary="@string/summarylanguage"
-            android:key="languageList"
-            android:defaultValue="es"
-            android:entries="@array/preferenceslanguageentries"
-            android:entryValues="@array/preferenceslanguagevalues"
-            >
-        </ListPreference>
-    </PreferenceCategory>
+    <ListPreference
+        android:title="@string/headerlanguage"
+        android:summary="@string/summarylanguage"
+        android:key="languageList"
+        android:defaultValue="es"
+        android:entries="@array/preferenceslanguageentries"
+        android:entryValues="@array/preferenceslanguagevalues"
+        >
+    </ListPreference>
+    <ListPreference
+        android:title="@string/headernotification"
+        android:summary="@string/notifications"
+        android:key="notifications"
+        android:defaultValue="yes"
+        android:entries="@array/preferencesnotificationsidiom"
+        android:entryValues="@array/preferencesnotifications"
+        >
+    </ListPreference>
+</PreferenceCategory>
 
 </PreferenceScreen>
