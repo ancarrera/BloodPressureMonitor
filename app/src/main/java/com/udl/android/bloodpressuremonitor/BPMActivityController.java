@@ -15,6 +15,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.hardware.SensorEvent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -784,7 +785,7 @@ public class BPMActivityController extends BPMmasterActivity
             Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
         }
     }
-
+    
     private class unregisterTask extends AsyncTask<Void,Void,String> {
 
         @Override

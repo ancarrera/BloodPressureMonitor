@@ -20,7 +20,6 @@ public class User {
     private String email;
     private String city;
     private String administration;
-    private String province;
     private String country;
     @Index
     private String password;
@@ -105,11 +104,4 @@ public class User {
         this.password = password;
     }
 
-    public String getProvince() {
-        return province;
-    }
-
-    public void setProvince(String province) {
-        this.province = province;
-    }
 }

@@ -329,7 +329,7 @@ public class RegisterActivity extends BPMmasterActivity
         User user = new User();
 
         user.setName(name.getText().toString());
-        String[] surnamesarray = surnames.getText().toString().split("");
+        String[] surnamesarray = surnames.getText().toString().split(" ");
         user.setFirstsurname(surnamesarray[0]);
         user.setSecondsurname(surnamesarray[1]);
         user.setCity(locationcity.getText().toString());
@@ -337,7 +337,7 @@ public class RegisterActivity extends BPMmasterActivity
         user.setAge(age.getText().toString());
         user.setEmail(email.getText().toString());
         user.setPassword(password1.getText().toString());
-        user.setProvince(locationprovince.getText().toString());
+        user.setAdministration(locationprovince.getText().toString());
 
         return user;
     }
