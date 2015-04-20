@@ -21,6 +21,7 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.BPMActivityController;
 import com.udl.android.bloodpressuremonitor.R;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
+import com.udl.android.bloodpressuremonitor.utils.MeasurementTask;
 
 import java.io.IOException;
 
@@ -89,7 +90,7 @@ public class ObtainManualPressures extends Fragment {
                         measurement.setSystolic(Integer.parseInt(systolictext.getText().toString()));
                         measurement.setDiastolic(Integer.parseInt(diastolictext.getText().toString()));
                         measurement.setDiastolic(Integer.parseInt(pulsetext.getText().toString()));
-                        new NewMeasurement().execute(measurement);
+                        new MeasurementTask(getActivity()).execute(measurement);
                     }
 
                 }
@@ -131,43 +132,4 @@ public class ObtainManualPressures extends Fragment {
 
     }
 
-
-    private class NewMeasurement extends AsyncTask<Measurement,Void,Measurement> {
-
-        @Override
-        public void onPreExecute() {
-            ((BPMActivityController) getActivity()).showDialog(false);
-        }
-
-        @Override
-        public Measurement doInBackground(Measurement... params) {
-
-            try {
-                MeasurementApi.Builder builder = new MeasurementApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                        .setRootUrl(Constants.LOCAL_TEST_EMULATOR_URL)
-                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                            @Override
-                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                                abstractGoogleClientRequest.setDisableGZipContent(true);
-                            }
-                        });
-                MeasurementApi measurementApi = builder.build();
-
-                return measurementApi.insertMeasurement(params[0]).execute();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-
-        }
-
-        @Override
-        public void onPostExecute(Measurement result) {
-            ((BPMActivityController) getActivity()).dialogDismiss();
-            if (result != null) {
-
-            }
-        }
-    }
 }

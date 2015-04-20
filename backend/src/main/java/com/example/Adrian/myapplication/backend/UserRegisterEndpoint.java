@@ -3,8 +3,10 @@ package com.example.Adrian.myapplication.backend;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
+import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.inject.Named;
@@ -15,6 +17,7 @@ import static com.example.Adrian.myapplication.backend.OfyService.*;
         ownerDomain = "backend.myapplication.Adrian.example.com",
         ownerName = "backend.myapplication.Adrian.example.com",
         packagePath = ""))
+
 public class UserRegisterEndpoint {
 
     private static final Logger logger = Logger.getLogger(UserRegisterEndpoint.class.getName());
@@ -29,23 +32,28 @@ public class UserRegisterEndpoint {
         return user;
     }
 
-    @ApiMethod(name = "create",path = "users/create",httpMethod = ApiMethod.HttpMethod.POST)
+    @ApiMethod(name="listUsers",path="users",httpMethod = ApiMethod.HttpMethod.GET)
+    public CollectionResponse<User> listUsers(@Named("count")int count) {
+        List<User> records = ofy().load().type(User.class).limit(count).list();
+        return CollectionResponse.<User>builder().setItems(records).build();
+    }
+
+    @ApiMethod(name = "create",path = "users",httpMethod = ApiMethod.HttpMethod.POST)
     public User create(User user) {
         ofy().save().entity(user).now();
         logger.info("user created " + user.getId());
         return ofy().load().entity(user).now();
     }
 
-    @ApiMethod(name = "update",path = "users/{id}/update",httpMethod = ApiMethod.HttpMethod.PUT)
+    @ApiMethod(name = "update",path = "users/{id}",httpMethod = ApiMethod.HttpMethod.PUT)
     public User update(@Named("id") Long id, User user) throws NotFoundException {
-        // TODO: You should validate your ID parameter against your resource's ID here.
         checkExists(id);
         ofy().save().entity(user).now();
         logger.info("user upadate:" + user);
         return ofy().load().entity(user).now();
     }
 
-    @ApiMethod(name = "remove",path = "users/{id}/remove",httpMethod = ApiMethod.HttpMethod.DELETE)
+    @ApiMethod(name = "remove",path = "users/{id}",httpMethod = ApiMethod.HttpMethod.DELETE)
     public void remove(@Named("id") Long id) throws NotFoundException {
         checkExists(id);
         ofy().delete().type(User.class).id(id).now();

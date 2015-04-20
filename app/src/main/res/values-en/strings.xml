@@ -137,4 +137,9 @@
     <string name="heartrateinfo">For realizing a measurement with hear rate, you have to put the phone in plane position,then keep your fingertip on the camera (loosely), one time the camera view will take red color and the screen shows a image changing color, the measurement will be displayed.</string>
     <string name="helpheader">Help</string>
 
+    <!-- Measurement-->
+    <string name="recoveryregidOK">Device register in GCM</string>
+    <string name="goodsendmeasurement">Measurment sent correctly</string>
+    <string name="errorsendmeasurement">Error sending measurement</string>
+
 </resources>

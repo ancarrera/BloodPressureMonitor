@@ -154,4 +154,6 @@
 
     <!--GCM strings-->
     <string name="recoveryregidOK">Dispositivo registrado en GCM</string>
+    <string name="goodsendmeasurement">Presiones enviadas correctamente</string>
+    <string name="errorsendmeasurement">Error enviando medición</string>
 </resources>

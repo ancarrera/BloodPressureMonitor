@@ -55,6 +55,7 @@ import com.udl.android.bloodpressuremonitor.fragments.ObtainManualPressures;
 import com.udl.android.bloodpressuremonitor.fragments.ProfileFragment;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 import com.udl.android.bloodpressuremonitor.utils.GCMRegister;
+import com.udl.android.bloodpressuremonitor.utils.MeasurementTask;
 import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -195,14 +196,19 @@ public class BPMActivityController extends BPMmasterActivity
 
                         final  AlertDialog.Builder dialogresult = new AlertDialog.Builder(BPMActivityController.this);
 
-                        dialogresult.setMessage(getResources().getString(R.string.measurements)+
-                                linebreak+linebreak+getResources().getString(R.string.systolic)+" "+systolicPressure+" "+pressure_unit
-                                +linebreak+getResources().getString(R.string.diastolic)+" "+diastolicPressure+" "+pressure_unit+linebreak
-                                +getResources().getString(R.string.pulse)+" "+pulse+ " "+pulse_unit);
+                        dialogresult.setMessage(getResources().getString(R.string.measurements) +
+                                linebreak + linebreak + getResources().getString(R.string.systolic) + " " + systolicPressure + " " + pressure_unit
+                                + linebreak + getResources().getString(R.string.diastolic) + " " + diastolicPressure + " " + pressure_unit + linebreak
+                                + getResources().getString(R.string.pulse) + " " + pulse + " " + pulse_unit);
+                        final Measurement measurement = new Measurement();
+                        measurement.setDiastolic(Integer.parseInt(diastolicPressure));
+                        measurement.setSystolic(Integer.parseInt(systolicPressure));
+                        measurement.setDiastolic(Integer.parseInt(pulse));
 
                         dialogresult.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                new MeasurementTask(BPMActivityController.this).execute(measurement);
                                 dialog.dismiss();
                             }
                         });
@@ -766,7 +772,7 @@ public class BPMActivityController extends BPMmasterActivity
                regid = gcm.register(Constants.SENDER_ID);
 
                 GCMRegister.getInstance()
-                        .executeSendRegistrationToBackend(BPMActivityController.this,regid);
+                        .executeSendRegistrationToBackend(BPMActivityController.this, regid);
 
             } catch (IOException ex) {
                 ex.printStackTrace();
@@ -821,39 +827,6 @@ public class BPMActivityController extends BPMmasterActivity
             }
 
             Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private class NewMeasurement extends AsyncTask<Measurement,Void,Measurement> {
-
-        @Override
-        public Measurement doInBackground(Measurement... params) {
-
-            try {
-                MeasurementApi.Builder builder = new MeasurementApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                        .setRootUrl(Constants.LOCAL_TEST_EMULATOR_URL)
-                        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                            @Override
-                            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                                abstractGoogleClientRequest.setDisableGZipContent(true);
-                            }
-                        });
-                MeasurementApi measurementApi = builder.build();
-
-                    return measurementApi.insertMeasurement(params[0]).execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                return null;
-
-        }
-
-        @Override
-        public void onPostExecute(Measurement result){
-          if (result!=null){
-
-          }
         }
     }
 
