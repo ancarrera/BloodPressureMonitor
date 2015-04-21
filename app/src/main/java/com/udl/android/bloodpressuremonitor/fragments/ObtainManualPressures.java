@@ -91,6 +91,9 @@ public class ObtainManualPressures extends Fragment {
                         measurement.setDiastolic(Integer.parseInt(diastolictext.getText().toString()));
                         measurement.setDiastolic(Integer.parseInt(pulsetext.getText().toString()));
                         new MeasurementTask(getActivity()).execute(measurement);
+                        systolictext.setText("");
+                        diastolictext.setText("");
+                        pulsetext.setText("");
                     }
 
                 }

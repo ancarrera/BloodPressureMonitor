@@ -19,17 +19,17 @@ public class MeasurementEndpoint {
 
     private static final Logger logger = Logger.getLogger(MeasurementEndpoint.class.getName());
 
-    @ApiMethod(name = "getMeasurement")
+    @ApiMethod(name = "getMeasurement",path="measurements",httpMethod = ApiMethod.HttpMethod.GET)
     public Measurement getMeasurement(@Named("id") Long id) {
         logger.info("Calling getMeasurement method");
         Measurement measurement = ofy().load().type(Measurement.class).id(id).now();
         return measurement;
     }
 
-    @ApiMethod(name = "insertMeasurement")
+    @ApiMethod(name = "insertMeasurement",path="measurements",httpMethod = ApiMethod.HttpMethod.POST)
     public Measurement insertMeasurement(Measurement measurement) {
         logger.info("Calling insertMeasurement method");
-        ofy().save().entities(measurement).now();
-        return measurement;
+        ofy().save().entity(measurement).now();
+        return ofy().load().entity(measurement).now();
     }
 }

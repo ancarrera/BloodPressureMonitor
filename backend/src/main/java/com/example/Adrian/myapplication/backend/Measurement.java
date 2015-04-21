@@ -1,10 +1,12 @@
 package com.example.Adrian.myapplication.backend;
 
+import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
 /**
  * Created by Adrian on 17/4/15.
  */
+@Entity
 public class Measurement {
 
     @Id

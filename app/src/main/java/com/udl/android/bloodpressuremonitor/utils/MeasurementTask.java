@@ -39,9 +39,9 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
                         abstractGoogleClientRequest.setDisableGZipContent(true);
                     }
                 });
-        MeasurementApi registerapi = builder.build();
+        MeasurementApi measurementApi = builder.build();
         try {
-            return registerapi.insertMeasurement(params[0]).execute();
+            return measurementApi.insertMeasurement(params[0]).execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -50,6 +50,7 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
     }
 
     protected void onPostExecute(Measurement measurement){
+        context.dialogDismiss();
         if (measurement!=null){
             showAlertDialog(true);
         }else{
