@@ -7,6 +7,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
 import com.google.api.server.spi.response.UnauthorizedException;
+import com.google.appengine.api.oauth.OAuthRequestException;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -46,8 +47,8 @@ public class UserRegisterEndpoint {
             Constant.API_EXPLORER_CLIENT_ID},
             audiences = {BackendConstants.ANDROID_AUDIENCE},
             scopes = {BackendConstants.EMAIL_SCOPE})
-    public User create(User user, com.google.appengine.api.users.User userAuth) throws UnauthorizedException{
-        if (userAuth==null) throw new UnauthorizedException("User unauthorized");
+    public User create(User user, com.google.appengine.api.users.User userAuth) throws OAuthRequestException{
+        if (userAuth==null) throw new OAuthRequestException("User unauthorized");
         ofy().save().entity(user).now();
         logger.info("user created " + user.getId());
         return ofy().load().entity(user).now();

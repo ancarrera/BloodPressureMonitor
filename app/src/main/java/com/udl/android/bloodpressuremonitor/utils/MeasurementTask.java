@@ -32,7 +32,7 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
     @Override
     protected Measurement doInBackground(Measurement... params) {
         MeasurementApi.Builder builder = new MeasurementApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                .setRootUrl(Constants.LOCAL_TEST_EMULATOR_URL)
+                .setRootUrl(Constants.TEST_URL)
                 .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                     @Override
                     public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {

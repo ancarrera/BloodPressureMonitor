@@ -1,5 +1,7 @@
 package com.udl.android.bloodpressuremonitor;
 
+import android.accounts.AccountManager;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -18,15 +20,22 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.adrian.myapplication.backend.bpmApiRegister.model.User;
 import com.example.adrian.myapplication.backend.bpmApiRegister.BpmApiRegister;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
+import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
+import com.udl.android.bloodpressuremonitor.utils.GoogleAccountCredentials;
 
 import java.io.IOException;
 import java.util.List;
@@ -49,6 +58,9 @@ public class RegisterActivity extends BPMmasterActivity
         ERROR_REGISTER_PROCESS
     }
 
+    public static final int CHOOSE_ACCOUNT = 1;
+    public static final int REQUEST_AUTHORIZATION = 2;
+
 
        private Button autobutton;
        private Button siginbutton;
@@ -65,6 +77,8 @@ public class RegisterActivity extends BPMmasterActivity
        private Location lastKnownLocation;
 
        private String city,administration,country;
+
+       private GoogleAccountCredentials credentialClass;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -100,8 +114,10 @@ public class RegisterActivity extends BPMmasterActivity
         if(gpsenabled && lastKnownLocation == null)
             lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-       providerBestCriteria = locationManager.getBestProvider(new Criteria(),true);
+       providerBestCriteria = locationManager.getBestProvider(new Criteria(), true);
 
+        credentialClass = GoogleAccountCredentials.getNewInstance(this);
+        startActivityForResult(credentialClass.getCredentials().newChooseAccountIntent(), CHOOSE_ACCOUNT);
     }
 
     @Override
@@ -286,32 +302,63 @@ public class RegisterActivity extends BPMmasterActivity
 
         @Override
         public void onPreExecute(){
-            showDialog(false);
+            //showDialog(false);
         }
         @Override
         public User doInBackground(Void... param){
-            BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl(Constants.LOCAL_TEST_EMULATOR_URL)
+
+            String scope = String.format("oauth2:server:client_id:%s:api_scope:%s",
+                    Constants.ANDROID_CLIENT_ID, Constants.EMAIL_SCOPE);
+            String token = "";
+            try {
+               token = GoogleAuthUtil.getToken(
+                        RegisterActivity.this, credentialClass.getCredentials().getSelectedAccountName(), scope);
+            }catch (Exception ex){
+                ex.printStackTrace();
+            }
+            GoogleCredential credential = new GoogleCredential().setAccessToken(token);
+            BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(),
+                    new AndroidJsonFactory(),credential)
+                    .setRootUrl(Constants.TEST_URL)
+                    .setApplicationName("BPM")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
                             abstractGoogleClientRequest.setDisableGZipContent(true);
                         }
                     });
-            User user = createUser();
-            BpmApiRegister registerapi = builder.build();
+                User user = createUser();
+                BpmApiRegister registerapi = builder.build();
+
             try {
                 return registerapi.create(user).execute();
-            } catch (IOException e) {
+            } catch (Exception e) {
+//                if (e instanceof UserRecoverableAuthIOException){
+//                    onProgressUpdate();
+//                    try {
+//                        return registerapi.create(user).execute();
+//                    }catch (Exception ex){
+//                        ex.printStackTrace();
+//                    }
+//                }else{
+//                    e.printStackTrace();
+//                }
                 e.printStackTrace();
             }
 
             return null;
         }
 
+//        @Override
+//        public void onProgressUpdate(Void... params){
+//            super.onProgressUpdate(params);
+//
+//            RegisterActivity.this.startActivityForResult(credentialClass.getCredentials().newChooseAccountIntent(), CHOOSE_ACCOUNT);
+//        }
+
         @Override
         public void onPostExecute(User user){
-            dialogDismiss();
+           // dialogDismiss();
             if (user!=null) {
                 Constants.SESSION_USER_ID = user.getId();
                 startActivity(new Intent(RegisterActivity.this, BPMActivityController.class));
@@ -341,5 +388,31 @@ public class RegisterActivity extends BPMmasterActivity
 
         return user;
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case CHOOSE_ACCOUNT:
+                if (data != null) {
+                    Bundle extras = data.getExtras();
+                    if (extras != null) {
+                        String accountName = extras.getString(AccountManager.KEY_ACCOUNT_NAME);
+
+                        if (accountName != null) {
+                            credentialClass.getCredentials().setSelectedAccountName(accountName);
+                        }
+                    }
+                }
+                break;
+            case REQUEST_AUTHORIZATION:
+                if (resultCode == Activity.RESULT_OK) {
+                    Toast.makeText(this, "Click the button again to perform chosen action.", Toast.LENGTH_LONG).show();
+                } else {
+                    startActivityForResult( credentialClass.getCredentials().newChooseAccountIntent(), CHOOSE_ACCOUNT);
+                }
+                break;
+        }
+    }
+
 
 }
