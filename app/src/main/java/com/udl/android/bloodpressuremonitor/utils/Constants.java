@@ -13,5 +13,4 @@ public class Constants {
     public static final String LOCAL_TEST_EMULATOR_URL="http://10.0.2.2:8080/_ah/api/";
     public static final String SELF_MACHINE_SERVER_ADDRESS="http://192.168.193.233:8080/_ah/api/";
     public static Long SESSION_USER_ID;
-
 }

@@ -1,10 +1,12 @@
 package com.example.Adrian.myapplication.backend;
 
+import com.google.api.server.spi.Constant;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 import com.google.api.server.spi.response.NotFoundException;
+import com.google.api.server.spi.response.UnauthorizedException;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -38,8 +40,14 @@ public class UserRegisterEndpoint {
         return CollectionResponse.<User>builder().setItems(records).build();
     }
 
-    @ApiMethod(name = "create",path = "users",httpMethod = ApiMethod.HttpMethod.POST)
-    public User create(User user) {
+    @ApiMethod(name = "create",path = "users",httpMethod = ApiMethod.HttpMethod.POST,clientIds = {
+            BackendConstants.WEB_CLIENT_ID,
+            BackendConstants.ANDROID_CLIENT_ID,
+            Constant.API_EXPLORER_CLIENT_ID},
+            audiences = {BackendConstants.ANDROID_AUDIENCE},
+            scopes = {BackendConstants.EMAIL_SCOPE})
+    public User create(User user, com.google.appengine.api.users.User userAuth) throws UnauthorizedException{
+        if (userAuth==null) throw new UnauthorizedException("User unauthorized");
         ofy().save().entity(user).now();
         logger.info("user created " + user.getId());
         return ofy().load().entity(user).now();
