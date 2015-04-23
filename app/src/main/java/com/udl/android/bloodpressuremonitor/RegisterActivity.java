@@ -24,13 +24,9 @@ import android.widget.Toast;
 
 import com.example.adrian.myapplication.backend.bpmApiRegister.model.User;
 import com.example.adrian.myapplication.backend.bpmApiRegister.BpmApiRegister;
-import com.google.android.gms.auth.GoogleAuthUtil;
-import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
@@ -302,23 +298,13 @@ public class RegisterActivity extends BPMmasterActivity
 
         @Override
         public void onPreExecute(){
-            //showDialog(false);
+            showDialog(false);
         }
         @Override
         public User doInBackground(Void... param){
-
-            String scope = String.format("oauth2:server:client_id:%s:api_scope:%s",
-                    Constants.ANDROID_CLIENT_ID, Constants.EMAIL_SCOPE);
-            String token = "";
-            try {
-               token = GoogleAuthUtil.getToken(
-                        RegisterActivity.this, credentialClass.getCredentials().getSelectedAccountName(), scope);
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
-            GoogleCredential credential = new GoogleCredential().setAccessToken(token);
+            String name = credentialClass.getCredentials().getSelectedAccountName();
             BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(),
-                    new AndroidJsonFactory(),credential)
+                    new AndroidJsonFactory(),credentialClass.getCredentials())
                     .setRootUrl(Constants.TEST_URL)
                     .setApplicationName("BPM")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
@@ -333,32 +319,16 @@ public class RegisterActivity extends BPMmasterActivity
             try {
                 return registerapi.create(user).execute();
             } catch (Exception e) {
-//                if (e instanceof UserRecoverableAuthIOException){
-//                    onProgressUpdate();
-//                    try {
-//                        return registerapi.create(user).execute();
-//                    }catch (Exception ex){
-//                        ex.printStackTrace();
-//                    }
-//                }else{
-//                    e.printStackTrace();
-//                }
                 e.printStackTrace();
             }
 
             return null;
         }
 
-//        @Override
-//        public void onProgressUpdate(Void... params){
-//            super.onProgressUpdate(params);
-//
-//            RegisterActivity.this.startActivityForResult(credentialClass.getCredentials().newChooseAccountIntent(), CHOOSE_ACCOUNT);
-//        }
 
         @Override
         public void onPostExecute(User user){
-           // dialogDismiss();
+            dialogDismiss();
             if (user!=null) {
                 Constants.SESSION_USER_ID = user.getId();
                 startActivity(new Intent(RegisterActivity.this, BPMActivityController.class));
@@ -402,13 +372,6 @@ public class RegisterActivity extends BPMmasterActivity
                             credentialClass.getCredentials().setSelectedAccountName(accountName);
                         }
                     }
-                }
-                break;
-            case REQUEST_AUTHORIZATION:
-                if (resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(this, "Click the button again to perform chosen action.", Toast.LENGTH_LONG).show();
-                } else {
-                    startActivityForResult( credentialClass.getCredentials().newChooseAccountIntent(), CHOOSE_ACCOUNT);
                 }
                 break;
         }

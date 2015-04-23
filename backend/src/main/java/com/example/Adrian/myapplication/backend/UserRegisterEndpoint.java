@@ -45,10 +45,10 @@ public class UserRegisterEndpoint {
             BackendConstants.WEB_CLIENT_ID,
             BackendConstants.ANDROID_CLIENT_ID,
             Constant.API_EXPLORER_CLIENT_ID},
-            audiences = {BackendConstants.ANDROID_AUDIENCE},
+            audiences = {BackendConstants.ANDROID_AUDIENCE,BackendConstants.ANDROID_CLIENT_ID},
             scopes = {BackendConstants.EMAIL_SCOPE})
-    public User create(User user, com.google.appengine.api.users.User userAuth) throws OAuthRequestException{
-        if (userAuth==null) throw new OAuthRequestException("User unauthorized");
+    public User create(User user, com.google.appengine.api.users.User userAuth) {
+        logger.info("entrooooooooo");
         ofy().save().entity(user).now();
         logger.info("user created " + user.getId());
         return ofy().load().entity(user).now();

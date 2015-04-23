@@ -23,9 +23,8 @@ public class GoogleAccountCredentials {
     public GoogleAccountCredential getCredentials(){
 
         if (credential==null) {
-            List<String> scopes = new ArrayList<String>();
-            scopes.add(Constants.EMAIL_SCOPE);
-            credential = GoogleAccountCredential.usingOAuth2(context,scopes);
+            credential = GoogleAccountCredential.usingAudience(context,
+                    "server:client_id:" + Constants.WEB_CLIENT_ID);
         }
 
         return credential;
