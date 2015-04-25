@@ -20,20 +20,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.adrian.myapplication.backend.bpmApiRegister.model.User;
 import com.example.adrian.myapplication.backend.bpmApiRegister.BpmApiRegister;
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
+import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+import com.google.api.client.http.HttpHeaders;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 import com.udl.android.bloodpressuremonitor.utils.GoogleAccountCredentials;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,7 +61,6 @@ public class RegisterActivity extends BPMmasterActivity
     }
 
     public static final int CHOOSE_ACCOUNT = 1;
-    public static final int REQUEST_AUTHORIZATION = 2;
 
 
        private Button autobutton;
@@ -75,6 +80,9 @@ public class RegisterActivity extends BPMmasterActivity
        private String city,administration,country;
 
        private GoogleAccountCredentials credentialClass;
+
+       private String accesstoken;
+    private GoogleAccountCredential mCredential;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -112,8 +120,18 @@ public class RegisterActivity extends BPMmasterActivity
 
        providerBestCriteria = locationManager.getBestProvider(new Criteria(), true);
 
-        credentialClass = GoogleAccountCredentials.getNewInstance(this);
-        startActivityForResult(credentialClass.getCredentials().newChooseAccountIntent(), CHOOSE_ACCOUNT);
+//        credentialClass = GoogleAccountCredentials.getNewInstance(this);
+//        startActivityForResult(credentialClass.getCredentials().newChooseAccountIntent(), CHOOSE_ACCOUNT);
+//        List<String> scopes = new ArrayList<>();
+//        scopes.add(Constants.EMAIL_SCOPE);
+//        mCredential = GoogleAccountCredential.usingOAuth2(this, scopes);
+
+        mCredential = GoogleAccountCredential.usingAudience(this,"server:client_id:"+Constants.WEB_CLIENT_ID);
+
+        // user needs to select an account, start account picker
+//        startActivityForResult(
+//                mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
+        chooseAccount();
     }
 
     @Override
@@ -302,17 +320,30 @@ public class RegisterActivity extends BPMmasterActivity
         }
         @Override
         public User doInBackground(Void... param){
-            String name = credentialClass.getCredentials().getSelectedAccountName();
+            String name = mCredential.getSelectedAccountName();
+            mCredential.
+            //GoogleCredential credential = new GoogleCredential().setAccessToken(token);
+            try {
+                accesstoken = GoogleAuthUtil.getToken(getApplicationContext(),"acpgithub@gmail.com", "oauth2:"+Constants.EMAIL_SCOPE,new Bundle());
+            }catch (Exception e){
+                if (e instanceof UserRecoverableAuthException){
+                    Intent oneTimeToken =((UserRecoverableAuthException)e).getIntent();
+                    startActivityForResult(oneTimeToken,555);
+                    return null;
+                }
+                e.printStackTrace();
+
+            }
+
             BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(),
-                    new AndroidJsonFactory(),credentialClass.getCredentials())
-                    .setRootUrl(Constants.TEST_URL)
-                    .setApplicationName("BPM")
-                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                        @Override
-                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                            abstractGoogleClientRequest.setDisableGZipContent(true);
-                        }
-                    });
+                    .setRootUrl(Constants.CLOUD_URL)
+                    .setApplicationName("BPM");
+//                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+//                        @Override
+//                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+//                            abstractGoogleClientRequest.setDisableGZipContent(true);
+//                        }
+//                    });
                 User user = createUser();
                 BpmApiRegister registerapi = builder.build();
 
@@ -359,23 +390,105 @@ public class RegisterActivity extends BPMmasterActivity
         return user;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case CHOOSE_ACCOUNT:
-                if (data != null) {
-                    Bundle extras = data.getExtras();
-                    if (extras != null) {
-                        String accountName = extras.getString(AccountManager.KEY_ACCOUNT_NAME);
+    void chooseAccount() {
+        startActivityForResult(mCredential.newChooseAccountIntent(),
+                REQUEST_ACCOUNT_PICKER);
+    }
 
-                        if (accountName != null) {
-                            credentialClass.getCredentials().setSelectedAccountName(accountName);
-                        }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ACCOUNT_PICKER:
+                if (data != null && data.getExtras() != null) {
+                    String accountName =
+                            data.getExtras().getString(
+                                    AccountManager.KEY_ACCOUNT_NAME);
+                    if (accountName != null) {
+                        mCredential.setSelectedAccountName(accountName);
                     }
                 }
                 break;
+
+        }
+
+        if (requestCode == 555) {
+            Bundle extra = data.getExtras();
+            String oneTimeToken = extra.getString("authtoken");
+            String wtf = oneTimeToken;
         }
     }
+
+
+
+    public class RetrieveExchangeCodeAsyncTask
+            extends AsyncTask<Void, Boolean, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+//            String scope = String.format("oauth2:server:client_id:%s:api_scope:%s",
+//                    Constants.WEB_CLIENT_ID, Constants.EMAIL_SCOPE);
+            try {
+//                return GoogleAuthUtil.getToken(
+//                        RegisterActivity.this, mCredential.getSelectedAccountName(), scope);
+                //final String scope = "oauth2:" + Constants.EMAIL_SCOPE;
+                //String scope = "audience:server:client_id:" + ;
+               // String token =mCredential.getToken();
+                return GoogleAuthUtil.getToken(RegisterActivity.this, mCredential.getSelectedAccountName(), "", new Bundle());
+
+            } catch (UserRecoverableAuthException e) {
+                startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
+            } catch (Exception e) {
+                e.printStackTrace(); // TODO: handle the exception
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String code) {
+            // exchange code with server-side to retrieve an additional
+            // access token on the server-side.
+
+
+
+            String m = code;
+        }
+    }
+
+    /**
+     * Retrieves a JWT to identify the user without the
+     * regular client-side authorization flow. The jwt payload needs to be
+     * sent to the server-side component.
+     */
+    public class RetrieveJwtAsyncTask
+            extends AsyncTask<Void, Boolean, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String scope = "audience:server:client_id:" + "367586992850.apps.googleusercontent.com";
+            try {
+                return mCredential.getToken();
+            } catch(UserRecoverableAuthIOException e) {
+                startActivityForResult(e.getIntent(), REQUEST_AUTHORIZATION);
+            } catch (Exception e) {
+                e.printStackTrace(); // TODO: handle the exception
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String idToken) {
+            // exchange encrypted idToken with server-side to identify the user
+            //mIdTokenEditText.setText(idToken);
+            String itoken = idToken;
+            String d = itoken;
+        }
+    }
+
+    private static final int REQUEST_ACCOUNT_PICKER = 100;
+    private static final int REQUEST_AUTHORIZATION = 200;
+
 
 
 }

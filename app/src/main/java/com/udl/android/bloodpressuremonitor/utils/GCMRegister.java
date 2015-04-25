@@ -34,7 +34,7 @@ public class GCMRegister {
     private static Registration registerInDebugMode(){
 
         Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-        .setRootUrl(Constants.TEST_URL)
+        .setRootUrl(Constants.CLOUD_URL)
         .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
             @Override
             public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {

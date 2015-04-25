@@ -106,7 +106,8 @@ public class LoginActivity extends BPMmasterActivity {
         @Override
         public User doInBackground(Login... param){
             BpmApiLogin.Builder builder = new BpmApiLogin.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl(Constants.TEST_URL)
+                    .setRootUrl(Constants.CLOUD_URL)
+                    .setApplicationName("BPM")
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {

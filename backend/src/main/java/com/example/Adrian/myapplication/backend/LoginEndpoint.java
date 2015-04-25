@@ -18,14 +18,8 @@ public class LoginEndpoint {
 
     private static final Logger logger = Logger.getLogger(LoginEndpoint.class.getName());
 
-    @ApiMethod(name = "checklogin", path = "login/check", httpMethod = ApiMethod.HttpMethod.POST,clientIds = {
-            BackendConstants.WEB_CLIENT_ID,
-            BackendConstants.ANDROID_CLIENT_ID,
-            Constant.API_EXPLORER_CLIENT_ID},
-            audiences = {BackendConstants.ANDROID_AUDIENCE},
-            scopes = {BackendConstants.EMAIL_SCOPE})
-    public User checkLogin(Login login, com.google.appengine.api.users.User authuser) throws ErrorLoginException,OAuthRequestException {
-        if (authuser == null) throw new OAuthRequestException("Unauthotized user");
+    @ApiMethod(name = "checklogin", path = "login/check", httpMethod = ApiMethod.HttpMethod.POST)
+    public User checkLogin(Login login) throws ErrorLoginException{
         logger.info("Este es el email "+login.getEmail()+" y esta la contraseña "+login.getPassword());
         User user = ofy().load().type(User.class).filter("email",login.getEmail()).filter("password",login.getPassword()).first().now();
         if (user==null)

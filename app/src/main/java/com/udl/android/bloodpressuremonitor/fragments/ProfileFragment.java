@@ -69,7 +69,7 @@ public class ProfileFragment extends Fragment {
         protected User doInBackground(Void... params) {
 
             BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl(Constants.TEST_URL)
+                    .setRootUrl(Constants.CLOUD_URL)
                     .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                         @Override
                         public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
