@@ -1,8 +1,7 @@
 package com.udl.android.bloodpressuremonitor.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,15 +11,15 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.adrian.myapplication.backend.measurementApi.MeasurementApi;
+import com.example.adrian.myapplication.backend.measurementApi.model.CollectionResponseMeasurement;
 import com.example.adrian.myapplication.backend.measurementApi.model.Measurement;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+import com.udl.android.bloodpressuremonitor.BPMActivityController;
 import com.udl.android.bloodpressuremonitor.R;
 import com.udl.android.bloodpressuremonitor.adapters.MeasurementAdapter;
-import com.udl.android.bloodpressuremonitor.model.Pressure;
-import com.udl.android.bloodpressuremonitor.test.DBMock;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 
 import java.io.IOException;
@@ -51,10 +50,75 @@ public class MeasurementsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        List<Pressure> list = DBMock.getMeasurementsFake();
-        MeasurementAdapter adapter = new MeasurementAdapter(getActivity(),list);
+        new GetMeasurements().execute();
+
+    }
+
+
+    private class GetMeasurements extends AsyncTask<Void,Void,CollectionResponseMeasurement>{
+
+        public void onPreExecute(){
+            getControllerActivity().showDialog(false);
+        }
+
+        @Override
+        public CollectionResponseMeasurement doInBackground(Void... params){
+
+            MeasurementApi.Builder builder = new MeasurementApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
+                    .setRootUrl(Constants.CLOUD_URL)
+                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                        @Override
+                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                            abstractGoogleClientRequest.setDisableGZipContent(true);
+                        }
+                    });
+            MeasurementApi measurementApi = builder.build();
+            try {
+                return measurementApi.listMeasurements(Constants.SESSION_USER_ID).execute();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+
+        }
+
+        @Override
+        public void onPostExecute(CollectionResponseMeasurement result) {
+            getControllerActivity().dialogDismiss();
+            if (result == null) {
+                showErrorDialog();
+            }else {
+                configureView(result.getItems());
+            }
+        }
+
+
+    }
+
+    private void showErrorDialog(){
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getControllerActivity())
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                })
+                .setMessage(getResources().getString(R.string.errorreceivingpressures));
+            dialog.show();
+
+    }
+
+
+    private void configureView(List<Measurement> measurements){
+        //List<Pressure> list = DBMock.getMeasurementsFake();
+        MeasurementAdapter adapter = new MeasurementAdapter(getActivity(),measurements);
         listview.setAdapter(adapter);
 
+    }
+
+    private BPMActivityController getControllerActivity(){
+        return (BPMActivityController)getActivity();
     }
 
 

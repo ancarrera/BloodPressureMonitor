@@ -18,6 +18,7 @@
     <string name="systolicpressure">Systolic P</string>
     <string name="diastolicpressure">Diastolic P</string>
     <string name="pulsetext">Pulse</string>
+    <string name="recoverymeasurements">Recovering measurements</string>
 
     <!--Action bar-->
 
@@ -141,5 +142,7 @@
     <string name="recoveryregidOK">Device register in GCM</string>
     <string name="goodsendmeasurement">Measurment sent correctly</string>
     <string name="errorsendmeasurement">Error sending measurement</string>
+    <string name="errorreceivingpressures">Error receiving the user pressures</string>
+    <string name="healthstatus">Su estado de saludo</string>
 
 </resources>

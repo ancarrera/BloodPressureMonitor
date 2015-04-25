@@ -21,6 +21,7 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.BPMActivityController;
 import com.udl.android.bloodpressuremonitor.R;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
+import com.udl.android.bloodpressuremonitor.utils.DateUtils;
 import com.udl.android.bloodpressuremonitor.utils.MeasurementTask;
 
 import java.io.IOException;
@@ -90,6 +91,7 @@ public class ObtainManualPressures extends Fragment {
                         measurement.setSystolic(Integer.parseInt(systolictext.getText().toString()));
                         measurement.setDiastolic(Integer.parseInt(diastolictext.getText().toString()));
                         measurement.setDiastolic(Integer.parseInt(pulsetext.getText().toString()));
+                        measurement.setDate(DateUtils.getCurrentDate());
                         new MeasurementTask(getActivity()).execute(measurement);
                         systolictext.setText("");
                         diastolictext.setText("");

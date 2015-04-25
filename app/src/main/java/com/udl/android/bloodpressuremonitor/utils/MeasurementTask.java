@@ -3,7 +3,9 @@ package com.udl.android.bloodpressuremonitor.utils;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 
 import com.example.adrian.myapplication.backend.measurementApi.MeasurementApi;
 import com.example.adrian.myapplication.backend.measurementApi.model.Measurement;
@@ -40,13 +42,23 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
                     }
                 });
         MeasurementApi measurementApi = builder.build();
+        String lan = checkAppLenguage(context);
         try {
-            return measurementApi.insertMeasurement(params[0]).execute();
+            return measurementApi.insertMeasurement(Constants.SESSION_USER_ID,lan,params[0]).execute();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         return null;
+    }
+
+    private String checkAppLenguage(Context context){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        if (!preferences.getString("languageList","").equalsIgnoreCase("")){
+            return preferences.getString("languageList","");
+        }
+
+        return "";
     }
 
     protected void onPostExecute(Measurement measurement){

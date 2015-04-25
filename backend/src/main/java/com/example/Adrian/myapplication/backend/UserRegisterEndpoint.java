@@ -41,7 +41,7 @@ public class UserRegisterEndpoint {
         return CollectionResponse.<User>builder().setItems(records).build();
     }
 
-    @ApiMethod(name = "create",path = "users",httpMethod = ApiMethod.HttpMethod.POST,
+    @ApiMethod(name = "create",path="users",httpMethod = ApiMethod.HttpMethod.POST,
             scopes = {BackendConstants.EMAIL_SCOPE},
             clientIds = {
                     BackendConstants.WEB_CLIENT_ID,

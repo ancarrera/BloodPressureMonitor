@@ -10,8 +10,9 @@ public class Constants {
     public static final String SENDER_ID = "1029013275941";
     public static final String TAG ="GCM_DEBUG";
     public static final int NOTIFICATION= 1;
-//    public static final String TEST ="http://10.0.2.2:8080/_ah/api/";
-    public static final String CLOUD_URL ="https://metal-center-92523.appspot.com/_ah/api/";
+    //public static final String CLOUD_URL ="http://10.0.2.2:8080/_ah/api/";
+    public static final String CLOUD_URL ="http://172.16.122.203:8080/_ah/api/";
+    //public static final String CLOUD_URL ="https://metal-center-92523.appspot.com/_ah/api/";
     public static Long SESSION_USER_ID;
 
 

@@ -64,7 +64,7 @@ public class GCMRegister {
                 registration = registerInRealeaseMode();
 
             if (registration!=null) {
-                registration.register(regid).execute();
+                registration.register(Constants.SESSION_USER_ID,regid).execute();
                 Log.d("SEND", "Good send" + regid);
             }else
                 throw new IOException();

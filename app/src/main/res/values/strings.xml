@@ -23,6 +23,7 @@
     <string name="diastolicpressure">P.Diastólica</string>
     <string name="pulsetext">Pulso</string>
     <string name="measurememtheader">Mediciones</string>
+    <string name="recoverymeasurements">Recuperando mediciones</string>
 
     <!--Action bar-->
     <string name="principaltext">Menu Principal</string>
@@ -156,4 +157,6 @@
     <string name="recoveryregidOK">Dispositivo registrado en GCM</string>
     <string name="goodsendmeasurement">Presiones enviadas correctamente</string>
     <string name="errorsendmeasurement">Error enviando medición</string>
+    <string name="errorreceivingpressures">Error reciviendo las mediciones del usuarios</string>
+    <string name="healthstatus">Su estado de salud</string>
 </resources>

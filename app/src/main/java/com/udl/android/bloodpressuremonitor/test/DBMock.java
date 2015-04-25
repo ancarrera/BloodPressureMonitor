@@ -1,13 +1,12 @@
 package com.udl.android.bloodpressuremonitor.test;
 
-import com.udl.android.bloodpressuremonitor.model.Pressure;
+import com.example.adrian.myapplication.backend.measurementApi.model.Measurement;
+import com.udl.android.bloodpressuremonitor.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
@@ -16,30 +15,30 @@ import java.util.Random;
  */
 public class DBMock {
 
-    public static List<Pressure> getMeasurementsFake(){
+    public static List<Measurement> getMeasurementsFake(){
 
-        List<Pressure> list = new ArrayList<>();
+        List<Measurement> list = new ArrayList<>();
         Random random = new Random();
         Calendar calendar = Calendar.getInstance();
         final int max = 40;
         calendar.add(Calendar.DAY_OF_MONTH,-max);
-        Pressure pressure;
+        Measurement pressures;
 
         for (int i=0;i<max;i++){
 
-            pressure = new Pressure();
-            pressure.setSystolic(String.valueOf(random.nextInt(220)));
-            pressure.setDiastolic(String.valueOf(random.nextInt(220)));
-            pressure.setPulse(String.valueOf(random.nextInt(220)));
-            pressure.setDate(calendar.getTime());
-            list.add(pressure);
+            pressures = new Measurement();
+            pressures.setSystolic(random.nextInt(220));
+            pressures.setDiastolic(random.nextInt(220));
+            pressures.setPulse(random.nextInt(220));
+            pressures.setDate(DateUtils.dateToString(calendar.getTime(),DateUtils.DATEFORMAT));
+            list.add(pressures);
             calendar.add(Calendar.DAY_OF_MONTH,1);
 
         }
 
-        Collections.sort(list, new Comparator<Pressure>() {
+        Collections.sort(list, new Comparator<Measurement>() {
             @Override
-            public int compare(Pressure lhs, Pressure rhs) {
+            public int compare(Measurement lhs, Measurement rhs) {
                 return rhs.getDate().compareTo(lhs.getDate());
             }
         });

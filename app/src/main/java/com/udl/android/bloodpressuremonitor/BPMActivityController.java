@@ -54,6 +54,7 @@ import com.udl.android.bloodpressuremonitor.fragments.MeasurementsFragment;
 import com.udl.android.bloodpressuremonitor.fragments.ObtainManualPressures;
 import com.udl.android.bloodpressuremonitor.fragments.ProfileFragment;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
+import com.udl.android.bloodpressuremonitor.utils.DateUtils;
 import com.udl.android.bloodpressuremonitor.utils.GCMRegister;
 import com.udl.android.bloodpressuremonitor.utils.MeasurementTask;
 import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
@@ -149,6 +150,11 @@ public class BPMActivityController extends BPMmasterActivity
     public void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+
+        managePush(intent);
+
         setContentView(R.layout.homeactivitylayout);
         configureActionBar();
         selectFragment(HomeFragment.getNewInstace(), false, false);
@@ -204,6 +210,7 @@ public class BPMActivityController extends BPMmasterActivity
                         measurement.setDiastolic(Integer.parseInt(diastolicPressure));
                         measurement.setSystolic(Integer.parseInt(systolicPressure));
                         measurement.setDiastolic(Integer.parseInt(pulse));
+                        measurement.setDate(DateUtils.getCurrentDate());
 
                         dialogresult.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
@@ -227,6 +234,14 @@ public class BPMActivityController extends BPMmasterActivity
 
       registerGCM();
 
+
+    }
+
+    @Override
+    public void onNewIntent(Intent intent){
+        super.onNewIntent(intent);
+
+        managePush(intent);
 
     }
 
@@ -853,6 +868,33 @@ public class BPMActivityController extends BPMmasterActivity
             new unregisterTask().execute();
         } else {
             Log.d(Constants.TAG, "Google Cloud Services not found");
+        }
+    }
+
+    private void showPushAlertDialog(String msg){
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        })
+        .setMessage(msg);
+        dialog.show();
+    }
+
+    private void managePush(Intent intent){
+        if (intent!=null)
+            Log.d("d","distinto de nulo "+intent.toString());
+        if (intent.hasExtra("message")){
+            FragmentManager fragmentManager = this.getSupportFragmentManager();
+            if (fragmentManager.findFragmentById(R.id.fragmentframe) != null){
+                fragmentManager.beginTransaction().remove(
+                        fragmentManager.findFragmentById(R.id.fragmentframe)).commit();
+                putHomeFragmentInTop(false);
+            }
+            String msg = intent.getStringExtra("message");
+            showPushAlertDialog(msg);
         }
     }
 

@@ -3,18 +3,20 @@ package com.example.Adrian.myapplication.backend;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
+import java.util.Date;
+
 /**
  * Created by Adrian on 17/4/15.
  */
-@Entity
+
 public class Measurement {
 
-    @Id
-    Long id;
+
 
     private int systolic;
     private int diastolic;
     private int pulse;
+    private String date;
 
     public int getDiastolic() {
         return diastolic;
@@ -38,5 +40,12 @@ public class Measurement {
 
     public void setSystolic(int systolic) {
         this.systolic = systolic;
+    }
+
+    public String getDate() {
+        return date;
+    }
+    public void setDate(String date) {
+        this.date = date;
     }
 }

@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.example.adrian.myapplication.backend.measurementApi.model.Measurement;
 import com.udl.android.bloodpressuremonitor.R;
-import com.udl.android.bloodpressuremonitor.fragments.MeasurementsFragment;
-import com.udl.android.bloodpressuremonitor.model.Pressure;
-import com.udl.android.bloodpressuremonitor.utils.DateUtils;
 
 import java.util.List;
 
@@ -20,9 +18,9 @@ import java.util.List;
 public class MeasurementAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Pressure> list;
+    private List<Measurement> list;
 
-    public MeasurementAdapter(Context context, List<Pressure> list){
+    public MeasurementAdapter(Context context, List<Measurement> list){
 
         this.context = context;
         this.list = list;
@@ -34,7 +32,7 @@ public class MeasurementAdapter extends BaseAdapter {
     }
 
     @Override
-    public Pressure getItem(int position) {
+    public Measurement getItem(int position) {
         return list.get(position);
     }
 
@@ -62,12 +60,12 @@ public class MeasurementAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
-        Pressure pressure = getItem(position);
+        Measurement pressures = getItem(position);
 
-        holder.date.setText(DateUtils.dateToString(pressure.getDate(),DateUtils.DATEFORMAT));
-        holder.pulse.setText(pressure.getPulse());
-        holder.systolic.setText(pressure.getSystolic());
-        holder.diastolic.setText(pressure.getDiastolic());
+        holder.date.setText(pressures.getDate());
+        holder.pulse.setText(""+pressures.getPulse());
+        holder.systolic.setText(""+pressures.getSystolic());
+        holder.diastolic.setText(""+pressures.getDiastolic());
 
         return convertView;
     }

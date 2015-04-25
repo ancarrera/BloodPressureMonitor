@@ -4,6 +4,9 @@ import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 import com.googlecode.objectify.annotation.Index;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Adrian on 1/4/15.
  */
@@ -21,9 +24,15 @@ public class User {
     private String city;
     private String administration;
     private String country;
+    private int totalinsertions;
+    private List<Measurement> measurementList;
     @Index
     private String password;
 
+    public User(){
+        this.measurementList = new ArrayList<>();
+        totalinsertions = 0;
+    }
     public Long getId() {
         return id;
     }
@@ -104,4 +113,25 @@ public class User {
         this.password = password;
     }
 
+    public List<Measurement> getMeasurementList() {
+        return measurementList;
+    }
+
+    public void addMeasurement(Measurement measurement){
+            measurementList.add(measurement);
+    }
+    public Measurement getMeasurementAtIndex(int index){
+        return measurementList.get(index);
+    }
+    public void setMeasurementList(List<Measurement> measurementList) {
+        this.measurementList = measurementList;
+    }
+
+    public int getTotalinsertions() {
+        return totalinsertions;
+    }
+
+    public void sumOneInsertion() {
+        totalinsertions++;
+    }
 }

@@ -38,8 +38,8 @@ public class RegistrationEndpoint {
      *
      * @param regId The Google Cloud Messaging registration Id to add
      */
-    @ApiMethod(name = "register")
-    public void registerDevice(@Named("regId") String regId) {
+    @ApiMethod(name = "register",path = "users/{id}/register")
+    public void registerDevice(@Named("regId") String regId,@Named("id") Long userID) {
         if (findRecord(regId) != null) {
             log.info("Device " + regId + " already registered, skipping register");
             return;
@@ -47,6 +47,7 @@ public class RegistrationEndpoint {
         log.info(regId);
         RegistrationRecord record = new RegistrationRecord();
         record.setRegId(regId);
+        record.setUserID(userID);
         ofy().save().entity(record).now();
     }
 

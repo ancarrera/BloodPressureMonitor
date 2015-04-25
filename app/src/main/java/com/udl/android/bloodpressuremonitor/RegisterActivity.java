@@ -34,6 +34,7 @@ import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecovera
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.google.api.client.http.HttpHeaders;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 import com.udl.android.bloodpressuremonitor.utils.GoogleAccountCredentials;
@@ -126,8 +127,8 @@ public class RegisterActivity extends BPMmasterActivity
 //        scopes.add(Constants.EMAIL_SCOPE);
 //        mCredential = GoogleAccountCredential.usingOAuth2(this, scopes);
 
-        mCredential = GoogleAccountCredential.usingAudience(this,"server:client_id:"+Constants.WEB_CLIENT_ID);
-
+        ///mCredential = GoogleAccountCredential.usingAudience(this,"server:client_id:"+Constants.WEB_CLIENT_ID);
+        mCredential = GoogleAccountCredential.usingAudience(this, "server:client_id:" + Constants.WEB_CLIENT_ID);
         // user needs to select an account, start account picker
 //        startActivityForResult(
 //                mCredential.newChooseAccountIntent(), REQUEST_ACCOUNT_PICKER);
@@ -321,29 +322,38 @@ public class RegisterActivity extends BPMmasterActivity
         @Override
         public User doInBackground(Void... param){
             String name = mCredential.getSelectedAccountName();
-            mCredential.
             //GoogleCredential credential = new GoogleCredential().setAccessToken(token);
-            try {
-                accesstoken = GoogleAuthUtil.getToken(getApplicationContext(),"acpgithub@gmail.com", "oauth2:"+Constants.EMAIL_SCOPE,new Bundle());
-            }catch (Exception e){
-                if (e instanceof UserRecoverableAuthException){
-                    Intent oneTimeToken =((UserRecoverableAuthException)e).getIntent();
-                    startActivityForResult(oneTimeToken,555);
-                    return null;
-                }
-                e.printStackTrace();
+//            try {
+//                accesstoken = GoogleAuthUtil.getToken(getApplicationContext(),"acpgithub@gmail.com", "oauth2:"+Constants.EMAIL_SCOPE,new Bundle());
+//            }catch (Exception e){
+//                if (e instanceof UserRecoverableAuthException){
+//                    Intent oneTimeToken =((UserRecoverableAuthException)e).getIntent();
+//                    startActivityForResult(oneTimeToken,555);
+//                    return null;
+//                }
+//                e.printStackTrace();
+//
+//            }
 
-            }
+//            String scope = String.format("oauth2:server:client_id:%s:api_scope:%s",Constants.ANDROID_CLIENT_ID,Constants.EMAIL_SCOPE);
+//            String token = "";
+//            try {
+//                 token =GoogleAuthUtil.getToken(
+//                        RegisterActivity.this, "acpgithub@gmail.com", scope);
+//            } catch (Exception e) {
+//                e.printStackTrace(); // TODO: handle the exception
+//            }
+//            return null;
 
-            BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(),
+            BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(),new AndroidJsonFactory(),mCredential)
                     .setRootUrl(Constants.CLOUD_URL)
-                    .setApplicationName("BPM");
-//                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-//                        @Override
-//                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-//                            abstractGoogleClientRequest.setDisableGZipContent(true);
-//                        }
-//                    });
+                    .setApplicationName("BPM")
+                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+                        @Override
+                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+                            abstractGoogleClientRequest.setDisableGZipContent(true);
+                        }
+                    });
                 User user = createUser();
                 BpmApiRegister registerapi = builder.build();
 

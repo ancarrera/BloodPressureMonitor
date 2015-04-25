@@ -20,4 +20,8 @@ public class DateUtils {
         DateFormat df = new SimpleDateFormat(format);
         return df.format(date);
     }
+
+    public static String getCurrentDate(){
+        return dateToString(new Date(),DATEFORMAT);
+    }
 }
