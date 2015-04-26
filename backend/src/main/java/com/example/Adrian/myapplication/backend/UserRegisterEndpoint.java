@@ -1,5 +1,6 @@
 package com.example.Adrian.myapplication.backend;
 
+import com.google.android.gcm.server.Constants;
 import com.google.api.server.spi.Constant;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
@@ -42,9 +43,9 @@ public class UserRegisterEndpoint {
     }
 
     @ApiMethod(name = "create",path="users",httpMethod = ApiMethod.HttpMethod.POST,
-            scopes = {BackendConstants.EMAIL_SCOPE},
+            scopes = {"https://www.googleapis.com/auth/userinfo.profile","https://www.googleapis.com/auth/userinfo.email"},
             clientIds = {
-                    BackendConstants.WEB_CLIENT_ID,
+                    ,
                     BackendConstants.ANDROID_CLIENT_ID,
                     Constant.API_EXPLORER_CLIENT_ID},
             audiences = {BackendConstants.ANDROID_AUDIENCE})

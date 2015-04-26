@@ -26,6 +26,7 @@ import com.example.adrian.myapplication.backend.bpmApiRegister.BpmApiRegister;
 import com.google.android.gms.auth.GoogleAuthException;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
+import com.google.android.gms.common.Scopes;
 import com.google.api.client.extensions.android.http.AndroidHttp;
 import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -322,46 +323,39 @@ public class RegisterActivity extends BPMmasterActivity
         @Override
         public User doInBackground(Void... param){
             String name = mCredential.getSelectedAccountName();
-            //GoogleCredential credential = new GoogleCredential().setAccessToken(token);
-//            try {
-//                accesstoken = GoogleAuthUtil.getToken(getApplicationContext(),"acpgithub@gmail.com", "oauth2:"+Constants.EMAIL_SCOPE,new Bundle());
-//            }catch (Exception e){
-//                if (e instanceof UserRecoverableAuthException){
-//                    Intent oneTimeToken =((UserRecoverableAuthException)e).getIntent();
-//                    startActivityForResult(oneTimeToken,555);
-//                    return null;
-//                }
-//                e.printStackTrace();
-//
-//            }
-
-//            String scope = String.format("oauth2:server:client_id:%s:api_scope:%s",Constants.ANDROID_CLIENT_ID,Constants.EMAIL_SCOPE);
-//            String token = "";
-//            try {
-//                 token =GoogleAuthUtil.getToken(
-//                        RegisterActivity.this, "acpgithub@gmail.com", scope);
-//            } catch (Exception e) {
-//                e.printStackTrace(); // TODO: handle the exception
-//            }
-//            return null;
-
-            BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(),new AndroidJsonFactory(),mCredential)
-                    .setRootUrl(Constants.CLOUD_URL)
-                    .setApplicationName("BPM")
-                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                        @Override
-                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                            abstractGoogleClientRequest.setDisableGZipContent(true);
-                        }
-                    });
-                User user = createUser();
-                BpmApiRegister registerapi = builder.build();
-
+            //final String scope = "oauth2:" + Scopes.PROFILE;
+            //GoogleCredential credential = new GoogleCredential().setAccessToken(accesstoken);
+            String scope =String.format("oauth2:server:client_id:%s:api_scope:%s", Constants.WEB_CLIENT_ID, "https://www.googleapis.com/auth/userinfo.profile");
             try {
-                return registerapi.create(user).execute();
-            } catch (Exception e) {
+               accesstoken = GoogleAuthUtil.getToken(RegisterActivity.this, name, scope, new Bundle());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }catch(UserRecoverableAuthException ex){
+                startActivityForResult(ex.getIntent(),555);
+            }catch (GoogleAuthException e) {
                 e.printStackTrace();
             }
+
+
+//            BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(),new AndroidJsonFactory(),mCredential)
+//                    .setRootUrl(Constants.CLOUD_URL)
+//                    .setApplicationName("BPM")
+//                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
+//                        @Override
+//                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
+//                            abstractGoogleClientRequest.setDisableGZipContent(true);
+//                            abstractGoogleClientRequest.set("Authorization","Bearer "+accesstoken);
+//                        }
+//                    });
+//                User user = createUser();
+//                BpmApiRegister registerapi = builder.build();
+//
+//            try {
+//                return registerapi.create(user).execute();
+//
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
 
             return null;
         }
@@ -425,8 +419,7 @@ public class RegisterActivity extends BPMmasterActivity
 
         if (requestCode == 555) {
             Bundle extra = data.getExtras();
-            String oneTimeToken = extra.getString("authtoken");
-            String wtf = oneTimeToken;
+            accesstoken = extra.getString("authtoken");
         }
     }
 
@@ -439,6 +432,7 @@ public class RegisterActivity extends BPMmasterActivity
         protected String doInBackground(Void... params) {
 //            String scope = String.format("oauth2:server:client_id:%s:api_scope:%s",
 //                    Constants.WEB_CLIENT_ID, Constants.EMAIL_SCOPE);
+
             try {
 //                return GoogleAuthUtil.getToken(
 //                        RegisterActivity.this, mCredential.getSelectedAccountName(), scope);
