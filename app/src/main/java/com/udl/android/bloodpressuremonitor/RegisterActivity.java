@@ -14,6 +14,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -139,11 +140,7 @@ public class RegisterActivity extends BPMmasterActivity
             public void onClick(View v) {
                 locationbuttonpressed = true;
                 if (lastKnownLocation!=null){
-                    obtainLocationData(lastKnownLocation);
-                    if (country!=null && administration!=null && city!= null)
-                        showDialogEvents(AlertsID.LOCATION_FINDED);
-                    else
-                        showDialogEvents(AlertsID.PROBLEM_LOCATION);
+                        new ObtainLocation().execute(lastKnownLocation);
                 }else{
                     showDialogEvents(AlertsID.PROBLEM_LOCATION);
                 }
@@ -266,7 +263,6 @@ public class RegisterActivity extends BPMmasterActivity
 
         double lat = location.getLatitude();
         double lng = location.getLongitude();
-
         Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
         StringBuilder builder = new StringBuilder();
         try {
@@ -277,6 +273,8 @@ public class RegisterActivity extends BPMmasterActivity
             country = foundAddress.getCountryName();
             city = foundAddress.getLocality();
             administration = foundAddress.getAdminArea();
+            Log.d("L","coun"+country+" cit"+city+" ad"+administration);
+
 
         }
         }catch(IOException e) {
@@ -388,4 +386,43 @@ public class RegisterActivity extends BPMmasterActivity
 
             }
         }
+
+    private class ObtainLocation extends AsyncTask<Location,Void,Void>{
+
+        @Override
+        public void onPreExecute(){
+            showDialog(false);
+        }
+
+        @Override
+        public Void doInBackground(Location... params){
+
+            obtainLocationData(params[0]);
+            return null;
+        }
+
+        @Override
+        public void onPostExecute(Void aVoid) {
+            dialogDismiss();
+            if (country!=null || administration!=null || city!= null) {
+                checkNullFields();
+                showDialogEvents(AlertsID.LOCATION_FINDED);
+            }else {
+                showDialogEvents(AlertsID.PROBLEM_LOCATION);
+            }
+        }
+    }
+
+    private void checkNullFields(){
+        final String nullfield = getResources().getString(R.string.fieldnotfound);
+        if (city==null){
+            city= nullfield;
+        }
+        if(country==null){
+            country = nullfield;
+        }
+        if (administration==null){
+            administration=nullfield;
+        }
+    }
 }

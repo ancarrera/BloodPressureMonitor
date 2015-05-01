@@ -57,6 +57,7 @@ import com.udl.android.bloodpressuremonitor.utils.Constants;
 import com.udl.android.bloodpressuremonitor.utils.DateUtils;
 import com.udl.android.bloodpressuremonitor.utils.GCMRegister;
 import com.udl.android.bloodpressuremonitor.utils.MeasurementTask;
+import com.udl.android.bloodpressuremonitor.utils.PendingMeasurement;
 import com.udl.android.bloodpressuremonitor.utils.PreferenceConstants;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -215,7 +216,7 @@ public class BPMActivityController extends BPMmasterActivity
                         dialogresult.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                new MeasurementTask(BPMActivityController.this).execute(measurement);
+                                new MeasurementTask(BPMActivityController.this,false).execute(measurement);
                                 dialog.dismiss();
                             }
                         });
@@ -233,6 +234,10 @@ public class BPMActivityController extends BPMmasterActivity
         };
 
       registerGCM();
+        PendingMeasurement pendingm = new PendingMeasurement(this);
+        if (pendingm.checkIfPending()){
+            pendingm.showPendingDialog();
+        }
 
 
     }
@@ -342,17 +347,23 @@ public class BPMActivityController extends BPMmasterActivity
                 break;
             case 3:
                 buttonbar.setVisibility(View.INVISIBLE);
-                if (bluetoothAdapter == null) {
-                    showDialogBluetoothCases(BluetoothDialog.NOT_SUPPORTED);
-                }else{
-                    if (!bluetoothAdapter.isEnabled()) {
+                PendingMeasurement pendingm = new PendingMeasurement(this);
+                if (pendingm.checkIfPending()){
+                    pendingm.showPendingDialog();
+                }else {
+                    if (bluetoothAdapter == null) {
+                        showDialogBluetoothCases(BluetoothDialog.NOT_SUPPORTED);
+                    } else {
+                        if (!bluetoothAdapter.isEnabled()) {
 
-                        showDialogBluetoothCases(BluetoothDialog.NOT_ENABLED);
-                    }else{
+                            showDialogBluetoothCases(BluetoothDialog.NOT_ENABLED);
+                        } else {
 
-                        onActivityResult(BLUETOOTH_ENABLE_PROCESS,RESULT_OK,null);
+                            onActivityResult(BLUETOOTH_ENABLE_PROCESS, RESULT_OK, null);
+                        }
                     }
                 }
+
                 secondbuttonbar.setVisibility(View.VISIBLE);
                 break;
             case 4:
@@ -749,7 +760,7 @@ public class BPMActivityController extends BPMmasterActivity
     private String removeRegID(Context context){
         final SharedPreferences preferences = getSharedPreferences(
                 PreferenceConstants.GCM_PREFERENCES, Context.MODE_PRIVATE);
-        preferences.edit().putString(PreferenceConstants.REG_ID,"").commit();
+        preferences.edit().putString(Constants.SESSION_USER_ID+"","").commit();
         return "";
     }
 
@@ -885,7 +896,6 @@ public class BPMActivityController extends BPMmasterActivity
 
     private void managePush(Intent intent){
         if (intent!=null)
-            Log.d("d","distinto de nulo "+intent.toString());
         if (intent.hasExtra("message")){
             FragmentManager fragmentManager = this.getSupportFragmentManager();
             if (fragmentManager.findFragmentById(R.id.fragmentframe) != null){

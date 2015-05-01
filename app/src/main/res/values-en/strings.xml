@@ -83,6 +83,7 @@
     <string name="registerprocesserror">Error in register process</string>
     <string name="yestext">Yes</string>
     <string name="notext">No</string>
+    <string name="fieldnotfound">Not found</string>
 
 
 
@@ -141,8 +142,9 @@
     <!-- Measurement-->
     <string name="recoveryregidOK">Device register in GCM</string>
     <string name="goodsendmeasurement">Measurment sent correctly</string>
-    <string name="errorsendmeasurement">Error sending measurement</string>
+    <string name="errorsendmeasurement">Error sending measurement. The measurement has been saved.</string>
     <string name="errorreceivingpressures">Error receiving the user pressures</string>
-    <string name="healthstatus">Su estado de saludo</string>
+    <string name="healthstatus">Your health state</string>
+    <string name="pendingmeasurement">There are one pending measurement</string>
 
 </resources>

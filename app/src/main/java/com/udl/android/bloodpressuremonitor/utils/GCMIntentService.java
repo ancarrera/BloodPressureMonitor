@@ -1,6 +1,7 @@
 package com.udl.android.bloodpressuremonitor.utils;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -61,9 +62,9 @@ public class GCMIntentService extends IntentService {
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setAutoCancel(true)
+                        .setDefaults(Notification.DEFAULT_ALL)
                         .setContentTitle("BPM Notification")
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(msg))
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
                         .setContentText(msg);
 
         mBuilder.setContentIntent(contentIntent);

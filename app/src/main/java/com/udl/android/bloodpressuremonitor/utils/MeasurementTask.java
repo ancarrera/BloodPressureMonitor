@@ -23,8 +23,11 @@ import java.io.IOException;
  */
 public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
     private BPMmasterActivity context;
+    private boolean isPending = false;
+    private Measurement oldmeasurement;
 
-    public MeasurementTask(Context context){
+    public MeasurementTask(Context context,boolean isPending){
+        this.isPending = isPending;
         this.context = (BPMmasterActivity)context;
     }
 
@@ -35,6 +38,7 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
     protected Measurement doInBackground(Measurement... params) {
         MeasurementApi.Builder builder = new MeasurementApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
                 .setRootUrl(Constants.CLOUD_URL)
+                .setApplicationName("BPM")
                 .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
                     @Override
                     public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
@@ -48,7 +52,7 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        this.oldmeasurement  = params[0];
         return null;
     }
 
@@ -63,10 +67,16 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
 
     protected void onPostExecute(Measurement measurement){
         context.dialogDismiss();
+        if (isPending){
+            PendingMeasurement.removePending(context);
+        }
+
         if (measurement!=null){
             showAlertDialog(true);
         }else{
             showAlertDialog(false);
+            if (!isPending)
+                PendingMeasurement.saveMeasurement(context,oldmeasurement);
         }
     }
 

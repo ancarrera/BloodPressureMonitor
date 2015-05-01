@@ -1,10 +1,8 @@
 package com.example.Adrian.myapplication.backend;
 
-import com.google.api.server.spi.Constant;
 import com.google.api.server.spi.config.Api;
 import com.google.api.server.spi.config.ApiMethod;
 import com.google.api.server.spi.config.ApiNamespace;
-import com.google.appengine.api.oauth.OAuthRequestException;
 
 import java.util.logging.Logger;
 

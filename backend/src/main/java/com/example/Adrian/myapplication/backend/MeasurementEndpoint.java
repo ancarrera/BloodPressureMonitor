@@ -135,7 +135,7 @@ public class MeasurementEndpoint {
         Sender sender = new Sender(API_KEY);
         Message msg = new Message.Builder().addData("message", message).build();
         List<RegistrationRecord> records = ofy().load().type(RegistrationRecord.class)
-                .filter("userId", user.getId()).limit(5).list();
+                .filter("userId", user.getId()).limit(5).list(); //limited to five devices per user.
         for (RegistrationRecord record : records) {
             Result result = sender.send(msg, record.getRegId(), 5);
             if (result.getMessageId() != null) {

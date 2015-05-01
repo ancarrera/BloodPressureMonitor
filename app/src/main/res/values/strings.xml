@@ -91,6 +91,7 @@
     <string name="registerprocesserror">Error en el proceso de registro</string>
     <string name="yestext">Si</string>
     <string name="notext">No</string>
+    <string name="fieldnotfound">No encontrado</string>
 
     <string name="loginincorrect">El email o contraseña son incorrectos</string>
 
@@ -156,7 +157,8 @@
     <!--GCM strings-->
     <string name="recoveryregidOK">Dispositivo registrado en GCM</string>
     <string name="goodsendmeasurement">Presiones enviadas correctamente</string>
-    <string name="errorsendmeasurement">Error enviando medición</string>
+    <string name="errorsendmeasurement">Error enviando medición. La medición ha sido guardada.</string>
     <string name="errorreceivingpressures">Error reciviendo las mediciones del usuarios</string>
     <string name="healthstatus">Su estado de salud</string>
+    <string name="pendingmeasurement">Hay una medición pendiente de envio</string>
 </resources>

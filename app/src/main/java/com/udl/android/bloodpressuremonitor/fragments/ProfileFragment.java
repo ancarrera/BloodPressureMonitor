@@ -21,6 +21,8 @@ import com.udl.android.bloodpressuremonitor.BPMActivityController;
 import com.udl.android.bloodpressuremonitor.R;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 
+import junit.framework.Test;
+
 import java.io.IOException;
 
 /**
@@ -28,7 +30,7 @@ import java.io.IOException;
  */
 public class ProfileFragment extends Fragment {
 
-    private TextView name,surname,age,city,administration,country;
+    private TextView name,surname,age,city,administration,country,mail;
     private BPMActivityController context;
 
     public static ProfileFragment getNewInstance(){
@@ -43,6 +45,7 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.perfillayout, null);
         name = (TextView) view.findViewById(R.id.nametextview);
         surname = (TextView) view.findViewById(R.id.surnametextview);
+        mail = (TextView) view.findViewById(R.id.textviewemail);
         age = (TextView) view.findViewById(R.id.agetextview);
         city = (TextView) view.findViewById(R.id.citytextview);
         administration = (TextView) view.findViewById(R.id.administrationtextview);
@@ -90,6 +93,7 @@ public class ProfileFragment extends Fragment {
             if (user!=null){
                 name.setText(user.getName());
                 surname.setText(user.getFirstsurname()+" "+user.getSecondsurname());
+                mail.setText(user.getEmail());
                 age.setText(user.getAge());
                 city.setText(user.getCity());
                 administration.setText(user.getAdministration());

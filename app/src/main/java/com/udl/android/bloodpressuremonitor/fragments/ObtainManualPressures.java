@@ -23,6 +23,7 @@ import com.udl.android.bloodpressuremonitor.R;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 import com.udl.android.bloodpressuremonitor.utils.DateUtils;
 import com.udl.android.bloodpressuremonitor.utils.MeasurementTask;
+import com.udl.android.bloodpressuremonitor.utils.PendingMeasurement;
 
 import java.io.IOException;
 
@@ -67,37 +68,42 @@ public class ObtainManualPressures extends Fragment {
         sendbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PendingMeasurement pendingm = new PendingMeasurement((BPMActivityController)ObtainManualPressures.this.getActivity());
+                if (pendingm.checkIfPending()) {
+                    pendingm.showPendingDialog();
+                } else {
 
-                if (systolictext.getText().toString().equals("")
-                        || diastolictext.getText().toString().equals("") ||
-                        pulsetext.getText().toString().equals("")){
+                    if (systolictext.getText().toString().equals("")
+                            || diastolictext.getText().toString().equals("") ||
+                            pulsetext.getText().toString().equals("")) {
 
-                    showFieldsDialog(0);
-                }else{
-                    systolicpressure = Integer.parseInt(systolictext.getText().toString());
-                    diastolicpressure = Integer.parseInt(diastolictext.getText().toString());
-                    pulse = Integer.parseInt(pulsetext.getText().toString());
-                    if (systolicpressure > maxsystolic || systolicpressure < minsystolic){
+                        showFieldsDialog(0);
+                    } else {
+                        systolicpressure = Integer.parseInt(systolictext.getText().toString());
+                        diastolicpressure = Integer.parseInt(diastolictext.getText().toString());
+                        pulse = Integer.parseInt(pulsetext.getText().toString());
+                        if (systolicpressure > maxsystolic || systolicpressure < minsystolic) {
 
-                        showFieldsDialog(1);
-                    }else if (diastolicpressure>maxdiastolic ||diastolicpressure < mindiastolic){
+                            showFieldsDialog(1);
+                        } else if (diastolicpressure > maxdiastolic || diastolicpressure < mindiastolic) {
 
-                        showFieldsDialog(2);
-                    }else if (pulse > maxpulse || pulse < minpulse){
+                            showFieldsDialog(2);
+                        } else if (pulse > maxpulse || pulse < minpulse) {
 
-                        showFieldsDialog(3);
-                    }else{
-                        Measurement measurement = new Measurement();
-                        measurement.setSystolic(Integer.parseInt(systolictext.getText().toString()));
-                        measurement.setDiastolic(Integer.parseInt(diastolictext.getText().toString()));
-                        measurement.setDiastolic(Integer.parseInt(pulsetext.getText().toString()));
-                        measurement.setDate(DateUtils.getCurrentDate());
-                        new MeasurementTask(getActivity()).execute(measurement);
-                        systolictext.setText("");
-                        diastolictext.setText("");
-                        pulsetext.setText("");
+                            showFieldsDialog(3);
+                        } else {
+                            Measurement measurement = new Measurement();
+                            measurement.setSystolic(Integer.parseInt(systolictext.getText().toString()));
+                            measurement.setDiastolic(Integer.parseInt(diastolictext.getText().toString()));
+                            measurement.setPulse(Integer.parseInt(pulsetext.getText().toString()));
+                            measurement.setDate(DateUtils.getCurrentDate());
+                            new MeasurementTask(getActivity(),false).execute(measurement);
+                            systolictext.setText("");
+                            diastolictext.setText("");
+                            pulsetext.setText("");
+                        }
+
                     }
-
                 }
             }
         });
