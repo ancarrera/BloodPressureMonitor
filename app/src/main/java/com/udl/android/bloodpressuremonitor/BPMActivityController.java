@@ -730,7 +730,7 @@ public class BPMActivityController extends BPMmasterActivity
     private String getRegID(Context appcontext){
         final SharedPreferences preferences = getSharedPreferences(
                 PreferenceConstants.GCM_PREFERENCES,Context.MODE_PRIVATE);
-        String regid = preferences.getString(PreferenceConstants.REG_ID,"");
+        String regid = preferences.getString(Constants.SESSION_USER_ID+"","");
         if (regid.equals("")){
 
             return "";
@@ -769,7 +769,7 @@ public class BPMActivityController extends BPMmasterActivity
                 PreferenceConstants.GCM_PREFERENCES,Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(PreferenceConstants.REG_ID,newregid);
+        editor.putString(Constants.SESSION_USER_ID+"",newregid);
         editor.putInt(PreferenceConstants.APP_VERSION, getAppVersion(context));
         editor.commit();
     }

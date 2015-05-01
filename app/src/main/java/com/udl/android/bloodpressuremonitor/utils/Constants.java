@@ -15,9 +15,6 @@ public class Constants {
     //public static final String CLOUD_URL ="https://metal-center-92523.appspot.com/_ah/api/";
     public static Long SESSION_USER_ID;
 
+    public static final String WEB_CLIENT_ID = "1029013275941-ehmoit33qflnnms890f8kdfob8ck2m1d.apps.googleusercontent.com";
 
-    public static final String WEB_CLIENT_ID = "1029013275941-gm6sv93jgg9mqh3p8hvj35v32d762m7l.apps.googleusercontent.com";
-    public static final String ANDROID_CLIENT_ID = "1029013275941-kj9a0fie7j98oldf6bcp2iaih4mrnble.apps.googleusercontent.com";
-    public static final String ANDROID_AUDIENCE= WEB_CLIENT_ID;
-    public static final String EMAIL_SCOPE = "https://www.googleapis.com/auth/userinfo.email";
 }

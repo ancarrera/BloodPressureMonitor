@@ -5,8 +5,8 @@ package com.example.Adrian.myapplication.backend;
  */
 public class BackendConstants {
 
-    public static final String WEB_CLIENT_ID = "1029013275941-gm6sv93jgg9mqh3p8hvj35v32d762m7l.apps.googleusercontent.com";
-    public static final String ANDROID_CLIENT_ID = "1029013275941-kj9a0fie7j98oldf6bcp2iaih4mrnble.apps.googleusercontent.com";
-    public static final String ANDROID_AUDIENCE= "1029013275941-gm6sv93jgg9mqh3p8hvj35v32d762m7l.apps.googleusercontent.com";
+    public static final String WEB_CLIENT_ID = "1029013275941-ehmoit33qflnnms890f8kdfob8ck2m1d.apps.googleusercontent.com";
+    public static final String ANDROID_CLIENT_ID = "1029013275941-drivb6798lg406s6mcj97ir5boofmu9d.apps.googleusercontent.com";
+    public static final String ANDROID_AUDIENCE= "1029013275941-ehmoit33qflnnms890f8kdfob8ck2m1d.apps.googleusercontent.com";
     public static final String EMAIL_SCOPE = "https://www.googleapis.com/auth/userinfo.email";
 }
