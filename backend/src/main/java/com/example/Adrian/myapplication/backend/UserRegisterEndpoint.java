@@ -49,33 +49,38 @@ public class UserRegisterEndpoint {
                     Constant.API_EXPLORER_CLIENT_ID},
             audiences = {BackendConstants.ANDROID_AUDIENCE})
 
-    public User create(User user, com.google.appengine.api.users.User userAuth) throws OAuthRequestException {
+    public User create(User user, com.google.appengine.api.users.User userAuth) throws OAuthRequestException, NotFoundException, UserAlreadyExistException {
         if (userAuth==null) throw new OAuthRequestException("User unauthorized");
+        checkExists(null,user.getEmail(),1);
         ofy().save().entity(user).now();
         logger.info("user created " + user.getId());
         return ofy().load().entity(user).now();
     }
 
     @ApiMethod(name = "update",path = "users/{id}",httpMethod = ApiMethod.HttpMethod.PUT)
-    public User update(@Named("id") Long id, User user) throws NotFoundException {
-        checkExists(id);
+    public User update(@Named("id") Long id, User user) throws NotFoundException, UserAlreadyExistException {
+        checkExists(id, "udpdate",2);
         ofy().save().entity(user).now();
         logger.info("user upadate:" + user);
         return ofy().load().entity(user).now();
     }
 
     @ApiMethod(name = "remove",path = "users/{id}",httpMethod = ApiMethod.HttpMethod.DELETE)
-    public void remove(@Named("id") Long id) throws NotFoundException {
-        checkExists(id);
+    public void remove(@Named("id") Long id) throws NotFoundException, UserAlreadyExistException {
+        checkExists(id,"remove",2);
         ofy().delete().type(User.class).id(id).now();
         logger.info("user deleted " + id);
     }
 
-    public static void checkExists(Long id) throws NotFoundException {
-        try {
-            ofy().load().type(User.class).id(id).safe();
-        } catch (com.googlecode.objectify.NotFoundException e) {
-            throw new NotFoundException("Could not find User with ID: " + id);
+    private static void checkExists(Long id,String arg,int code) throws UserAlreadyExistException, NotFoundException {
+        if (code == 1){
+            User user =  ofy().load().type(User.class).filter("email",arg).first().now();
+            if (user != null)throw new UserAlreadyExistException("User with mail "+arg+" already exists. Conflict.");
+        }else if (code==2){
+            User user =  ofy().load().type(User.class).id(id).now();
+            if (code==2 && user==null) throw new NotFoundException("User not found.It can not "+arg);
         }
+
+
     }
 }

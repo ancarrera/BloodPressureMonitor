@@ -10,7 +10,8 @@ public class PreferenceConstants {
     public static final String LANGUAGE_SPANISH ="es";
     public static final String LANGUAGE_ENGLISH="en";
     public static final String LANGUAGEPREFERENCESKEY = "languageList";
-
+    public static final String NETWORKPREFERENCES = "networkList";
+    public static final String NOTIFICATIONPREFERENCES = "notifications";
     //GCM
     public static final String GCM_PREFERENCES = "GCM_preferences";
     public static final String APP_VERSION = "appVersion";

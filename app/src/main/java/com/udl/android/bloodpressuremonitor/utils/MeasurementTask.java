@@ -9,12 +9,9 @@ import android.preference.PreferenceManager;
 
 import com.example.adrian.myapplication.backend.measurementApi.MeasurementApi;
 import com.example.adrian.myapplication.backend.measurementApi.model.Measurement;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.R;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
+import com.udl.android.bloodpressuremonitor.backend.BackendCalls;
 
 import java.io.IOException;
 
@@ -36,16 +33,8 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
     }
     @Override
     protected Measurement doInBackground(Measurement... params) {
-        MeasurementApi.Builder builder = new MeasurementApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                .setRootUrl(Constants.CLOUD_URL)
-                .setApplicationName("BPM")
-                .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                    @Override
-                    public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                        abstractGoogleClientRequest.setDisableGZipContent(true);
-                    }
-                });
-        MeasurementApi measurementApi = builder.build();
+
+        MeasurementApi measurementApi = BackendCalls.getInstance().buildMeasurement();
         String lan = checkAppLenguage(context);
         try {
             return measurementApi.insertMeasurement(Constants.SESSION_USER_ID,lan,params[0]).execute();
@@ -61,7 +50,6 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
         if (!preferences.getString("languageList","").equalsIgnoreCase("")){
             return preferences.getString("languageList","");
         }
-
         return "";
     }
 

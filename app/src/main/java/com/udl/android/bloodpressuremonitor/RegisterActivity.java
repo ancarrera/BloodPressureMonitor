@@ -23,14 +23,10 @@ import android.widget.TextView;
 
 import com.example.adrian.myapplication.backend.bpmApiRegister.model.User;
 import com.example.adrian.myapplication.backend.bpmApiRegister.BpmApiRegister;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
+import com.udl.android.bloodpressuremonitor.backend.BackendCalls;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
-import com.udl.android.bloodpressuremonitor.utils.GoogleAccountCredentials;
 
 import java.io.IOException;
 import java.util.List;
@@ -58,21 +54,14 @@ public class RegisterActivity extends BPMmasterActivity
 
        private Button autobutton;
        private Button siginbutton;
-
        private EditText name,surnames,age,locationcity,locationprovince,locationcountry,email,
                         password1,password2;
+       private String city,administration,country;
 
        private LocationManager locationManager;
        private String providerBestCriteria;
-
        private boolean locationbuttonpressed=false;
-
-
        private Location lastKnownLocation;
-
-       private String city,administration,country;
-
-       private GoogleAccountCredentials credentialClass;
 
        private GoogleAccountCredential credential;
 
@@ -301,18 +290,8 @@ public class RegisterActivity extends BPMmasterActivity
         @Override
         public User doInBackground(Void... param) {
 
-            BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport()
-                    , new AndroidJsonFactory(), credential)
-                    .setRootUrl(Constants.CLOUD_URL)
-                    .setApplicationName("BPM")
-                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                        @Override
-                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                            abstractGoogleClientRequest.setDisableGZipContent(true);
-                        }
-                    });
             User user = createUser();
-            BpmApiRegister registerapi = builder.build();
+            BpmApiRegister registerapi = BackendCalls.getInstance().buildRegister(credential);
 
             try {
                 return registerapi.create(user).execute();
@@ -323,7 +302,6 @@ public class RegisterActivity extends BPMmasterActivity
 
             return null;
         }
-
 
         @Override
         public void onPostExecute(User user) {

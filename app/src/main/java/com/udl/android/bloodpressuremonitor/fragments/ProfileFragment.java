@@ -19,6 +19,7 @@ import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.BPMActivityController;
 import com.udl.android.bloodpressuremonitor.R;
+import com.udl.android.bloodpressuremonitor.backend.BackendCalls;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 
 import junit.framework.Test;
@@ -71,16 +72,9 @@ public class ProfileFragment extends Fragment {
         @Override
         protected User doInBackground(Void... params) {
 
-            BpmApiRegister.Builder builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl(Constants.CLOUD_URL)
-                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                        @Override
-                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                            abstractGoogleClientRequest.setDisableGZipContent(true);
-                        }
-                    });
+            BpmApiRegister apiregister = BackendCalls.getInstance().buildRegister(null);
             try {
-                return builder.build().receive(Constants.SESSION_USER_ID).execute();
+                return apiregister.receive(Constants.SESSION_USER_ID).execute();
             } catch (IOException e) {
                 e.printStackTrace();
             }

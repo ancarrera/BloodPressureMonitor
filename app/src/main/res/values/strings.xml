@@ -92,6 +92,7 @@
     <string name="yestext">Si</string>
     <string name="notext">No</string>
     <string name="fieldnotfound">No encontrado</string>
+    <string name="userloginerror">Email o contraseña incorrectos</string>
 
     <string name="loginincorrect">El email o contraseña son incorrectos</string>
 
@@ -128,7 +129,7 @@
     </string-array>
     <string-array name="preferencesnotificationsidiom">
         <item>si</item>
-        <item>>no</item>
+        <item>no</item>
     </string-array>
     <string name="appPreferences">Preferencias de la aplicación</string>
     <string name="summarylanguage">Permite escoger el idioma de la aplicación</string>
@@ -145,6 +146,7 @@
     <string name="administration">Administración:</string>
     <string name="country">País:</string>
     <string name="erroruserprofile">Error al recuperar los datos de usuario</string>
+    <string name="notNetwork">Según tus preferences solo puedes descargar la mediciones con WI-FI</string>
 
 
     <!--Help-->
@@ -156,6 +158,7 @@
 
     <!--GCM strings-->
     <string name="recoveryregidOK">Dispositivo registrado en GCM</string>
+    <string name="unregister">Dispositivo deregistrado en GCM</string>
     <string name="goodsendmeasurement">Presiones enviadas correctamente</string>
     <string name="errorsendmeasurement">Error enviando medición. La medición ha sido guardada.</string>
     <string name="errorreceivingpressures">Error reciviendo las mediciones del usuarios</string>

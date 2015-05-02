@@ -59,6 +59,7 @@
     <string name="pulsepressuredialog">The pulse is incorrect. The values range between 50 y 240</string>
     <string name="mandatoryfields">All fields are mandatory</string>
     <string name="dialogpositivbutton">OK</string>
+    <string name="notNetwork"> Depending on your preferences can only download the measurements with WI-FI </string>
 
     <!--Register Activity-->
 
@@ -84,7 +85,7 @@
     <string name="yestext">Yes</string>
     <string name="notext">No</string>
     <string name="fieldnotfound">Not found</string>
-
+    <string name="userloginerror">Email or password incorrect</string>
 
 
     <!--Preference activity-->
@@ -109,7 +110,7 @@
 
     <string-array name="preferencesnotifications">
         <item>yes</item>
-        <item>>no</item>
+        <item>no</item>
     </string-array>
 
     <string-array name="preferencesnotificationsidiom">
@@ -141,10 +142,12 @@
 
     <!-- Measurement-->
     <string name="recoveryregidOK">Device register in GCM</string>
+    <string name="unregister">Device unregister in GCM</string>
     <string name="goodsendmeasurement">Measurment sent correctly</string>
     <string name="errorsendmeasurement">Error sending measurement. The measurement has been saved.</string>
     <string name="errorreceivingpressures">Error receiving the user pressures</string>
     <string name="healthstatus">Your health state</string>
     <string name="pendingmeasurement">There are one pending measurement</string>
+
 
 </resources>

@@ -20,6 +20,7 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.BPMActivityController;
 import com.udl.android.bloodpressuremonitor.R;
 import com.udl.android.bloodpressuremonitor.adapters.MeasurementAdapter;
+import com.udl.android.bloodpressuremonitor.backend.BackendCalls;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 
 import java.io.IOException;
@@ -49,9 +50,9 @@ public class MeasurementsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
-
-        new GetMeasurements().execute();
-
+        if (BPMActivityController.downloadAllMeasurements){
+            new GetMeasurements().execute();
+        }
     }
 
 
@@ -63,16 +64,7 @@ public class MeasurementsFragment extends Fragment {
 
         @Override
         public CollectionResponseMeasurement doInBackground(Void... params){
-
-            MeasurementApi.Builder builder = new MeasurementApi.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl(Constants.CLOUD_URL)
-                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                        @Override
-                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                            abstractGoogleClientRequest.setDisableGZipContent(true);
-                        }
-                    });
-            MeasurementApi measurementApi = builder.build();
+            MeasurementApi measurementApi = BackendCalls.getInstance().buildMeasurement();
             try {
                 return measurementApi.listMeasurements(Constants.SESSION_USER_ID).execute();
             } catch (IOException e) {

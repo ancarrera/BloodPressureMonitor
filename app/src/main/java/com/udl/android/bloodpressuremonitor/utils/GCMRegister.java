@@ -5,10 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.adrian.myapplication.backend.registration.Registration;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+import com.udl.android.bloodpressuremonitor.backend.BackendCalls;
 
 import java.io.IOException;
 
@@ -18,7 +15,6 @@ import java.io.IOException;
 public class GCMRegister {
 
     private static GCMRegister gcmRegister;
-    private static boolean isDebug = true;
 
     private GCMRegister(){}
 
@@ -31,37 +27,11 @@ public class GCMRegister {
         return gcmRegister;
     }
 
-    private static Registration registerInDebugMode(){
-
-        Registration.Builder builder = new Registration.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-        .setRootUrl(Constants.CLOUD_URL)
-        .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-            @Override
-            public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                abstractGoogleClientRequest.setDisableGZipContent(true);
-            }
-        });
-
-
-        return  builder.build();
-    }
-
-    private static Registration registerInRealeaseMode(){
-
-        return new Registration.Builder(AndroidHttp.newCompatibleTransport(),
-                new AndroidJsonFactory(), null).build();
-
-    }
-
     public void executeSendRegistrationToBackend(Context context,String regid){
 
         Registration registration =null;
         try {
-            if (isDebug)
-                registration =registerInDebugMode();
-
-            else
-                registration = registerInRealeaseMode();
+            registration = BackendCalls.getInstance().buildRegistration();
 
             if (registration!=null) {
                 registration.register(Constants.SESSION_USER_ID,regid).execute();
@@ -78,12 +48,7 @@ public class GCMRegister {
 
         Registration registration =null;
         try {
-            if (isDebug)
-                registration =registerInDebugMode();
-
-            else
-                registration = registerInRealeaseMode();
-
+            registration = BackendCalls.getInstance().buildRegistration();
             if (registration!=null) {
                 registration.unregister(regid).execute();
                 Log.d("SEND", "Good send unregister" + regid);
@@ -94,7 +59,5 @@ public class GCMRegister {
             Toast.makeText(context,"Error sending register regid",Toast.LENGTH_LONG);
         }
     }
-
-
 
 }

@@ -208,9 +208,9 @@ public class BPMActivityController extends BPMmasterActivity
                                 + linebreak + getResources().getString(R.string.diastolic) + " " + diastolicPressure + " " + pressure_unit + linebreak
                                 + getResources().getString(R.string.pulse) + " " + pulse + " " + pulse_unit);
                         final Measurement measurement = new Measurement();
-                        measurement.setDiastolic(Integer.parseInt(diastolicPressure));
                         measurement.setSystolic(Integer.parseInt(systolicPressure));
-                        measurement.setDiastolic(Integer.parseInt(pulse));
+                        measurement.setDiastolic(Integer.parseInt(diastolicPressure));
+                        measurement.setPulse(Integer.parseInt(pulse));
                         measurement.setDate(DateUtils.getCurrentDate());
 
                         dialogresult.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
@@ -232,14 +232,10 @@ public class BPMActivityController extends BPMmasterActivity
 
             }
         };
-
-      registerGCM();
-        PendingMeasurement pendingm = new PendingMeasurement(this);
-        if (pendingm.checkIfPending()){
-            pendingm.showPendingDialog();
-        }
-
-
+    PendingMeasurement pendingm = new PendingMeasurement(this);
+    if (pendingm.checkIfPending()){
+        pendingm.showPendingDialog();
+    }
     }
 
     @Override
@@ -266,7 +262,10 @@ public class BPMActivityController extends BPMmasterActivity
         super.onResume();
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        networkconnectionstatus = preferences.getString("networkList", "WiFi");
+        String option = preferences.getString(PreferenceConstants.NOTIFICATIONPREFERENCES, "");
+        if (!option.equalsIgnoreCase("no"))
+            registerGCM();
+        networkconnectionstatus = preferences.getString(PreferenceConstants.NETWORKPREFERENCES, "WiFi");
         checkStatusConnectionPreferences(this);
     }
 
@@ -758,7 +757,7 @@ public class BPMActivityController extends BPMmasterActivity
     }
 
     private String removeRegID(Context context){
-        final SharedPreferences preferences = getSharedPreferences(
+        SharedPreferences preferences = getSharedPreferences(
                 PreferenceConstants.GCM_PREFERENCES, Context.MODE_PRIVATE);
         preferences.edit().putString(Constants.SESSION_USER_ID+"","").commit();
         return "";
@@ -861,7 +860,6 @@ public class BPMActivityController extends BPMmasterActivity
         if (checkGooglePlayServicesAvailable()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             registrationid = getRegID(getApplicationContext());
-            //greetBPMController();
             if (registrationid.isEmpty()) {
                 new registerTask().execute();
             }else{
@@ -877,6 +875,7 @@ public class BPMActivityController extends BPMmasterActivity
         if (checkGooglePlayServicesAvailable()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             new unregisterTask().execute();
+            Toast.makeText(this,getResources().getString(R.string.unregister),Toast.LENGTH_LONG).show();
         } else {
             Log.d(Constants.TAG, "Google Cloud Services not found");
         }

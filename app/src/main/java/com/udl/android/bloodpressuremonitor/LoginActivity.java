@@ -18,6 +18,7 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
+import com.udl.android.bloodpressuremonitor.backend.BackendCalls;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 
 import java.io.IOException;
@@ -105,17 +106,9 @@ public class LoginActivity extends BPMmasterActivity {
 
         @Override
         public User doInBackground(Login... param){
-            BpmApiLogin.Builder builder = new BpmApiLogin.Builder(AndroidHttp.newCompatibleTransport(), new AndroidJsonFactory(), null)
-                    .setRootUrl(Constants.CLOUD_URL)
-                    .setApplicationName("BPM")
-                    .setGoogleClientRequestInitializer(new GoogleClientRequestInitializer() {
-                        @Override
-                        public void initialize(AbstractGoogleClientRequest<?> abstractGoogleClientRequest) throws IOException {
-                            abstractGoogleClientRequest.setDisableGZipContent(true);
-                        }
-                    });
 
-            BpmApiLogin loginapi= builder.build();
+            BpmApiLogin loginapi = BackendCalls.getInstance().buildLogin();
+
             try {
                 return loginapi.checklogin(param[0]).execute();
             } catch (IOException e) {
@@ -130,17 +123,31 @@ public class LoginActivity extends BPMmasterActivity {
                 Constants.SESSION_USER_ID = user.getId();
                 startActivity(new Intent(LoginActivity.this, BPMActivityController.class));
                 finish();
+            }else{
+                showLoginError();
             }
         }
 
     }
 
-    private boolean emailIsCorrect(){
-        if (emailtextview.getText().toString().contains("@") && emailtextview.getText().toString().contains(".")){
+    private boolean emailIsCorrect() {
+        if (emailtextview.getText().toString().contains("@") && emailtextview.getText().toString().contains(".")) {
 
             return true;
         }
 
         return false;
+    }
+    private void showLoginError(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        })
+        .setMessage(getResources().getString(R.string.userloginerror));
+        builder.show();
+
     }
 }
