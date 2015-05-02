@@ -323,7 +323,7 @@ public class RegisterActivity extends BPMmasterActivity
 
             user.setName(name.getText().toString());
             String[] surnamesarray = surnames.getText().toString().split(" ");
-            if (surnamesarray.length!=2) {
+            if (surnamesarray.length==2) {
                 user.setFirstsurname(surnamesarray[0]);
                 user.setSecondsurname(surnamesarray[1]);
             }else{

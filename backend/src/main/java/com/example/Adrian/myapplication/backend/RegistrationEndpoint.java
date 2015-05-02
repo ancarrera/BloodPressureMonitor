@@ -40,7 +40,7 @@ public class RegistrationEndpoint {
      */
     @ApiMethod(name = "register",path = "users/{id}/register")
     public void registerDevice(@Named("regId") String regId,@Named("id") Long userID) {
-        if (findRecord(regId) != null) {
+        if (findRecord(regId,userID) != null) {
             log.info("Device " + regId + " already registered, skipping register");
             return;
         }
@@ -56,9 +56,9 @@ public class RegistrationEndpoint {
      *
      * @param regId The Google Cloud Messaging registration Id to remove
      */
-    @ApiMethod(name = "unregister")
-    public void unregisterDevice(@Named("regId") String regId) {
-        RegistrationRecord record = findRecord(regId);
+    @ApiMethod(name = "unregister",path = "users/{id}/unregister")
+    public void unregisterDevice(@Named("regId") String regId,@Named("id")Long id) {
+        RegistrationRecord record = findRecord(regId,id);
         if (record == null) {
             log.info("Device " + regId + " not registered, skipping unregister");
             return;
@@ -78,8 +78,8 @@ public class RegistrationEndpoint {
         return CollectionResponse.<RegistrationRecord>builder().setItems(records).build();
     }
 
-    private RegistrationRecord findRecord(String regId) {
-        return ofy().load().type(RegistrationRecord.class).filter("regId", regId).first().now();
+    private RegistrationRecord findRecord(String regId,Long userId) {
+        return ofy().load().type(RegistrationRecord.class).filter("regId", regId).filter("userId",userId).first().now();
     }
 
 }

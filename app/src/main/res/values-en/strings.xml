@@ -120,7 +120,8 @@
 
     <string name="appPreferences">Aplication preferences</string>
     <string name="summarylanguage">Allow choose the language in application</string>
-    <string name="notifications">Choose if you want receive notifications about yout health</string>
+    <string name="notifications">Choose if you want receive notifications about yout health
+        in this device</string>
 
     <!--Profile-->
     <string name="headerprofile">Profile</string>

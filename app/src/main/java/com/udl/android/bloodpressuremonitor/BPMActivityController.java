@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.hardware.SensorEvent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -36,15 +35,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.adrian.myapplication.backend.measurementApi.MeasurementApi;
 import com.example.adrian.myapplication.backend.measurementApi.model.Measurement;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.adapters.ViewPagerHelpAdapter;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.fragments.HearRateMonitorFragment;
@@ -144,6 +138,9 @@ public class BPMActivityController extends BPMmasterActivity
     private GoogleCloudMessaging gcm;
     private String registrationid;
 
+    private  SharedPreferences preferences;
+    private Long CURRENT_USER = Constants.SESSION_USER_ID;
+
 
 
 
@@ -236,6 +233,10 @@ public class BPMActivityController extends BPMmasterActivity
     if (pendingm.checkIfPending()){
         pendingm.showPendingDialog();
     }
+    preferences =  PreferenceManager.getDefaultSharedPreferences(this);
+    String option = preferences.getString(PreferenceConstants.NOTIFICATIONPREFERENCES, "");
+    if (!option.equalsIgnoreCase("no"))
+        registerGCM();
     }
 
     @Override
@@ -261,10 +262,6 @@ public class BPMActivityController extends BPMmasterActivity
     public void onResume(){
         super.onResume();
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String option = preferences.getString(PreferenceConstants.NOTIFICATIONPREFERENCES, "");
-        if (!option.equalsIgnoreCase("no"))
-            registerGCM();
         networkconnectionstatus = preferences.getString(PreferenceConstants.NETWORKPREFERENCES, "WiFi");
         checkStatusConnectionPreferences(this);
     }
@@ -838,20 +835,7 @@ public class BPMActivityController extends BPMmasterActivity
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
-            return regid;
-        }
-
-        @Override
-        public void onPostExecute(String result){
-            String msg;
-            if (result.isEmpty()) {
-                msg = "Registration not found";
-            }else {
-                msg = result;
-                storeNewRegId(BPMActivityController.this, result);
-            }
-
-            Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
+            return null;
         }
     }
 

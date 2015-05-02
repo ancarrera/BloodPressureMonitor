@@ -52,6 +52,8 @@ public class MeasurementsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if (BPMActivityController.downloadAllMeasurements){
             new GetMeasurements().execute();
+        }else{
+            showNetworkDialog();
         }
     }
 
@@ -111,6 +113,18 @@ public class MeasurementsFragment extends Fragment {
 
     private BPMActivityController getControllerActivity(){
         return (BPMActivityController)getActivity();
+    }
+
+    private void showNetworkDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getControllerActivity());
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        })
+        .setMessage(getResources().getString(R.string.notNetwork));
+        builder.show();
     }
 
 
