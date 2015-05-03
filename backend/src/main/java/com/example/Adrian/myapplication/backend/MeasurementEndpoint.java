@@ -24,8 +24,6 @@ import static com.example.Adrian.myapplication.backend.OfyService.*;
                 packagePath = "" )
 )
 
-
-
 public class MeasurementEndpoint {
 
     private static final String API_KEY = System.getProperty("gcm.api.key");
