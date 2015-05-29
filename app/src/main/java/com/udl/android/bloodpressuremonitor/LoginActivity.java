@@ -13,12 +13,10 @@ import android.widget.TextView;
 import com.example.adrian.myapplication.backend.bpmApiLogin.model.Login;
 import com.example.adrian.myapplication.backend.bpmApiLogin.BpmApiLogin;
 import com.example.adrian.myapplication.backend.bpmApiLogin.model.User;
-import com.google.api.client.extensions.android.http.AndroidHttp;
-import com.google.api.client.extensions.android.json.AndroidJsonFactory;
-import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
-import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
+import com.udl.android.bloodpressuremonitor.BPMServerWS.WSManager;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.backend.BackendCalls;
+import com.udl.android.bloodpressuremonitor.datastore.DataStore;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 
 import java.io.IOException;
@@ -58,7 +56,12 @@ public class LoginActivity extends BPMmasterActivity {
                     Login login = new Login();
                     login.setEmail(emailtextview.getText().toString());
                     login.setPassword(passwordtextview.getText().toString());
-                    new checkLoginData().execute(login);
+                    if(Constants.IS_EXPRESSJS_SERVER){
+                        sendLoginToBPMServer();
+                    }else{
+                        new checkLoginData().execute(login);
+                    }
+
                 }else{
                     showDialogEvents();
                 }
@@ -149,5 +152,28 @@ public class LoginActivity extends BPMmasterActivity {
         .setMessage(getResources().getString(R.string.userloginerror));
         builder.show();
 
+    }
+
+    private void sendLoginToBPMServer(){
+        showDialog(true);
+        WSManager.getInstance().sendLogin(this, emailtextview.getText().toString(), passwordtextview.getText().toString(), new WSManager.BPMCallback<User>(){
+            @Override
+            public void onSuccess(User user) {
+                if (user != null) {
+                    DataStore.getInstance().setUser(user);
+                } else {
+
+                    showLoginError();
+                }
+
+                dialogDismiss();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                dialogDismiss();
+                e.printStackTrace();
+            }
+        });
     }
 }
