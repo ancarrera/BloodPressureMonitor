@@ -45,7 +45,8 @@ public class UserRegisterEndpoint {
     @ApiMethod(name = "create",httpMethod = ApiMethod.HttpMethod.POST,
             scopes = {BackendConstants.EMAIL_SCOPE},
             clientIds = {BackendConstants.WEB_CLIENT_ID,
-                    BackendConstants.ANDROID_CLIENT_ID,
+                    BackendConstants.ANDROID__DEBUG_CLIENT_ID,
+                    BackendConstants.ANDROID__APK_CLIENT_ID,
                     Constant.API_EXPLORER_CLIENT_ID},
             audiences = {BackendConstants.ANDROID_AUDIENCE})
 

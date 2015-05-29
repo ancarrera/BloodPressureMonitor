@@ -12,7 +12,7 @@ public class Constants {
     public static final int NOTIFICATION= 1;
     public static Long SESSION_USER_ID;
     public static String SESSION_USER_MD5_PASS;
-
+    
     //GCM
     public static final String APP_NAME = "BPM";
     public static final boolean LOCAL_BACKEND = false;

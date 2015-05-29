@@ -325,30 +325,28 @@ public class RegisterActivity extends BPMmasterActivity
 
     }
 
-
     private User createUser() {
 
         User user = new User();
 
-        user.setName(name.getText().toString());
-        String[] surnamesarray = surnames.getText().toString().split(" ");
-        if (surnamesarray.length==2) {
-            user.setFirstsurname(surnamesarray[0]);
-            user.setSecondsurname(surnamesarray[1]);
-        }else{
-            user.setFirstsurname(surnames.getText().toString());
-            user.setSecondsurname("");
+            user.setName(name.getText().toString());
+            String[] surnamesarray = surnames.getText().toString().split(" ");
+            if (surnamesarray.length==2) {
+                user.setFirstsurname(surnamesarray[0]);
+                user.setSecondsurname(surnamesarray[1]);
+            }else{
+                user.setFirstsurname(surnames.getText().toString());
+                user.setSecondsurname("");
+            }
+            user.setCity(locationcity.getText().toString());
+            user.setCountry(locationcountry.getText().toString());
+            user.setAge(age.getText().toString());
+            user.setEmail(email.getText().toString());
+            user.setPassword(password1.getText().toString());
+            user.setAdministration(locationprovince.getText().toString());
+
+            return user;
         }
-        user.setCity(locationcity.getText().toString());
-        user.setCountry(locationcountry.getText().toString());
-        user.setAge(age.getText().toString());
-        user.setEmail(email.getText().toString());
-        user.setPassword(password1.getText().toString());
-        user.setAdministration(locationprovince.getText().toString());
-
-        return user;
-    }
-
         void chooseAccount() {
             startActivityForResult(credential.newChooseAccountIntent(),
                     CHOOSE_ACCOUNT);

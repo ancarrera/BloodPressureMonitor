@@ -10,6 +10,7 @@ import com.google.api.server.spi.config.ApiNamespace;
 import com.google.api.server.spi.response.CollectionResponse;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -22,8 +23,6 @@ import static com.example.Adrian.myapplication.backend.OfyService.*;
                 ownerName = "backend.myapplication.Adrian.example.com",
                 packagePath = "" )
 )
-
-
 
 public class MeasurementEndpoint {
 
@@ -52,21 +51,23 @@ public class MeasurementEndpoint {
 
     @ApiMethod(name = "insertMeasurement",path="users/{id}/measurements/{lan}",httpMethod = ApiMethod.HttpMethod.POST)
     public Measurement insertMeasurement(@Named("id")Long id, Measurement measurement,@Named("lan")String language) throws IOException {
-        logger.info("Calling insertMeasurement method with language "+language);
+        logger.info("Calling insertMeasurement method with language " + language);
         User user = ofy().load().type(User.class).id(id).now();
-        user.sumOneInsertion();
-        if (isPushInsertion(user)){
-           int status = calculatePatientStatus(measurement);
-           String message = prepareMessage(status,language);
-           sendMessage(message,user);
-        }
         user.addMeasurement(measurement);
+        user.sumOneInsertion();
         ofy().save().entity(user).now();
+        if (isPushInsertion(user)){
+            List<Measurement> fiveLastMeasures = getFiveLastMeasurements(user);
+            Average average = calculateAverages(fiveLastMeasures);
+            int status = calculatePatientStatus(average);
+            String message = prepareMessage(status,language);
+            sendMessage(message,user);
+        }
         return measurement;
     }
 
     private boolean isPushInsertion(User user){
-        if (user.getTotalinsertions() % 5 == 0 || true){
+        if (user.getTotalinsertions() % 5 == 0){
             logger.info("insertions % 5 ==0");
             return true;
         }
@@ -78,12 +79,12 @@ public class MeasurementEndpoint {
     //status 1 the patient has regular health
     //status 2 the patient has bad health
 
-    private int calculatePatientStatus(Measurement measurement){
-        if (measurement.getDiastolic()>DIANA_DIASTOLIC_LIMIT || measurement.getSystolic()>DIANA_SYSTOLIC_LIMIT){
+    private int calculatePatientStatus(Average average){
+        if (average.diastolic>DIANA_DIASTOLIC_LIMIT || average.systolic >DIANA_SYSTOLIC_LIMIT){
             logger.info("Status 2");
             return 2;
-        }else if ((DIANA_DIASTOLIC_LIMIT - measurement.getDiastolic())<=REST_DIANA_LIMIT
-                 || (DIANA_SYSTOLIC_LIMIT - measurement.getSystolic())<=REST_DIANA_LIMIT){
+        }else if ((DIANA_DIASTOLIC_LIMIT - average.diastolic)<=REST_DIANA_LIMIT
+                 || (DIANA_SYSTOLIC_LIMIT - average.systolic)<=REST_DIANA_LIMIT){
             logger.info("Status 1");
             return 1;
         }else {
@@ -155,5 +156,31 @@ public class MeasurementEndpoint {
                 }
             }
         }
+    }
+
+    private List<Measurement> getFiveLastMeasurements(User user){
+
+        int totalInsertions = user.getTotalinsertions();
+        List<Measurement> measurements = new ArrayList<>();
+
+        for (int i=totalInsertions-1;i>=(totalInsertions-5);i--){
+            measurements.add(user.getMeasurementAtIndex(i));
+        }
+        return measurements;
+    }
+
+    private Average calculateAverages(List<Measurement> measurements){
+        Average average = new Average();
+        int tmp_sys = 0,tmp_dia = 0,tmp_pul = 0;
+        for (Measurement measurement: measurements){
+            tmp_sys += measurement.getSystolic();
+            tmp_dia += measurement.getDiastolic();
+            tmp_pul += measurement.getPulse();
+        }
+        average.systolic = (int) (tmp_sys /5);
+        average.diastolic = (int) (tmp_dia / 5);
+        average.pulse = (int) (tmp_pul / 5);
+
+        return average;
     }
 }
