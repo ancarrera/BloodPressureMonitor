@@ -880,13 +880,13 @@ public class BPMActivityController extends BPMmasterActivity
     private void managePush(Intent intent){
         if (intent!=null)
         if (intent.hasExtra("message")){
+            String msg = intent.getStringExtra("message");
             FragmentManager fragmentManager = this.getSupportFragmentManager();
             if (fragmentManager.findFragmentById(R.id.fragmentframe) != null){
                 fragmentManager.beginTransaction().remove(
                         fragmentManager.findFragmentById(R.id.fragmentframe)).commit();
                 putHomeFragmentInTop(false);
             }
-            String msg = intent.getStringExtra("message");
             showPushAlertDialog(msg);
         }
     }

@@ -89,7 +89,7 @@ public class BackendCalls {
                     });
         else{
             builder = new BpmApiRegister.Builder(AndroidHttp.newCompatibleTransport()
-                    , new AndroidJsonFactory(), credential)
+                    , new AndroidJsonFactory()/*, credential*/,null)
                     .setRootUrl(Constants.CLOUD_URL)
                     .setApplicationName(Constants.APP_NAME);
         }

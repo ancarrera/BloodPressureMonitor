@@ -52,11 +52,11 @@ public class GCMIntentService extends IntentService {
     private void sendNotification(String msg, Bundle extras) {
         NotificationManager mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
-
+        String message = extras.getString("message")+"";
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, BPMActivityController.class)
+                new Intent(this, BPMActivityController.class).setAction("com.new.push")
                 .setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP).putExtra(
-                        "message",extras.getString("message")), 0);
+                        "message",message), 0);
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)

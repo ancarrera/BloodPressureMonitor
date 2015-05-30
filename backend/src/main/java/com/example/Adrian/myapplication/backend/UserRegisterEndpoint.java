@@ -42,16 +42,16 @@ public class UserRegisterEndpoint {
         return CollectionResponse.<User>builder().setItems(records).build();
     }
 
-    @ApiMethod(name = "create",httpMethod = ApiMethod.HttpMethod.POST,
-            scopes = {BackendConstants.EMAIL_SCOPE},
-            clientIds = {BackendConstants.WEB_CLIENT_ID,
-                    BackendConstants.ANDROID__DEBUG_CLIENT_ID,
-                    BackendConstants.ANDROID__APK_CLIENT_ID,
-                    Constant.API_EXPLORER_CLIENT_ID},
-            audiences = {BackendConstants.ANDROID_AUDIENCE})
+    @ApiMethod(name = "create",httpMethod = ApiMethod.HttpMethod.POST)
+//            scopes = {BackendConstants.EMAIL_SCOPE},
+//            clientIds = {BackendConstants.WEB_CLIENT_ID,
+//                    BackendConstants.ANDROID__DEBUG_CLIENT_ID,
+//                    BackendConstants.ANDROID__APK_CLIENT_ID,
+//                    Constant.API_EXPLORER_CLIENT_ID},
+//            audiences = {BackendConstants.ANDROID_AUDIENCE})
 
-    public User create(User user, com.google.appengine.api.users.User userAuth) throws OAuthRequestException, NotFoundException, UserAlreadyExistException {
-        if (userAuth==null) throw new OAuthRequestException("User unauthorized");
+    public User create(User user/*, com.google.appengine.api.users.User userAuth*/) throws OAuthRequestException, NotFoundException, UserAlreadyExistException {
+        //if (userAuth==null) throw new OAuthRequestException("User unauthorized");
         checkExists(null,user.getEmail(),1);
         ofy().save().entity(user).now();
         logger.info("user created " + user.getId());
