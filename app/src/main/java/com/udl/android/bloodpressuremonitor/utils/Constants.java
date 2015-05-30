@@ -11,6 +11,7 @@ public class Constants {
     public static final String TAG ="GCM_DEBUG";
     public static final int NOTIFICATION= 1;
     public static Long SESSION_USER_ID;
+    public static String SESSION_MD5_TOKEN; //user pass in MD5
     //GCM
     public static final String APP_NAME = "BPM";
     public static final boolean LOCAL_BACKEND = false;

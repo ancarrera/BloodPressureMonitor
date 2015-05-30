@@ -45,7 +45,7 @@ public class MeasurementTask extends AsyncTask<Measurement,Void,Measurement> {
         return null;
     }
 
-    private String checkAppLenguage(Context context){
+    public static String checkAppLenguage(Context context){
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (!preferences.getString("languageList","").equalsIgnoreCase("")){
             return preferences.getString("languageList","");

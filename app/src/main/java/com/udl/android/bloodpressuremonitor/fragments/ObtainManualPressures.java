@@ -1,5 +1,6 @@
 package com.udl.android.bloodpressuremonitor.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
@@ -19,7 +20,9 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.BPMActivityController;
+import com.udl.android.bloodpressuremonitor.BPMServerWS.WSManager;
 import com.udl.android.bloodpressuremonitor.R;
+import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
 import com.udl.android.bloodpressuremonitor.utils.DateUtils;
 import com.udl.android.bloodpressuremonitor.utils.MeasurementTask;
@@ -97,7 +100,26 @@ public class ObtainManualPressures extends Fragment {
                             measurement.setDiastolic(Integer.parseInt(diastolictext.getText().toString()));
                             measurement.setPulse(Integer.parseInt(pulsetext.getText().toString()));
                             measurement.setDate(DateUtils.getCurrentDate());
-                            new MeasurementTask(getActivity(),false).execute(measurement);
+                            if (Constants.IS_EXPRESSJS_SERVER){
+                                getBaseActivity().showDialog(false);
+                                WSManager.getInstance().sendNewMeasurement(getBaseActivity(), measurement,
+                                        MeasurementTask.checkAppLenguage(getActivity()),new WSManager.BPMCallback<String>() {
+                                    @Override
+                                    public void onSuccess(String response) {
+                                        getBaseActivity().dialogDismiss();
+                                        alertSentMeasurementCorrectly();
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+                                        getBaseActivity().dialogDismiss();
+                                        alertSendMeasurement();
+                                        e.printStackTrace();
+                                    }
+                                });
+                            }else{
+                                new MeasurementTask(getActivity(),false).execute(measurement);
+                            }
                             systolictext.setText("");
                             diastolictext.setText("");
                             pulsetext.setText("");
@@ -107,6 +129,30 @@ public class ObtainManualPressures extends Fragment {
                 }
             }
         });
+    }
+
+    private void alertSendMeasurement(){
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        })
+                .setMessage(getResources().getString(R.string.error_sending_measurement));
+        dialog.show();
+    }
+
+    private void alertSentMeasurementCorrectly(){
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        })
+                .setMessage(getResources().getString(R.string.measurement_send));
+        dialog.show();
     }
 
 
@@ -141,6 +187,10 @@ public class ObtainManualPressures extends Fragment {
         alert.show();
 
 
+    }
+
+    private BPMmasterActivity getBaseActivity(){
+        return ((BPMmasterActivity)getActivity());
     }
 
 }

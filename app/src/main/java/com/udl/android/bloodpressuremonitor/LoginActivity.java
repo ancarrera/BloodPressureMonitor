@@ -161,6 +161,8 @@ public class LoginActivity extends BPMmasterActivity {
             public void onSuccess(User user) {
                 if (user != null) {
                     DataStore.getInstance().setUser(user);
+                    startActivity(new Intent(LoginActivity.this, BPMActivityController.class));
+                    finish();
                 } else {
 
                     showLoginError();

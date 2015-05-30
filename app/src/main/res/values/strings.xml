@@ -165,4 +165,11 @@
     <string name="errorreceivingpressures">Error reciviendo las mediciones del usuarios</string>
     <string name="healthstatus">Su estado de salud</string>
     <string name="pendingmeasurement">Hay una medición pendiente de envio</string>
+
+    <!--WS -->
+    <string name="token_error">Error enviando gcm token</string>
+    <string name="token_error_delete">Error borrando gcm token</string>
+    <string name="error_adding_measurement">Error añadiendo medicion</string>
+    <string name="error_sending_measurement">Error enviando medicion</string>
+    <string name="measurement_send">Medición enviada correctamente</string>
 </resources>

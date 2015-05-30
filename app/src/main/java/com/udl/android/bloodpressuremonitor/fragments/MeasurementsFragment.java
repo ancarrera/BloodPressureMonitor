@@ -18,6 +18,7 @@ import com.google.api.client.extensions.android.json.AndroidJsonFactory;
 import com.google.api.client.googleapis.services.AbstractGoogleClientRequest;
 import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 import com.udl.android.bloodpressuremonitor.BPMActivityController;
+import com.udl.android.bloodpressuremonitor.BPMServerWS.WSManager;
 import com.udl.android.bloodpressuremonitor.R;
 import com.udl.android.bloodpressuremonitor.adapters.MeasurementAdapter;
 import com.udl.android.bloodpressuremonitor.backend.BackendCalls;
@@ -51,7 +52,11 @@ public class MeasurementsFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
         if (BPMActivityController.downloadAllMeasurements){
-            new GetMeasurements().execute();
+            if (Constants.IS_EXPRESSJS_SERVER){
+                getMeasurmentsFromBPMServer();
+            }else{
+                new GetMeasurements().execute();
+            }
         }else{
             showNetworkDialog();
         }
@@ -127,6 +132,25 @@ public class MeasurementsFragment extends Fragment {
         builder.show();
     }
 
+    private void getMeasurmentsFromBPMServer(){
+        getControllerActivity().showDialog(false);
+        WSManager.getInstance().getMeasurements(getControllerActivity(), new WSManager.BPMCallback<List<Measurement>>() {
+            @Override
+            public void onSuccess(List<Measurement> response) {
+                getControllerActivity().dialogDismiss();
+                if (response == null) {
+                    showErrorDialog();
+                }else {
+                    configureView(response);
+                }
+            }
 
+            @Override
+            public void onError(Exception e) {
+                getControllerActivity().dialogDismiss();
+                showErrorDialog();
+            }
+        });
+    }
 
 }

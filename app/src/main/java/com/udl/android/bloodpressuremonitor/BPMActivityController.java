@@ -39,6 +39,7 @@ import com.example.adrian.myapplication.backend.measurementApi.model.Measurement
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.udl.android.bloodpressuremonitor.BPMServerWS.WSManager;
 import com.udl.android.bloodpressuremonitor.adapters.ViewPagerHelpAdapter;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.fragments.HearRateMonitorFragment;
@@ -69,7 +70,7 @@ import java.util.UUID;
 public class BPMActivityController extends BPMmasterActivity
                          implements View.OnClickListener {
 
-    public static enum HomeButton{
+    public static enum HomeButton {
 
         HEART,
         LIST,
@@ -78,7 +79,7 @@ public class BPMActivityController extends BPMmasterActivity
         BLUETOOTH
     }
 
-    public static enum BluetoothDialog{
+    public static enum BluetoothDialog {
 
         NOT_SUPPORTED,
         NOT_ENABLED,
@@ -88,13 +89,13 @@ public class BPMActivityController extends BPMmasterActivity
 
     }
 
-    public static enum ViewPagerType{
+    public static enum ViewPagerType {
 
         BLUETOOTH_EXAMPLE,
         HEARTRATE_EXPLAIN
     }
 
-    private final String TAG_RECEIVER_XML="BLUETOOTH_XML";
+    private final String TAG_RECEIVER_XML = "BLUETOOTH_XML";
 
 
     private final int SHOW_TOAST = 0;
@@ -104,7 +105,7 @@ public class BPMActivityController extends BPMmasterActivity
     private final int DISMISS_FAIL = 4;
 
     private TextView headertextview;
-    private ImageButton buttonbar,secondbuttonbar;
+    private ImageButton buttonbar, secondbuttonbar;
     private NetworkStatusReceiver receiver;
 
     private static String networkconnectionstatus;
@@ -115,9 +116,9 @@ public class BPMActivityController extends BPMmasterActivity
 
     public static final int BLUETOOTH_ENABLE_PROCESS = 288;
     public static final int SIGNAL_KILL_CONTROLLER = 111;
-    private final int MAX_TIME_DISCOVERABLE= 300;
-    private final int MAX_TIME_WAIT_OTHER_DEVICE=30000;
-    private final int DISCOVERABLE_BLUETOOTH_PROCESS=333;
+    private final int MAX_TIME_DISCOVERABLE = 300;
+    private final int MAX_TIME_WAIT_OTHER_DEVICE = 30000;
+    private final int DISCOVERABLE_BLUETOOTH_PROCESS = 333;
 
     private BluetoothAdapter bluetoothAdapter;
 
@@ -138,10 +139,8 @@ public class BPMActivityController extends BPMmasterActivity
     private GoogleCloudMessaging gcm;
     private String registrationid;
 
-    private  SharedPreferences preferences;
+    private SharedPreferences preferences;
     private Long CURRENT_USER = Constants.SESSION_USER_ID;
-
-
 
 
     @Override
@@ -162,15 +161,15 @@ public class BPMActivityController extends BPMmasterActivity
         frameLayout = (FrameLayout) findViewById(R.id.fragmentframe);
         viewPagerview = (ViewPager) findViewById(R.id.viewpager);
 
-        mainhandler = new Handler(){
+        mainhandler = new Handler() {
 
             @Override
             public void handleMessage(Message msg) {
 
-                switch (msg.what){
+                switch (msg.what) {
 
                     case SHOW_TOAST:
-                        Toast.makeText(BPMActivityController.this,(String)msg.obj,Toast.LENGTH_LONG).show();
+                        Toast.makeText(BPMActivityController.this, (String) msg.obj, Toast.LENGTH_LONG).show();
                         break;
 
                     case PROGRESSDIALOG_WAITCONN:
@@ -179,9 +178,9 @@ public class BPMActivityController extends BPMmasterActivity
                         break;
                     case DISMISS_FAIL:
                         progressDialog.dismiss();
-                        final AlertDialog.Builder dialog= new AlertDialog.Builder(BPMActivityController.this);
+                        final AlertDialog.Builder dialog = new AlertDialog.Builder(BPMActivityController.this);
                         dialog.setMessage(getResources().getString(R.string.socketconnfail));
-                        dialog.setPositiveButton(getResources().getString(android.R.string.ok),new DialogInterface.OnClickListener() {
+                        dialog.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
 
@@ -198,7 +197,7 @@ public class BPMActivityController extends BPMmasterActivity
                         final String pressure_unit = "mm Hg";
                         final String pulse_unit = "bpm";
 
-                        final  AlertDialog.Builder dialogresult = new AlertDialog.Builder(BPMActivityController.this);
+                        final AlertDialog.Builder dialogresult = new AlertDialog.Builder(BPMActivityController.this);
 
                         dialogresult.setMessage(getResources().getString(R.string.measurements) +
                                 linebreak + linebreak + getResources().getString(R.string.systolic) + " " + systolicPressure + " " + pressure_unit
@@ -213,7 +212,24 @@ public class BPMActivityController extends BPMmasterActivity
                         dialogresult.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                new MeasurementTask(BPMActivityController.this,false).execute(measurement);
+                                if (Constants.IS_EXPRESSJS_SERVER){
+                                    WSManager.getInstance().sendNewMeasurement(BPMActivityController.this, measurement,
+                                            MeasurementTask.checkAppLenguage(BPMActivityController.this),new WSManager.BPMCallback<String>() {
+                                        @Override
+                                        public void onSuccess(String response) {
+                                            alertSentMeasurementCorrectly();
+                                        }
+
+                                        @Override
+                                        public void onError(Exception e) {
+                                            alertSendMeasurement();
+                                            e.printStackTrace();
+                                        }
+                                    });
+                                }else{
+                                    new MeasurementTask(BPMActivityController.this, false).execute(measurement);
+                                }
+
                                 dialog.dismiss();
                             }
                         });
@@ -229,18 +245,18 @@ public class BPMActivityController extends BPMmasterActivity
 
             }
         };
-    PendingMeasurement pendingm = new PendingMeasurement(this);
-    if (pendingm.checkIfPending()){
-        pendingm.showPendingDialog();
-    }
-    preferences =  PreferenceManager.getDefaultSharedPreferences(this);
-    String option = preferences.getString(PreferenceConstants.NOTIFICATIONPREFERENCES, "");
-    if (!option.equalsIgnoreCase("no"))
-        registerGCM();
+        PendingMeasurement pendingm = new PendingMeasurement(this);
+        if (pendingm.checkIfPending()) {
+            pendingm.showPendingDialog();
+        }
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String option = preferences.getString(PreferenceConstants.NOTIFICATIONPREFERENCES, "");
+        if (!option.equalsIgnoreCase("no"))
+            registerGCM();
     }
 
     @Override
-    public void onNewIntent(Intent intent){
+    public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
 
         managePush(intent);
@@ -248,7 +264,7 @@ public class BPMActivityController extends BPMmasterActivity
     }
 
     @Override
-    public void onStart(){
+    public void onStart() {
         super.onStart();
 
         receiver = new NetworkStatusReceiver();
@@ -259,14 +275,14 @@ public class BPMActivityController extends BPMmasterActivity
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
 
         networkconnectionstatus = preferences.getString(PreferenceConstants.NETWORKPREFERENCES, "WiFi");
         checkStatusConnectionPreferences(this);
     }
 
-    private void configureActionBar(){
+    private void configureActionBar() {
 
         configureBaseActionBar();
         View view = getActionBarView();
@@ -279,7 +295,7 @@ public class BPMActivityController extends BPMmasterActivity
         buttonbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                  onBack();
+                onBack();
             }
         });
         secondbuttonbar.setOnClickListener(new View.OnClickListener() {
@@ -297,7 +313,7 @@ public class BPMActivityController extends BPMmasterActivity
         super.onConfigurationChanged(newConfig);
     }
 
-    private void selectFragment(Fragment fragment,boolean isBack,boolean animation){
+    private void selectFragment(Fragment fragment, boolean isBack, boolean animation) {
 
         FragmentManager fragmentManager = this.getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -325,18 +341,18 @@ public class BPMActivityController extends BPMmasterActivity
     public void onClick(View view) {
 
 
-        int tag = Integer.parseInt((String)view.getTag());
-        switch (tag){
+        int tag = Integer.parseInt((String) view.getTag());
+        switch (tag) {
             case 1:
                 HearRateMonitorFragment hearRateMonitorFragment = HearRateMonitorFragment.getNewInstance();
-                selectFragment(hearRateMonitorFragment,false,true);
+                selectFragment(hearRateMonitorFragment, false, true);
                 headertextview.setText(getResources().getString(R.string.heartbeatheader).toUpperCase());
                 buttonbar.setVisibility(View.VISIBLE);
                 secondbuttonbar.setVisibility(View.INVISIBLE);
                 break;
             case 2:
                 MeasurementsFragment measurementsFragment = MeasurementsFragment.getNewInstance();
-                selectFragment(measurementsFragment,false,true);
+                selectFragment(measurementsFragment, false, true);
                 headertextview.setText(getResources().getString(R.string.measurementlistheader).toUpperCase());
                 buttonbar.setVisibility(View.VISIBLE);
                 secondbuttonbar.setVisibility(View.INVISIBLE);
@@ -344,9 +360,9 @@ public class BPMActivityController extends BPMmasterActivity
             case 3:
                 buttonbar.setVisibility(View.INVISIBLE);
                 PendingMeasurement pendingm = new PendingMeasurement(this);
-                if (pendingm.checkIfPending()){
+                if (pendingm.checkIfPending()) {
                     pendingm.showPendingDialog();
-                }else {
+                } else {
                     if (bluetoothAdapter == null) {
                         showDialogBluetoothCases(BluetoothDialog.NOT_SUPPORTED);
                     } else {
@@ -364,14 +380,14 @@ public class BPMActivityController extends BPMmasterActivity
                 break;
             case 4:
                 ObtainManualPressures obtainManualPressures = ObtainManualPressures.getNewInstance();
-                selectFragment(obtainManualPressures,false,true);
+                selectFragment(obtainManualPressures, false, true);
                 headertextview.setText(getResources().getString(R.string.manualpressure).toUpperCase());
                 buttonbar.setVisibility(View.VISIBLE);
                 secondbuttonbar.setVisibility(View.INVISIBLE);
                 break;
             case 5:
                 ProfileFragment profileFragment = ProfileFragment.getNewInstance();
-                selectFragment(profileFragment,false,true);
+                selectFragment(profileFragment, false, true);
                 headertextview.setText(getResources().getString(R.string.headerprofile));
                 buttonbar.setVisibility(View.VISIBLE);
                 secondbuttonbar.setVisibility(View.INVISIBLE);
@@ -387,7 +403,7 @@ public class BPMActivityController extends BPMmasterActivity
                 fragments.add(bluetoothpage);
                 HelpFragment heartrate = HelpFragment.getNewInstance(ViewPagerType.HEARTRATE_EXPLAIN);
                 fragments.add(heartrate);
-                ViewPagerHelpAdapter adapter = new ViewPagerHelpAdapter(getSupportFragmentManager(),fragments);
+                ViewPagerHelpAdapter adapter = new ViewPagerHelpAdapter(getSupportFragmentManager(), fragments);
                 viewPagerview.setAdapter(adapter);
                 break;
             default:
@@ -397,23 +413,23 @@ public class BPMActivityController extends BPMmasterActivity
 
     }
 
-    private void onBack(){
+    private void onBack() {
 
 
         secondbuttonbar.setVisibility(View.VISIBLE);
         buttonbar.setVisibility(View.INVISIBLE);
         Fragment lasfragment = getSupportFragmentManager().findFragmentById(R.id.fragmentframe);
 
-        if (lasfragment instanceof HomeFragment && frameLayout.getVisibility()==View.VISIBLE ) {
+        if (lasfragment instanceof HomeFragment && frameLayout.getVisibility() == View.VISIBLE) {
             showExitDialog();
-        } else if(viewPagerview.getVisibility()==View.VISIBLE) {
+        } else if (viewPagerview.getVisibility() == View.VISIBLE) {
             removeViewPager();
             headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
 
-        }else if(lasfragment instanceof HearRateMonitorFragment){
+        } else if (lasfragment instanceof HearRateMonitorFragment) {
             getSupportFragmentManager().beginTransaction().remove(lasfragment).commit();
             putHomeFragmentInTop(true);
-        }else {
+        } else {
             putHomeFragmentInTop(true);
 
         }
@@ -424,11 +440,11 @@ public class BPMActivityController extends BPMmasterActivity
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         onBack();
     }
 
-    private void showExitDialog(){
+    private void showExitDialog() {
 
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setMessage(R.string.dialogexit);
@@ -437,7 +453,7 @@ public class BPMActivityController extends BPMmasterActivity
                 finish();
             }
         });
-        alert.setNegativeButton(getResources().getString(R.string.cancel),new DialogInterface.OnClickListener() {
+        alert.setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
@@ -445,7 +461,6 @@ public class BPMActivityController extends BPMmasterActivity
         });
         alert.show();
     }
-
 
 
     private static class NetworkStatusReceiver extends BroadcastReceiver {
@@ -459,25 +474,25 @@ public class BPMActivityController extends BPMmasterActivity
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
 
         super.onPause();
     }
 
-    private static void checkStatusConnectionPreferences(Context context){
+    private static void checkStatusConnectionPreferences(Context context) {
 
         ConnectivityManager connectivityManager =
-                (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo info = connectivityManager.getActiveNetworkInfo();
         if (info != null && info.isConnected()) {
 
 
             if (info.getType() == connectivityManager.TYPE_WIFI &&
-                    networkconnectionstatus.equals(PreferenceConstants.WIFI_CONNECT)){
+                    networkconnectionstatus.equals(PreferenceConstants.WIFI_CONNECT)) {
                 downloadAllMeasurements = true;
                 return;
-            }else if (networkconnectionstatus.equals(PreferenceConstants.ALL_CONNECT)){
+            } else if (networkconnectionstatus.equals(PreferenceConstants.ALL_CONNECT)) {
                 downloadAllMeasurements = true;
                 return;
             }
@@ -488,11 +503,11 @@ public class BPMActivityController extends BPMmasterActivity
 
     }
 
-    private void showDialogBluetoothCases(BluetoothDialog type){
+    private void showDialogBluetoothCases(BluetoothDialog type) {
 
         final AlertDialog.Builder alert = new AlertDialog.Builder(this);
         alert.setTitle(getResources().getString(R.string.dialogtitlebluetooth));
-        if (type == BluetoothDialog.NOT_SUPPORTED){
+        if (type == BluetoothDialog.NOT_SUPPORTED) {
 
             alert.setMessage(R.string.nonsupportedbluetooth);
             alert.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
@@ -501,26 +516,26 @@ public class BPMActivityController extends BPMmasterActivity
                 }
             });
 
-        }else if (type == BluetoothDialog.NOT_ENABLED){
+        } else if (type == BluetoothDialog.NOT_ENABLED) {
 
             alert.setMessage(R.string.non_enabledbluetooth);
             alert.setPositiveButton(getResources().getString(android.R.string.yes), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
 
-                        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                        startActivityForResult(enableBtIntent,BLUETOOTH_ENABLE_PROCESS );
+                    Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+                    startActivityForResult(enableBtIntent, BLUETOOTH_ENABLE_PROCESS);
 
 
                 }
             });
-            alert.setNegativeButton(getResources().getString(android.R.string.no),new DialogInterface.OnClickListener() {
+            alert.setNegativeButton(getResources().getString(android.R.string.no), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int id) {
 
                 }
             });
-        }else if (type == BluetoothDialog.COULD_NOT_CONNECTED ){
+        } else if (type == BluetoothDialog.COULD_NOT_CONNECTED) {
 
             alert.setMessage(R.string.failenablebluetooth);
             alert.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
@@ -528,7 +543,7 @@ public class BPMActivityController extends BPMmasterActivity
 
                 }
             });
-        }else if (type==BluetoothDialog.DISCOVER_CANCELLED){
+        } else if (type == BluetoothDialog.DISCOVER_CANCELLED) {
             alert.setMessage(getResources().getString(R.string.processcanceled));
             alert.setPositiveButton(getResources().getString(android.R.string.ok), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
@@ -538,7 +553,7 @@ public class BPMActivityController extends BPMmasterActivity
         }
 
         AlertDialog dialog = alert.show();
-        TextView messageText = (TextView)dialog.findViewById(android.R.id.message);
+        TextView messageText = (TextView) dialog.findViewById(android.R.id.message);
         messageText.setGravity(Gravity.CENTER);
         dialog.show();
 
@@ -547,55 +562,55 @@ public class BPMActivityController extends BPMmasterActivity
 
     @Override
     public void onActivityResult(int requestCode, int resultCode,
-                                   Intent data) {
+                                 Intent data) {
 
         if (requestCode == BLUETOOTH_ENABLE_PROCESS) {
             if (resultCode == RESULT_OK) {
                 initBluetoothProcess();
 
-            }else{
+            } else {
                 showDialogBluetoothCases(BluetoothDialog.COULD_NOT_CONNECTED);
             }
-        }else if (requestCode==SIGNAL_KILL_CONTROLLER) {
+        } else if (requestCode == SIGNAL_KILL_CONTROLLER) {
             String notification = "";
             if (data != null) {
                 notification = data.getExtras().getString("notifications", "");
             }
-            if (!notification.equals("")){
-                if (notification.equals("yes")){
+            if (!notification.equals("")) {
+                if (notification.equals("yes")) {
                     registerGCM();
-                }else if (notification.equals("no")){
+                } else if (notification.equals("no")) {
                     unregisterGCM();
                 }
-            }else if(resultCode == RESULT_OK){
+            } else if (resultCode == RESULT_OK) {
                 finish();
             }
 
-        }else if (requestCode==DISCOVERABLE_BLUETOOTH_PROCESS){
-            if (resultCode == RESULT_CANCELED){
+        } else if (requestCode == DISCOVERABLE_BLUETOOTH_PROCESS) {
+            if (resultCode == RESULT_CANCELED) {
                 showDialogBluetoothCases(BluetoothDialog.DISCOVER_CANCELLED);
-            }else{
+            } else {
                 bluetoothProcess();
             }
 
         }
     }
 
-    private void initBluetoothProcess(){
+    private void initBluetoothProcess() {
 
         Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, MAX_TIME_DISCOVERABLE);
-        startActivityForResult(discoverableIntent,DISCOVERABLE_BLUETOOTH_PROCESS);
+        startActivityForResult(discoverableIntent, DISCOVERABLE_BLUETOOTH_PROCESS);
     }
 
 
-    private void createDialog(String message){
+    private void createDialog(String message) {
 
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setCancelable(false);
             progressDialog.setMessage(message);
-        }else{
+        } else {
             progressDialog.setMessage(message);
         }
 
@@ -618,14 +633,15 @@ public class BPMActivityController extends BPMmasterActivity
                 if (socket != null) {
                     mainhandler.sendEmptyMessage(PROGRESSDIALOG_WAITCONN);
                     InputStream stream = socket.getInputStream();
-                    while (stream.available()<=0){}
-                    if(stream.available()>0){
+                    while (stream.available() <= 0) {
+                    }
+                    if (stream.available() > 0) {
                         xmlParsePressures(stream);
                         socket.close();
 
                     }
                 }
-               mainhandler.sendEmptyMessage(PROGRESSDIALOGDISSMIS_WAITCONN);
+                mainhandler.sendEmptyMessage(PROGRESSDIALOGDISSMIS_WAITCONN);
 
             } catch (IOException e) {
                 mainhandler.sendEmptyMessage(DISMISS_FAIL);
@@ -636,13 +652,13 @@ public class BPMActivityController extends BPMmasterActivity
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         super.onDestroy();
-        if (receiver!=null) unregisterReceiver(receiver);
+        if (receiver != null) unregisterReceiver(receiver);
 
     }
 
-    private void xmlParsePressures(InputStream stream){
+    private void xmlParsePressures(InputStream stream) {
 
         try {
 
@@ -657,20 +673,19 @@ public class BPMActivityController extends BPMmasterActivity
             while (!END_DOCUMENT) {
 
 
-                if (eventType == XmlPullParser.START_TAG){
+                if (eventType == XmlPullParser.START_TAG) {
                     element = parser.getName();
-                }
-                else if(eventType == XmlPullParser.TEXT) {
+                } else if (eventType == XmlPullParser.TEXT) {
 
-                    if(element.equals("systolic-pressure")){
-                        systolicPressure =parser.getText();
+                    if (element.equals("systolic-pressure")) {
+                        systolicPressure = parser.getText();
                         //Log.d("XML","ParseNext "+systolicPressure);
                     }
-                    if (element.equals("diastolic-pressure")){
+                    if (element.equals("diastolic-pressure")) {
                         diastolicPressure = parser.getText();
                         //Log.d("XML","ParseNext "+diastolicPressure);
                     }
-                    if (element.equals("pulse")){
+                    if (element.equals("pulse")) {
                         pulse = parser.getText();
                         END_DOCUMENT = true;
                         //Log.d("XML","ParseNext "+pulse);
@@ -680,16 +695,16 @@ public class BPMActivityController extends BPMmasterActivity
             }
 
             Message message = new Message();
-            message.what=BLUETOOTHDATA_RESULT;
+            message.what = BLUETOOTHDATA_RESULT;
             mainhandler.sendMessage(message);
 
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
     }
 
-    private void putHomeFragmentInTop(boolean back){
+    private void putHomeFragmentInTop(boolean back) {
         headertextview.setText(getResources().getString(R.string.principaltext).toUpperCase());
         selectFragment(HomeFragment.getNewInstace(), back, true);
     }
@@ -697,12 +712,12 @@ public class BPMActivityController extends BPMmasterActivity
     private void removeViewPager() {
 
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.viewpager);
-        if (fragment!=null) {
+        if (fragment != null) {
             getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         }
     }
 
-    private void bluetoothProcess(){
+    private void bluetoothProcess() {
 
         createDialog(getResources().getString(R.string.waitconnection));
         progressDialog.show();
@@ -717,7 +732,7 @@ public class BPMActivityController extends BPMmasterActivity
         thread.start();
     }
 
-    private boolean checkGooglePlayServicesAvailable(){
+    private boolean checkGooglePlayServicesAvailable() {
 
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         if (resultCode != ConnectionResult.SUCCESS) {
@@ -734,29 +749,29 @@ public class BPMActivityController extends BPMmasterActivity
 
     }
 
-    private String getRegID(Context appcontext){
+    private String getRegID(Context appcontext) {
         final SharedPreferences preferences = getSharedPreferences(
-                PreferenceConstants.GCM_PREFERENCES,Context.MODE_PRIVATE);
-        String regid = preferences.getString(Constants.SESSION_USER_ID+"","");
-        if (regid.equals("")){
+                PreferenceConstants.GCM_PREFERENCES, Context.MODE_PRIVATE);
+        String regid = preferences.getString(Constants.SESSION_USER_ID + "", "");
+        if (regid.equals("")) {
 
             return "";
         }
 
 
         int appversion = preferences.getInt(PreferenceConstants.APP_VERSION, 1);
-        if (appversion != getAppVersion(appcontext)){
+        if (appversion != getAppVersion(appcontext)) {
             return "";
         }
 
-       return regid;
+        return regid;
 
     }
 
-    private String removeRegID(Context context){
+    private String removeRegID(Context context) {
         SharedPreferences preferences = getSharedPreferences(
                 PreferenceConstants.GCM_PREFERENCES, Context.MODE_PRIVATE);
-        preferences.edit().putString(Constants.SESSION_USER_ID+"","").commit();
+        preferences.edit().putString(Constants.SESSION_USER_ID + "", "").commit();
         return "";
     }
 
@@ -771,27 +786,27 @@ public class BPMActivityController extends BPMmasterActivity
         }
     }
 
-    private void storeNewRegId(Context context,String newregid){
+    private void storeNewRegId(Context context, String newregid) {
         final SharedPreferences preferences = context.getSharedPreferences(
-                PreferenceConstants.GCM_PREFERENCES,Context.MODE_PRIVATE);
+                PreferenceConstants.GCM_PREFERENCES, Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(Constants.SESSION_USER_ID+"",newregid);
+        editor.putString(Constants.SESSION_USER_ID + "", newregid);
         editor.putInt(PreferenceConstants.APP_VERSION, getAppVersion(context));
         editor.commit();
     }
 
-    private class registerTask extends AsyncTask<Void,Void,String> {
+    private class registerTask extends AsyncTask<Void, Void, String> {
 
         @Override
         public String doInBackground(Void... params) {
 
-            String regid="";
+            String regid = "";
             try {
                 if (gcm == null) {
                     gcm = GoogleCloudMessaging.getInstance(BPMActivityController.this);
                 }
-               regid = gcm.register(Constants.SENDER_ID);
+                regid = gcm.register(Constants.SENDER_ID);
 
                 GCMRegister.getInstance()
                         .executeSendRegistrationToBackend(BPMActivityController.this, regid);
@@ -803,25 +818,25 @@ public class BPMActivityController extends BPMmasterActivity
         }
 
         @Override
-        public void onPostExecute(String result){
+        public void onPostExecute(String result) {
             String msg;
             if (result.isEmpty()) {
                 msg = "Registration not found";
-            }else {
+            } else {
                 msg = result;
                 storeNewRegId(BPMActivityController.this, result);
             }
 
-            Toast.makeText(BPMActivityController.this,msg,Toast.LENGTH_LONG).show();
+            Toast.makeText(BPMActivityController.this, msg, Toast.LENGTH_LONG).show();
         }
     }
 
-    private class unregisterTask extends AsyncTask<Void,Void,String> {
+    private class unregisterTask extends AsyncTask<Void, Void, String> {
 
         @Override
         public String doInBackground(Void... params) {
 
-            String regid="";
+            String regid = "";
             try {
                 if (gcm == null) {
                     gcm = GoogleCloudMessaging.getInstance(BPMActivityController.this);
@@ -839,33 +854,45 @@ public class BPMActivityController extends BPMmasterActivity
         }
     }
 
-    private void registerGCM(){
+    private void registerGCM() {
 
         if (checkGooglePlayServicesAvailable()) {
             gcm = GoogleCloudMessaging.getInstance(this);
             registrationid = getRegID(getApplicationContext());
             if (registrationid.isEmpty()) {
-                new registerTask().execute();
-            }else{
-                Toast.makeText(this,getResources().getString(R.string.recoveryregidOK),Toast.LENGTH_LONG).show();
+                if (Constants.IS_EXPRESSJS_SERVER) {
+                    new registerTaskBPMServer().execute(true);
+
+                }else{
+                    new registerTask().execute();
+                }
+            } else {
+                if (Constants.IS_EXPRESSJS_SERVER){
+                    new registerTaskBPMServer().execute(false);
+                }
+                Toast.makeText(this, getResources().getString(R.string.recoveryregidOK), Toast.LENGTH_LONG).show();
             }
         } else {
             Log.d(Constants.TAG, "Google Cloud Services not found");
         }
     }
 
-    private void unregisterGCM(){
+    private void unregisterGCM() {
 
         if (checkGooglePlayServicesAvailable()) {
             gcm = GoogleCloudMessaging.getInstance(this);
-            new unregisterTask().execute();
-            Toast.makeText(this,getResources().getString(R.string.unregister),Toast.LENGTH_LONG).show();
+            if (Constants.IS_EXPRESSJS_SERVER){
+                new unregisterTaskBPMServer().execute();
+            }else{
+                new unregisterTask().execute();
+            }
+            Toast.makeText(this, getResources().getString(R.string.unregister), Toast.LENGTH_LONG).show();
         } else {
             Log.d(Constants.TAG, "Google Cloud Services not found");
         }
     }
 
-    private void showPushAlertDialog(String msg){
+    private void showPushAlertDialog(String msg) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
@@ -873,22 +900,134 @@ public class BPMActivityController extends BPMmasterActivity
                 dialog.dismiss();
             }
         })
-        .setMessage(msg);
+                .setMessage(msg);
         dialog.show();
     }
 
-    private void managePush(Intent intent){
-        if (intent!=null)
-        if (intent.hasExtra("message")){
-            String msg = intent.getStringExtra("message");
-            FragmentManager fragmentManager = this.getSupportFragmentManager();
-            if (fragmentManager.findFragmentById(R.id.fragmentframe) != null){
-                fragmentManager.beginTransaction().remove(
-                        fragmentManager.findFragmentById(R.id.fragmentframe)).commit();
-                putHomeFragmentInTop(false);
+    private void managePush(Intent intent) {
+        if (intent != null)
+            if (intent.hasExtra("message")) {
+                String msg = intent.getStringExtra("message");
+                FragmentManager fragmentManager = this.getSupportFragmentManager();
+                if (fragmentManager.findFragmentById(R.id.fragmentframe) != null) {
+                    fragmentManager.beginTransaction().remove(
+                            fragmentManager.findFragmentById(R.id.fragmentframe)).commit();
+                    putHomeFragmentInTop(false);
+                }
+                showPushAlertDialog(msg);
             }
-            showPushAlertDialog(msg);
+    }
+
+    private class unregisterTaskBPMServer extends AsyncTask<Void, Void, String> {
+
+        @Override
+        public String doInBackground(Void... params) {
+
+
+            try {
+                if (gcm == null) {
+                    gcm = GoogleCloudMessaging.getInstance(BPMActivityController.this);
+                }
+                gcm.unregister();
+                registrationid = removeRegID(BPMActivityController.this);
+                WSManager.getInstance().removeGCMToken(BPMActivityController.this, new WSManager.BPMCallback<String>() {
+                    @Override
+                    public void onSuccess(String response) {
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        tokenDialog(getResources().getString(R.string.token_error_delete));
+                    }
+                });
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            return null;
         }
+    }
+
+    private class registerTaskBPMServer extends AsyncTask<Boolean, Void, String> {
+            private String regid;
+        @Override
+        public String doInBackground(Boolean... params) {
+            try {
+                if (params[0]){
+                    if (gcm == null) {
+                        gcm = GoogleCloudMessaging.getInstance(BPMActivityController.this);
+                    }
+                    regid = gcm.register(Constants.SENDER_ID);
+                }else{
+                    regid = getRegID(BPMActivityController.this);
+                }
+
+
+                WSManager.getInstance().sendGCMToken(BPMActivityController.this, regid, new WSManager.BPMCallback<String>() {
+                    @Override
+                    public void onSuccess(String response) {
+                        String msg;
+                        if (response.equalsIgnoreCase("OK")) {
+                            msg = regid;
+                            storeNewRegId(BPMActivityController.this, regid);
+
+                        } else {
+                            msg = "Registration not found";
+                        }
+
+
+                        Toast.makeText(BPMActivityController.this, msg, Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        tokenDialog(getResources().getString(R.string.token_error));
+                    }
+                });
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            return null;
+        }
+    }
+
+    private void tokenDialog(String msg) {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        })
+                .setMessage(msg);
+        dialog.show();
+    }
+
+    private void alertSendMeasurement(){
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        })
+                .setMessage(getResources().getString(R.string.error_sending_measurement));
+        dialog.show();
+    }
+
+
+    private void alertSentMeasurementCorrectly(){
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        })
+                .setMessage(getResources().getString(R.string.measurement_send));
+        dialog.show();
     }
 
 }

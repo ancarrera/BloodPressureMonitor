@@ -150,5 +150,14 @@
     <string name="healthstatus">Your health state</string>
     <string name="pendingmeasurement">There are one pending measurement</string>
 
+    <!-- WS-->
+
+    <string name="token_error">Error enviando gcm token</string>
+    <string name="token_error_delete">Error borrando gcm token</string>
+    <string name="error_adding_measurement">Error adding measurement</string>
+    <string name="error_sending_measurement">Error sending measurement</string>
+    <string name="measurement_send">Measurement sent correctly</string>
+
+
 
 </resources>
