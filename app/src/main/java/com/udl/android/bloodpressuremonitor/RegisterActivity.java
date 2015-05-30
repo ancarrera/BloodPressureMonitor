@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.example.adrian.myapplication.backend.bpmApiRegister.model.User;
 import com.example.adrian.myapplication.backend.bpmApiRegister.BpmApiRegister;
 import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
+import com.udl.android.bloodpressuremonitor.BPMServerWS.WSManager;
 import com.udl.android.bloodpressuremonitor.application.BPMmasterActivity;
 import com.udl.android.bloodpressuremonitor.backend.BackendCalls;
 import com.udl.android.bloodpressuremonitor.utils.Constants;
@@ -139,7 +140,12 @@ public class RegisterActivity extends BPMmasterActivity
             @Override
             public void onClick(View v) {
                 if (isDataCorrect()) {
-                    new registerNewUser().execute();
+                    if (Constants.IS_EXPRESSJS_SERVER){
+                        sendUserToBPMServer();
+                    }else{
+                        new registerNewUser().execute();
+                    }
+
                 }
 
             }
@@ -317,9 +323,11 @@ public class RegisterActivity extends BPMmasterActivity
 
         }
 
-        private User createUser() {
+    }
 
-            User user = new User();
+    private User createUser() {
+
+        User user = new User();
 
             user.setName(name.getText().toString());
             String[] surnamesarray = surnames.getText().toString().split(" ");
@@ -339,8 +347,6 @@ public class RegisterActivity extends BPMmasterActivity
 
             return user;
         }
-    }
-
         void chooseAccount() {
             startActivityForResult(credential.newChooseAccountIntent(),
                     CHOOSE_ACCOUNT);
@@ -402,5 +408,31 @@ public class RegisterActivity extends BPMmasterActivity
         if (administration==null){
             administration=nullfield;
         }
+    }
+
+    private void sendUserToBPMServer(){
+        User user = createUser();
+        showDialog(false);
+        WSManager.getInstance().sendUser(this,user, new WSManager.BPMCallback<String>() {
+            @Override
+            public void onSuccess(String response) {
+                if (response.equalsIgnoreCase("OK")){
+                    startActivity(new Intent(RegisterActivity.this, BPMActivityController.class));
+                    setResult(RESULT_OK);
+                    finish();
+                }else{
+                    showDialogEvents(AlertsID.ERROR_REGISTER_PROCESS);
+                }
+
+                dialogDismiss();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                showDialogEvents(AlertsID.ERROR_REGISTER_PROCESS);
+                dialogDismiss();
+                e.printStackTrace();
+            }
+        });
     }
 }
