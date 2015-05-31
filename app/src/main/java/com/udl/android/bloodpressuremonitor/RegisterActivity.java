@@ -417,7 +417,7 @@ public class RegisterActivity extends BPMmasterActivity
             @Override
             public void onSuccess(String response) {
                 if (response.equalsIgnoreCase("OK")){
-                    startActivity(new Intent(RegisterActivity.this, BPMActivityController.class));
+                    startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                     setResult(RESULT_OK);
                     finish();
                 }else{
