@@ -22,5 +22,6 @@ public class Constants {
 
     //BPMServer
     public static final boolean IS_EXPRESSJS_SERVER = true;
+    public static final String URL_BASE = "http://192.168.168.25:8089/";
 
 }

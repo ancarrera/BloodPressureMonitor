@@ -31,7 +31,6 @@ public class WSManager {
 
     private static WSManager SINGLETON_INSTANCE;
 
-    private static final String BASE_URL = "http://192.168.168.4:8089/";
     private static final String CREATE_USER_URL = "users/create";
     private static final String LOGIN_USER_URL = "login";
     private static final String GCM_TOKEN_URL = "users/%s/gcmtoken";
@@ -132,13 +131,13 @@ public class WSManager {
         params.put("country",user.getCountry());
         params.put("city", user.getCity());
 
-        call(context, BASE_URL + CREATE_USER_URL, Request.Method.POST, params, new APIReponseCallback() {
+        call(context, Constants.URL_BASE + CREATE_USER_URL, Request.Method.POST, params, new APIReponseCallback() {
             @Override
             public void onResponse(String response) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
 
-                    if (jsonObject.has("password")) { //check if response status 200 is user
+                    if (jsonObject.has("password")) {
                         callback.onSuccess("OK");
                     } else {
                         callback.onSuccess(null);
@@ -166,7 +165,7 @@ public class WSManager {
         params.put("email", email);
         params.put("password", password);
 
-        call(context, BASE_URL + LOGIN_USER_URL, Request.Method.POST, params, new APIReponseCallback() {
+        call(context, Constants.URL_BASE + LOGIN_USER_URL, Request.Method.POST, params, new APIReponseCallback() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -194,7 +193,7 @@ public class WSManager {
         params.put("gcmToken", regid);
         addTokenToHeaderRequest(Constants.SESSION_MD5_TOKEN);
 
-        call(context, BASE_URL + String.format(GCM_TOKEN_URL,Constants.SESSION_USER_ID), Request.Method.PUT, params, new APIReponseCallback() {
+        call(context, Constants.URL_BASE + String.format(GCM_TOKEN_URL,Constants.SESSION_USER_ID), Request.Method.PUT, params, new APIReponseCallback() {
             @Override
             public void onResponse(String response) {
 
@@ -221,7 +220,7 @@ public class WSManager {
         Map<String, String> params = new HashMap<>();
         addTokenToHeaderRequest(Constants.SESSION_MD5_TOKEN);
 
-        call(context, BASE_URL + String.format(GCM_TOKEN_URL,Constants.SESSION_USER_ID), Request.Method.DELETE, params, new APIReponseCallback() {
+        call(context, Constants.URL_BASE + String.format(GCM_TOKEN_URL, Constants.SESSION_USER_ID), Request.Method.DELETE, params, new APIReponseCallback() {
             @Override
             public void onResponse(String response) {
 
@@ -249,7 +248,7 @@ public class WSManager {
         Map<String, String> params = new HashMap<>();
         addTokenToHeaderRequest(Constants.SESSION_MD5_TOKEN);
 
-        call(context, BASE_URL + String.format(GET_MEASUREMENTS_URL,Constants.SESSION_USER_ID), Request.Method.GET, params, new APIReponseCallback() {
+        call(context,Constants.URL_BASE + String.format(GET_MEASUREMENTS_URL, Constants.SESSION_USER_ID), Request.Method.GET, params, new APIReponseCallback() {
             @Override
             public void onResponse(String response) {
 
@@ -294,7 +293,7 @@ public class WSManager {
         params.put("pulse",measurement.getPulse()+"");
         addTokenToHeaderRequest(Constants.SESSION_MD5_TOKEN);
 
-        call(context, BASE_URL + String.format(POST_MEASUREMENT_URL,Constants.SESSION_USER_ID)+"/"+lang, Request.Method.POST, params, new APIReponseCallback() {
+        call(context, Constants.URL_BASE + String.format(POST_MEASUREMENT_URL,Constants.SESSION_USER_ID)+"/"+lang, Request.Method.POST, params, new APIReponseCallback() {
             @Override
             public void onResponse(String response) {
                 try {
